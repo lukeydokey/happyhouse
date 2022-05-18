@@ -14,13 +14,13 @@
       ></b-img>
     </b-col>
     <b-col cols="10" class="align-self-center">
-      [{{ house.일련번호 }}] {{ house.아파트 }}
+      [{{ house.aptCode }}] {{ house.aptName }}
     </b-col>
   </b-row>
 </template>
 
 <script>
-// import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "HouseListItem",
@@ -32,7 +32,17 @@ export default {
   props: {
     house: Object,
   },
-  methods: {},
+  methods: {
+    ...mapActions(["detailHouse"]),
+    selectHouse() {
+      console.log("listRow : ", this.house);
+      // this.$store.dispatch("getHouse", this.house);
+      this.detailHouse(this.house);
+    },
+    colorChange(flag) {
+      this.isColor = flag;
+    },
+  },
 };
 </script>
 

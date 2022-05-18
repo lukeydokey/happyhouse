@@ -15,7 +15,7 @@
 
 <script>
 import HouseListItem from "@/components/house/HouseListItem.vue";
-// import { mapState } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "HouseList",
@@ -25,7 +25,12 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    ...mapState(["houses"]),
+    // houses() {
+    //   return this.$store.state.houses;
+    // },
+  },
 };
 </script>
 

@@ -1,27 +1,25 @@
 <template>
   <b-container class="bv-example-row mt-3 text-center">
     <b-card bg-variant="first">
-      <h3 class="underline-steelblue">
-        <b-icon icon="person-lines-fill"></b-icon> Member Service
+      <h3 class="underline-hotpink">
+        <b-icon icon="question-square-fill"></b-icon> Q & A
       </h3>
       <router-view></router-view>
     </b-card>
   </b-container>
 </template>
-
 <script>
 export default {
-  name: "MemberView",
+  name: "BoardView",
 };
 </script>
-
 <style scoped>
-.underline-steelblue {
+.underline-hotpink {
   display: inline-block;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 70%,
-    rgba(72, 190, 233, 0.3) 30%
+    rgba(231, 27, 139, 0.3) 30%
   );
 }
 </style>

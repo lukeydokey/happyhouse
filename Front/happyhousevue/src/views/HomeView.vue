@@ -1,23 +1,25 @@
 <template>
   <b-container class="bv-example-row mt-3 text-center">
-    <h3 class="underline-steelblue"><b-icon icon="house"></b-icon> SSAFY</h3>
-    <b-row>
-      <b-col></b-col>
-      <b-col cols="10">
-        <b-jumbotron
-          bg-variant="muted"
-          text-variant="dark"
-          border-variant="dark"
-        >
-          <template #header>SSAFY Home</template>
+    <b-container class="mainContents">
+      <b-row></b-row>
+      <b-row>
+        <b-col></b-col>
+        <b-col cols="10">
+          <b-jumbotron bg-variant="transparent" text-variant="light">
+            <template #header>Happy House</template>
 
-          <template #lead> 홈 화면 </template>
+            <template #lead> 행복한 우리집 </template>
 
-          <hr class="my-4" />
-        </b-jumbotron>
-      </b-col>
-      <b-col></b-col>
-    </b-row>
+            <hr class="my-4" />
+            <p>아파트 정보 검색</p>
+          </b-jumbotron>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-button type="button" variant="primary" @click="movePage"
+        >Start</b-button
+      >
+    </b-container>
   </b-container>
 </template>
 
@@ -26,6 +28,21 @@ export default {
   name: "HomeView",
   props: {
     msg: String,
+  },
+  data() {
+    return {
+      mainProps: {
+        center: true,
+        fluidGrow: true,
+        blank: true,
+        blankColor: "#bbb",
+      },
+    };
+  },
+  methods: {
+    movePage() {
+      this.$router.push({ name: "signIn" });
+    },
   },
 };
 </script>

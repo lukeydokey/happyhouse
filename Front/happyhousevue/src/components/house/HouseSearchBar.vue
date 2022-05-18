@@ -21,6 +21,13 @@
       <b-form-select
         v-model="gugunCode"
         :options="guguns"
+        @change="dongList"
+      ></b-form-select>
+    </b-col>
+    <b-col class="sm-3">
+      <b-form-select
+        v-model="dongCode"
+        :options="dongs"
         @change="searchApt"
       ></b-form-select>
     </b-col>
@@ -28,7 +35,7 @@
 </template>
 
 <script>
-// import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "HouseSearchBar",
@@ -36,11 +43,44 @@ export default {
     return {
       sidoCode: null,
       gugunCode: null,
+      dongCode: null,
     };
   },
-  computed: {},
-  created() {},
-  methods: {},
+  computed: {
+    ...mapState(["sidos", "guguns", "dongs", "houses"]),
+  },
+  created() {
+    this.clearSidoList();
+    this.getSido();
+  },
+  methods: {
+    ...mapActions([
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getHouseList",
+      "clearSidoList",
+      "clearGugunList",
+      "clearDongList",
+    ]),
+
+    gugunList() {
+      console.log(this.sidoCode);
+      this.clearGugunList();
+      this.gugunCode = null;
+      if (this.sidoCode) this.getGugun(this.sidoCode);
+    },
+    dongList() {
+      console.log(this.gugunCode);
+      this.clearDongList();
+      this.dongCode = null;
+      if (this.gugunCode) this.getDong(this.gugunCode);
+    },
+    searchApt() {
+      console.log(this.dongCode);
+      if (this.dongCode) this.getHouseList(this.dongCode);
+    },
+  },
 };
 </script>
 
