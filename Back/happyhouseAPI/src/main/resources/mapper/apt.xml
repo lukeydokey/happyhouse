@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapMapper">
+
+	<select id="getSido" resultType="sidoGugunCodeDto">
+		select left(sidoCode,2) sidoCode, sidoName
+		from sidocode
+		order by sidoCode
+	</select>
+	
+	<select id="getGugun" resultType="sidoGugunCodeDto">
+		select gugunCode, gugunName
+		from guguncode
+		order by gugunCode
+	</select>
+	
+	<select id="getGugunInSido" parameterType="string" resultType="sidoGugunCodeDto">
+		select left(gugunCode,5) gugunCode, gugunName
+		from guguncode
+		where left(gugunCode,2) = #{sido}
+		order by gugunCode
+	</select>
+	
+	<select id="getDongInGugun" parameterType="string" resultType="houseInfoDto">
+		select distinct dongName, dongCode
+		from houseinfo
+		where left(dongCode, 5) = #{gugun}
+		order by dongName
+	</select>
+	
+	<select id="getSidoGugunDong" parameterType="string" resultType="sidoGugunCodeDto">
+		select dongCode, sidoName, gugunName, dongName
+		from dongcode
+		where dongCode = #{dongCode}
+	</select>
+	
+	<select id="getAptInDong" parameterType="string" resultType="houseInfoDto">
+		select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice,
+				(select floor from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) floor
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where dongCode = #{dong} 
+		order by aptName
+	</select>
+	
+	<select id="getApt" parameterType="houseInfoDto" resultType="houseInfoDto">
+		select aptCode
+		from houseinfo
+		where dongCode = #{dongCode} and aptName = #{aptName}
+	</select>
+	
+	<select id="countApt" resultType="int">
+		select count(aptCode)
+		from houseinfo
+	</select>
+	
+	<insert id="saveAptInfo" parameterType="houseInfoDto">
+		insert into houseinfo(aptCode, aptName, dongCode, dongName, buildYear, jibun, lat, lng)
+		values
+		<foreach collection="list" item="apt" separator=",">
+		(
+		#{apt.aptCode}, #{apt.aptName}, #{apt.dongCode}, #{apt.dongName}, #{apt.buildYear}, #{apt.jibun}, #{apt.lat}, #{apt.lng}
+		)
+		</foreach>
+	</insert>
+	
+	<insert id="saveAptDeal" parameterType="houseInfoDto">
+		insert ignore into housedeal(aptCode, dealAmount, dealYear, dealMonth, dealDay, area, floor, type)
+		values
+		<foreach collection="list" item="apt" separator=",">
+		(
+		#{apt.aptCode}, #{apt.recentPrice}, #{apt.dealYear}, #{apt.dealMonth}, #{apt.dealDay}, #{apt.area}, #{apt.floor}, 1
+		)
+		</foreach>
+	</insert>
+</mapper>
