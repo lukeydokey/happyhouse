@@ -13,10 +13,7 @@ export default new Vuex.Store({
     houses: [],
     house: null,
     loginInfo: "",
-    todos: [
-      // { title: '할 일1', completed: false },
-      // { title: '할 일2', completed: false },
-    ],
+    comments: [],
   },
   getters: {
     allTodosCount(state) {
@@ -31,6 +28,9 @@ export default new Vuex.Store({
       return state.todos.filter((todo) => {
         return todo.completed === false;
       }).length;
+    },
+    commentList(state) {
+      return state.comments;
     },
   },
   mutations: {
@@ -50,6 +50,15 @@ export default new Vuex.Store({
         state.dongs.push({ value: dong.dongCode, text: dong.dongName });
       });
     },
+    SET_COMMENT_LIST(state, comments) {
+      comments.forEach((comment) => {
+        state.comments.push({
+          userid: comment.userid,
+          regtime: comment.regtime,
+          content: comment.content,
+        });
+      });
+    },
     CLEAR_SIDO_LIST(state) {
       state.sidos = [{ value: null, text: "선택하세요" }];
     },
@@ -58,6 +67,9 @@ export default new Vuex.Store({
     },
     CLEAR_DONG_LIST(state) {
       state.dongs = [{ value: null, text: "선택하세요" }];
+    },
+    CLEAR_COMMENTS(state) {
+      state.comments = [];
     },
     SET_HOUSE_LIST(state, houses) {
       console.log(houses);
@@ -138,6 +150,7 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
+
     clearSidoList({ commit }) {
       commit("CLEAR_SIDO_LIST");
     },
@@ -190,6 +203,14 @@ export default new Vuex.Store({
     },
     updateTodoStatus({ commit }, todoItem) {
       commit("UPDATE_TODO_STATUS", todoItem);
+    },
+    updateComments({ commit }, articleno) {
+      http.get(`/comment/${articleno}`).then(({ data }) => {
+        commit("SET_COMMENT_LIST", data);
+      });
+    },
+    clearComments({ commit }) {
+      commit("CLEAR_COMMENTS");
     },
     //////////////////////////// Todo List end //////////////////////////////////
   },
