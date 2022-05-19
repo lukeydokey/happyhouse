@@ -86,18 +86,15 @@
 <script>
 import { mapState, mapActions } from "vuex";
 const memberStore = "memberStore";
-
 export default {
   name: "HeaderNaviBar",
   computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    ...mapActions(memberStore, ["delLoginInfo"]),
+    ...mapActions(["delLoginInfo"]),
     logout() {
       this.delLoginInfo();
-      if (this.$router.currentRoute.name != "home")
-        this.$router.push({ name: "home" });
     },
   },
 };

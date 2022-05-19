@@ -1,7 +1,5 @@
 <template>
-  <b-container class="fluid">
-    <b-container class="fluid" id="map"></b-container>
-  </b-container>
+  <b-container id="map"></b-container>
 </template>
 
 <script>
@@ -9,6 +7,23 @@ export default {
   data() {
     return {
       map: null,
+      markerPositions: [
+        {
+          title: "카카오",
+          latlng: new kakao.maps.LatLng(33.450705, 126.570677),
+        },
+        {
+          title: "생태연못",
+          latlng: new kakao.maps.LatLng(33.450936, 126.569477),
+        },
+        { title: "텃밭", latlng: new kakao.maps.LatLng(33.450705, 126.570677) },
+        {
+          title: "근린공원",
+          latlng: new kakao.maps.LatLng(33.451393, 126.570738),
+        },
+      ],
+      // 화면에 표시되어있는 marker들
+      markers: [],
     };
   },
   methods: {
@@ -16,9 +31,44 @@ export default {
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(37.575869, 126.976859, 16),
-        level: 10,
+        level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+      this.displayMarkers(this.markerPositions);
+    },
+    displayMarkers(positions) {
+      // 1. 현재 표시되어있는 marker들이 있다면 marker에 등록된 map을 없애준다.
+      if (this.markers.length > 0) {
+        this.markers.forEach((item) => {
+          item.setMap(null);
+        });
+      }
+
+      // 2. 마커 이미지 커스터마이징 하기
+      // javascript 영역에서 assets의 정보 가져오기
+      const imgSrc = require("@/assets/map/marker.png");
+      const imgSize = new kakao.maps.Size(24, 35);
+      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
+      // 3. 마커 표시하기
+      positions.forEach((position) => {
+        const marker = new kakao.maps.Marker({
+          map: this.map,
+          position: position.latlng, // 마커의 위치
+          title: position.title, // 마우스 오버 시 표시할 제목
+          image: markerImage, // 마커의 이미지
+        });
+        this.markers.push(marker);
+      });
+
+      // 4. 지도를 이동시켜주기
+      // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
+      const bounds = positions.reduce(
+        (bounds, position) => bounds.extend(position.latlng),
+        new kakao.maps.LatLngBounds(),
+      );
+
+      this.map.setBounds(bounds);
     },
   },
   mounted() {
@@ -35,12 +85,10 @@ export default {
       this.initMap();
     }
   },
+  created() {
+    this.displayMarkers(this.markerPositions);
+  },
 };
 </script>
 
-<style scoped>
-#map {
-  width: 100vw;
-  height: 100vh;
-}
-</style>
+<style scoped></style>

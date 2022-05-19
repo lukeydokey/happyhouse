@@ -1,5 +1,8 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center fluid">
+  <b-container
+    class="justify-content-md-center mt-10 category"
+    style="background-color: red; width: 100%"
+  >
     <b-button v-b-toggle.sidebar-right>Toggle Sidebar</b-button>
     <b-sidebar id="sidebar-right" title="Sidebar" right shadow>
       <b-card bg-variant="first">
@@ -17,7 +20,7 @@
         </b-row>
       </b-card>
     </b-sidebar>
-    <house-map></house-map>
+    <house-map style="width: 100%; height: 500px"></house-map>
   </b-container>
 </template>
 <script>
@@ -44,5 +47,14 @@ export default {
     rgba(255, 255, 255, 0) 70%,
     rgba(231, 149, 27, 0.3) 30%
   );
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow: hidden;
 }
 </style>
