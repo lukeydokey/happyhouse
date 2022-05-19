@@ -50,7 +50,7 @@
           <tbody>
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
             <board-list-item2
-              v-for="comment in comments"
+              v-for="comment in commentList"
               :key="comment.commentno"
               v-bind="comment"
             />
@@ -68,7 +68,7 @@
 import http from "@/api/http";
 import BoardInputItem2 from "@/components/board/item/BoardInputItem2.vue";
 import BoardListItem2 from "@/components/board/item/BoardListItem2.vue";
-
+import { mapGetters } from "vuex";
 export default {
   name: "BoardDetail",
   components: {
@@ -78,7 +78,6 @@ export default {
   data() {
     return {
       article: {},
-      comments: [],
     };
   },
   computed: {
@@ -87,23 +86,21 @@ export default {
         return this.article.content.split("\n").join("<br>");
       return "";
     },
+    ...mapGetters(["commentList"]),
   },
   created() {
     http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
       this.article = data;
     });
-    http.get(`/comment/${this.$route.params.articleno}`).then(({ data }) => {
-      this.comments = data;
-    });
+    this.$store.dispatch("clearComments");
+    this.$store.dispatch("updateComments", this.$route.params.articleno);
     this.$on("updated", this.update);
   },
   methods: {
     update() {
-      setTimeout(() => console.log(this.comments), 3000);
-      http.get(`/comment/${this.$route.params.articleno}`).then(({ data }) => {
-        this.comments = data;
-        console.log(this.comments);
-      });
+      this.$store.dispatch("clearComments");
+      console.log("업데이트 함수");
+      this.$store.dispatch("updateComments", this.$route.params.articleno);
     },
     listArticle() {
       this.$router.push({ name: "boardList" });

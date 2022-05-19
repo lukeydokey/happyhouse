@@ -10,32 +10,28 @@
     <b-col class="sm-3" align="left">
       <b-button variant="outline-primary" @click="sendKeyword">검색</b-button>
     </b-col> -->
-    <b-col class="sm-3">
-      <b-form-select
-        v-model="sidoCode"
-        :options="sidos"
-        @change="gugunList"
-      ></b-form-select>
-    </b-col>
-    <b-col class="sm-3">
-      <b-form-select
-        v-model="gugunCode"
-        :options="guguns"
-        @change="dongList"
-      ></b-form-select>
-    </b-col>
-    <b-col class="sm-3">
-      <b-form-select
-        v-model="dongCode"
-        :options="dongs"
-        @change="searchApt"
-      ></b-form-select>
-    </b-col>
+    <b-form-select
+      v-model="sidoCode"
+      :options="sidos"
+      @change="gugunList"
+    ></b-form-select>
+    <b-form-select
+      v-model="gugunCode"
+      :options="guguns"
+      @change="dongList"
+    ></b-form-select>
+    <b-form-select
+      v-model="dongCode"
+      :options="dongs"
+      @change="searchApt"
+    ></b-form-select>
   </b-row>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+
+const houseStore = "houseStore";
 
 export default {
   name: "HouseSearchBar",
@@ -47,14 +43,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(["sidos", "guguns", "dongs", "houses"]),
+    ...mapState(houseStore, ["sidos", "guguns", "dongs", "houses"]),
   },
   created() {
     this.clearSidoList();
     this.getSido();
   },
   methods: {
-    ...mapActions([
+    ...mapActions(houseStore, [
       "getSido",
       "getGugun",
       "getDong",

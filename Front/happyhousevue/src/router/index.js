@@ -1,8 +1,28 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store/index.js";
 import HomeView from "../views/HomeView.vue";
 
 Vue.use(VueRouter);
+
+// https://router.vuejs.org/kr/guide/advanced/navigation-guards.html
+const onlyAuthUser = async (to, from, next) => {
+  // console.log(store);
+  const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+  const getUserInfo = store._actions["memberStore/getUserInfo"];
+  let token = sessionStorage.getItem("access-token");
+  if (checkUserInfo == null && token) {
+    await getUserInfo(token);
+  }
+  if (checkUserInfo === null) {
+    alert("로그인이 필요한 페이지입니다..");
+    next({ name: "signIn" });
+    // router.push({ name: "signIn" });
+  } else {
+    // console.log("로그인 했다.");
+    next();
+  }
+};
 
 const routes = [
   {
@@ -10,6 +30,11 @@ const routes = [
     name: "home",
     component: HomeView,
   },
+  // {
+  //   path: "/map",
+  //   name: "map",
+  //   component: () => import("@/views/MapView.vue"),
+  // },
   {
     path: "/user",
     name: "user",
@@ -24,6 +49,12 @@ const routes = [
         path: "singup",
         name: "signUp",
         component: () => import("@/components/user/MemberRegister.vue"),
+      },
+      {
+        path: "mypage",
+        name: "mypage",
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/components/user/MemberMyPage.vue"),
       },
     ],
   },
@@ -41,28 +72,27 @@ const routes = [
       {
         path: "write",
         name: "boardRegister",
+        beforeEnter: onlyAuthUser,
         component: () => import("@/components/board/BoardRegister.vue"),
       },
       {
         path: "detail/:articleno",
         name: "boardDetail",
+        beforeEnter: onlyAuthUser,
         component: () => import("@/components/board/BoardDetail.vue"),
       },
       {
         path: "modify/:articleno",
         name: "boardModify",
+        beforeEnter: onlyAuthUser,
         component: () => import("@/components/board/BoardModify.vue"),
-      },
-      {
-        path: "delete/:articleno",
-        name: "boardDelete",
-        component: () => import("@/components/board/BoardDelete.vue"),
       },
     ],
   },
   {
     path: "/house",
     name: "house",
+    beforeEnter: onlyAuthUser,
     component: () => import("@/views/HouseView.vue"),
   },
 ];

@@ -6,42 +6,49 @@
         <b-col></b-col>
         <b-col cols="10">
           <b-jumbotron bg-variant="transparent" text-variant="light">
-            <template #header>Happy House</template>
+            <template #header><b>Happy House</b></template>
 
-            <template #lead> 행복한 우리집 </template>
+            <template #lead> <b>행복한 우리집</b> </template>
 
             <hr class="my-4" />
-            <p>아파트 정보 검색</p>
+            <p><b>아파트 정보 검색</b></p>
           </b-jumbotron>
         </b-col>
         <b-col></b-col>
       </b-row>
-      <b-button type="button" variant="primary" @click="movePage"
-        >Start</b-button
+      <b-button type="button" variant="primary" v-if="isLogin" @click="moveApt">
+        Start
+      </b-button>
+      <b-button
+        type="button"
+        variant="primary"
+        v-if="!isLogin"
+        @click="moveLogin"
       >
+        Join
+      </b-button>
     </b-container>
   </b-container>
 </template>
 
 <script>
+import { mapState } from "vuex";
+const memberStore = "memberStore";
+
 export default {
   name: "HomeView",
   props: {
     msg: String,
   },
-  data() {
-    return {
-      mainProps: {
-        center: true,
-        fluidGrow: true,
-        blank: true,
-        blankColor: "#bbb",
-      },
-    };
+  computed: {
+    ...mapState(memberStore, ["isLogin"]),
   },
   methods: {
-    movePage() {
+    moveLogin() {
       this.$router.push({ name: "signIn" });
+    },
+    moveApt() {
+      this.$router.push({ name: "house" });
     },
   },
 };
