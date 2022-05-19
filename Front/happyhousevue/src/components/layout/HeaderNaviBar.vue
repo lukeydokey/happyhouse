@@ -40,17 +40,17 @@
             <template #button-content>
               <b-icon icon="people" font-scale="2"></b-icon>
             </template>
-            <b-dropdown-item href="#" v-if="!loginInfo"
+            <b-dropdown-item href="#" v-if="!isLogin"
               ><router-link :to="{ name: 'signUp' }" class="link"
                 ><b-icon icon="person-circle"></b-icon> 회원가입</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item href="#" v-if="!loginInfo"
+            <b-dropdown-item href="#" v-if="!isLogin"
               ><router-link :to="{ name: 'signIn' }" class="link"
                 ><b-icon icon="key"></b-icon> 로그인</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item href="#" v-if="loginInfo" @click="logout"
+            <b-dropdown-item href="#" v-if="isLogin" @click="logout"
               ><router-link :to="{ name: 'home' }" class="link"
                 ><b-icon icon="key"></b-icon> 로그아웃</router-link
               ></b-dropdown-item
@@ -64,15 +64,19 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+const memberStore = "memberStore";
+
 export default {
   name: "HeaderNaviBar",
   computed: {
-    ...mapState(["loginInfo"]),
+    ...mapState(memberStore, ["isLogin"]),
   },
   methods: {
-    ...mapActions(["delLoginInfo"]),
+    ...mapActions(memberStore, ["delLoginInfo"]),
     logout() {
       this.delLoginInfo();
+      if (this.$router.currentRoute.name != "home")
+        this.$router.push({ name: "home" });
     },
   },
 };
