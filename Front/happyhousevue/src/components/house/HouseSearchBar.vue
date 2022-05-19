@@ -10,27 +10,21 @@
     <b-col class="sm-3" align="left">
       <b-button variant="outline-primary" @click="sendKeyword">검색</b-button>
     </b-col> -->
-    <b-col class="sm-3">
-      <b-form-select
-        v-model="sidoCode"
-        :options="sidos"
-        @change="gugunList"
-      ></b-form-select>
-    </b-col>
-    <b-col class="sm-3">
-      <b-form-select
-        v-model="gugunCode"
-        :options="guguns"
-        @change="dongList"
-      ></b-form-select>
-    </b-col>
-    <b-col class="sm-3">
-      <b-form-select
-        v-model="dongCode"
-        :options="dongs"
-        @change="searchApt"
-      ></b-form-select>
-    </b-col>
+    <b-form-select
+      v-model="sidoCode"
+      :options="sidos"
+      @change="gugunList"
+    ></b-form-select>
+    <b-form-select
+      v-model="gugunCode"
+      :options="guguns"
+      @change="dongList"
+    ></b-form-select>
+    <b-form-select
+      v-model="dongCode"
+      :options="dongs"
+      @change="searchApt"
+    ></b-form-select>
   </b-row>
 </template>
 
