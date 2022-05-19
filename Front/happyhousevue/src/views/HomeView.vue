@@ -6,12 +6,12 @@
         <b-col></b-col>
         <b-col cols="10">
           <b-jumbotron bg-variant="transparent" text-variant="light">
-            <template #header>Happy House</template>
+            <template #header><b>Happy House</b></template>
 
-            <template #lead> 행복한 우리집 </template>
+            <template #lead> <b>행복한 우리집</b> </template>
 
             <hr class="my-4" />
-            <p>아파트 정보 검색</p>
+            <p><b>아파트 정보 검색</b></p>
           </b-jumbotron>
         </b-col>
         <b-col></b-col>

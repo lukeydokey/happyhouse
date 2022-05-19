@@ -41,21 +41,37 @@
               아파트정보</router-link
             ></b-nav-item
           >
-          <b-nav-item-dropdown right>
+          <b-nav-item-dropdown v-if="!isLogin" right>
             <template #button-content>
               <b-icon icon="people" font-scale="2"></b-icon>
             </template>
-            <b-dropdown-item href="#" v-if="!loginInfo"
+            <b-dropdown-item href="#"
               ><router-link :to="{ name: 'signUp' }" class="link"
                 ><b-icon icon="person-circle"></b-icon> 회원가입</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item href="#" v-if="!loginInfo"
+            <b-dropdown-item href="#"
               ><router-link :to="{ name: 'signIn' }" class="link"
                 ><b-icon icon="key"></b-icon> 로그인</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item href="#" v-if="loginInfo" @click="logout"
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown v-else right>
+            <template #button-content>
+              <b-icon icon="people" font-scale="2"></b-icon>
+            </template>
+            <b-dropdown-item class="align-self-center"
+              ><router-link
+                :to="{ name: 'mypage' }"
+                class="link align-self-center"
+                ><b-avatar
+                  variant="primary"
+                  v-text="userInfo ? userInfo.id.charAt(0).toUpperCase() : ''"
+                ></b-avatar
+                >{{ userInfo.name }}({{ userInfo.id }})</router-link
+              >
+            </b-dropdown-item>
+            <b-dropdown-item href="#" @click="logout"
               ><router-link :to="{ name: 'home' }" class="link"
                 ><b-icon icon="key"></b-icon> 로그아웃</router-link
               ></b-dropdown-item
@@ -69,16 +85,18 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-
+const memberStore = "memberStore";
 export default {
   name: "HeaderNaviBar",
   computed: {
-    ...mapState(["loginInfo"]),
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    ...mapActions(["delLoginInfo"]),
+    ...mapActions(memberStore, ["delLoginInfo"]),
     logout() {
       this.delLoginInfo();
+      if (this.$router.currentRoute.name != "home")
+        this.$router.push({ name: "home" });
     },
   },
 };

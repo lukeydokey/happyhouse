@@ -2,7 +2,7 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert variant="secondary" show><h3>회원가입</h3></b-alert>
+        <b-alert variant="primary" show><h3>회원가입</h3></b-alert>
       </b-col>
     </b-row>
     <b-row>
@@ -134,7 +134,6 @@ export default {
     },
     typedId() {
       let result = this.user.id.length > 0 ? true : false;
-      this.setCkidMsgDefault();
       this.ckId();
       return result;
     },
@@ -190,9 +189,12 @@ export default {
     async confirm() {
       this.user.phonenumber = this.$refs.phonenumber.value;
       await this.userRegister(this.user);
+      this.setCkidMsgDefault();
       this.$router.push({ name: "signIn" });
     },
     movePage() {
+      this.setCkidMsgDefault();
+      this.setRegisterErrorFalse();
       this.$router.push({ name: "home" });
     },
   },
