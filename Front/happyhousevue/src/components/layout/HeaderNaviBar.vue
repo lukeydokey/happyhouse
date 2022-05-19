@@ -92,9 +92,11 @@ export default {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    ...mapActions(["delLoginInfo"]),
+    ...mapActions(memberStore, ["delLoginInfo"]),
     logout() {
       this.delLoginInfo();
+      if (this.$router.currentRoute.name != "home")
+        this.$router.push({ name: "home" });
     },
   },
 };
