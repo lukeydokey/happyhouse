@@ -7,8 +7,6 @@ import com.ssafy.happyhouse.jwt.JwtTokenProvider;
 import com.ssafy.happyhouse.model.UserDto;
 import com.ssafy.happyhouse.model.mapper.UserMapper;
 
-import io.jsonwebtoken.Claims;
-
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -49,17 +47,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean isUsable(String jwt) throws Exception {
-		if(jwt!=null) {
-			if(jwtProvider.validateToken(jwt)) {
-				Claims claim = jwtProvider.getInformation(jwt);
-				System.out.println("유효한 토큰");
-				System.out.println(claim.get("userId"));
-				return true;
-			}
-		}
-		System.out.println("유효하지 않은 토큰");
-		return false;
+	public UserDto userInfo(String userid) throws Exception {
+		return userMapper.userInfo(userid);
 	}
 	
 	

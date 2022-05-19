@@ -9,5 +9,5 @@ public interface UserService {
 	void insertUser(UserDto userDto) throws Exception;
 	void updateUser(UserDto userDto) throws Exception;
 	void deleteUser(String userId) throws Exception;
-	boolean isUsable(String jwt) throws Exception;
+	public UserDto userInfo(String userid) throws Exception;
 }

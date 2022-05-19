@@ -85,13 +85,13 @@ public class HouseMapServiceImpl implements HouseMapService {
 		
 		int cntApt = houseMapMapper.countApt() + 1;
 		for(SidoGugunCodeDto gugun : list) {
-			if(Long.parseLong(gugun.getGugunCode())>4200000000L) {
+			if(Long.parseLong(gugun.getGugunCode())>2700000000L) {
 				System.out.println("break");
 				break;
 //				continue;
 			}
 			for(int year=2019;year<=2019;year++) {
-				for(int month=1;month<=3;month++) {
+				for(int month=1;month<=12;month++) {
 					SAXParser parser = factory.newSAXParser();
 					HouseSAXHandler handler = new HouseSAXHandler();
 					String yearStr = String.valueOf(year).concat("00");

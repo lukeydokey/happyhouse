@@ -11,8 +11,15 @@
 	</select>
 	
 	<select id="login" parameterType="userDto" resultType="userDto">
-		select * from user
-		where ID = #{id} and password = #{password}
+		select id, name, email, phonenumber, gender
+		from user
+		where id = #{id} and password = #{password}
+	</select>
+	
+	<select id="userInfo" parameterType="String" resultType="userDto">
+		select id, name, email, phonenumber, gender
+		from user
+		where ID = #{id}
 	</select>
 	
 	<select id="getUser" parameterType="String" resultType="userDto">
@@ -22,11 +29,11 @@
 	
 	<insert id="insertUser" parameterType="userDto">
 		insert into user
-		values(#{id}, #{password}, #{name}, #{address}, #{phonenumber}, #{gender})
+		values(#{id}, #{password}, #{name}, #{email}, #{phonenumber}, #{gender})
 	</insert>
 	
 	<update id="updateUser" parameterType="userDto">
-		update user set password = #{password}, name = #{name}, address = #{address}, phonenumber = #{phonenumber}
+		update user set password = #{password}, name = #{name}, email = #{email}, phonenumber = #{phonenumber}
 		where ID = #{id}
 	</update>
 	

@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### xml ###
+apt.xml
+geo.xml
+
 ### STS ###
 .apt_generated
 .classpath
