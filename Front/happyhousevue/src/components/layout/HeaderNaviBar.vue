@@ -25,6 +25,11 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-item href="#"
+            ><router-link :to="{ name: 'map' }" class="link"
+              ><b-icon icon="question-square-fill" font-scale="2"></b-icon>지도
+            </router-link></b-nav-item
+          >
+          <b-nav-item href="#"
             ><router-link :to="{ name: 'board' }" class="link"
               ><b-icon icon="question-square-fill" font-scale="2"></b-icon> Q &
               A</router-link

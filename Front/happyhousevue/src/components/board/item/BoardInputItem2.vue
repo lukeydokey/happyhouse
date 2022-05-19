@@ -87,15 +87,14 @@ export default {
       this.comment.userid = "";
       this.comment.content = "";
     },
-    registComment() {
-      http
-        .post(`/comment`, {
-          articleno: this.$route.params.articleno,
-          userid: this.comment.userid,
-          content: this.comment.content,
-        })
-        .then(this.$emit("updated", "등록 완료!"));
-
+    async registComment() {
+      await http.post(`/comment`, {
+        articleno: this.$route.params.articleno,
+        userid: this.comment.userid,
+        content: this.comment.content,
+      });
+      // .then(this.$store.dispatch("updateComments", this.comment.articleno))
+      await this.$emit("updated", "등록 완료!");
       this.comment.userid = "";
       this.comment.content = "";
     },
