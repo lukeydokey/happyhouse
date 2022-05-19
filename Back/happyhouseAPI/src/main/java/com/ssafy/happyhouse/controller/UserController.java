@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -85,6 +87,30 @@ public class UserController {
 		}
 	}
 	
+	@ApiOperation(value = "계정 수정 요청을 한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping("/update")
+	public ResponseEntity<String> update(@RequestBody UserDto user){
+		logger.debug("modify - 호출");
+		try {
+			userService.updateUser(user);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@ApiOperation(value = "계정 삭제 요청을 한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/delete")
+	public ResponseEntity<String> delete(@RequestBody UserDto user){
+		logger.debug("modify - 호출");
+		try {
+			userService.deleteUser(user.getId());
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		}
+	}
+	
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(
@@ -97,8 +123,8 @@ public class UserController {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
-				UserDto memberDto = userService.userInfo(userid);
-				resultMap.put("userInfo", memberDto);
+				UserDto userDto = userService.userInfo(userid);
+				resultMap.put("userInfo", userDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
