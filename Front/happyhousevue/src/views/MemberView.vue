@@ -1,46 +1,27 @@
 <template>
-  <b-container class="fluid">
-    <b-container class="fluid" id="map"></b-container>
+  <b-container class="bv-example-row mt-3 text-center">
+    <b-card bg-variant="first">
+      <h3 class="underline-steelblue">
+        <b-icon icon="person-lines-fill"></b-icon> Member Service
+      </h3>
+      <router-view></router-view>
+    </b-card>
   </b-container>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      map: null,
-    };
-  },
-  methods: {
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(37.575869, 126.976859, 16),
-        level: 10,
-      };
-      this.map = new kakao.maps.Map(container, options);
-    },
-  },
-  mounted() {
-    if (!window.kakao || !window.kakao.maps) {
-      const script = document.createElement("script");
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8c0ee03dd52a78f74e077c0615724e49`;
-      /* global kakao */
-      script.addEventListener("load", () => {
-        kakao.maps.load(this.initMap);
-      });
-      document.head.appendChild(script);
-    } else {
-      //console.log("이미 로딩됨: ", window.kakao);
-      this.initMap();
-    }
-  },
+  name: "MemberView",
 };
 </script>
 
 <style scoped>
-#map {
-  width: 100vw;
-  height: 100vh;
+.underline-steelblue {
+  display: inline-block;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(72, 190, 233, 0.3) 30%
+  );
 }
 </style>

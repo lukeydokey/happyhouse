@@ -30,11 +30,11 @@ const routes = [
     name: "home",
     component: HomeView,
   },
-  {
-    path: "/map",
-    name: "map",
-    component: () => import("@/views/MemberView.vue"),
-  },
+  // {
+  //   path: "/map",
+  //   name: "map",
+  //   component: () => import("@/views/MapView.vue"),
+  // },
   {
     path: "/user",
     name: "user",
