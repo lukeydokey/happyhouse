@@ -45,10 +45,12 @@
 <script>
 import { mapState } from "vuex";
 
+const houseStore = "houseStore";
+
 export default {
   name: "HouseDetail",
   computed: {
-    ...mapState(["house"]),
+    ...mapState(houseStore, ["house"]),
     // house() {
     //   return this.$store.state.house;
     // },

@@ -1,7 +1,7 @@
 <template>
   <b-container v-if="houses && houses.length != 0" class="bv-example-row mt-3">
     <house-list-item
-      v-for="(house, index) in houses"
+      v-for="(house, index) in houses.data"
       :key="index"
       :house="house"
     />
@@ -17,6 +17,8 @@
 import HouseListItem from "@/components/house/HouseListItem.vue";
 import { mapState } from "vuex";
 
+const houseStore = "houseStore";
+
 export default {
   name: "HouseList",
   components: {
@@ -26,7 +28,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["houses"]),
+    ...mapState(houseStore, ["houses"]),
     // houses() {
     //   return this.$store.state.houses;
     // },
