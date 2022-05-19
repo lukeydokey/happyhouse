@@ -16,32 +16,42 @@
         </b-col>
         <b-col></b-col>
       </b-row>
-      <b-button type="button" variant="primary" @click="movePage"
-        >Start</b-button
+      <b-button
+        type="button"
+        variant="primary"
+        v-if="loginInfo"
+        @click="moveApt"
       >
+        Start
+      </b-button>
+      <b-button
+        type="button"
+        variant="primary"
+        v-if="!loginInfo"
+        @click="moveLogin"
+      >
+        Join
+      </b-button>
     </b-container>
   </b-container>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "HomeView",
   props: {
     msg: String,
   },
-  data() {
-    return {
-      mainProps: {
-        center: true,
-        fluidGrow: true,
-        blank: true,
-        blankColor: "#bbb",
-      },
-    };
+  computed: {
+    ...mapState(["loginInfo"]),
   },
   methods: {
-    movePage() {
+    moveLogin() {
       this.$router.push({ name: "signIn" });
+    },
+    moveApt() {
+      this.$router.push({ name: "house" });
     },
   },
 };

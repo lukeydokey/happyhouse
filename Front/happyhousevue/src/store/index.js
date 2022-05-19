@@ -12,7 +12,7 @@ export default new Vuex.Store({
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
-    loginInfo: null,
+    loginInfo: "",
     todos: [
       // { title: '할 일1', completed: false },
       // { title: '할 일2', completed: false },

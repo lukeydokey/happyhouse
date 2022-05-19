@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <navi-bar />
-    <router-view />
+    <transition name="fade" mode="out-in">
+      <router-view />
+    </transition>
   </div>
 </template>
 
@@ -29,5 +31,17 @@ a:hover {
 
 a.router-link-exact-active {
   color: #3aa4ca;
+}
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-out;
+}
+
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
