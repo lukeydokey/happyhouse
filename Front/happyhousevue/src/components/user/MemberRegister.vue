@@ -22,7 +22,7 @@
                 placeholder="아이디 입력"
               >
               </b-form-input>
-              <p v-if="typedId" v-bind:class="idChecked">{{ ckidMsg }}</p>
+              <p v-if="typedId" v-bind:class="idChecked">{{ ckIdMsg }}</p>
             </b-form-group>
             <b-form-group label="비밀번호:" label-for="userpwd">
               <b-form-input
@@ -43,11 +43,11 @@
                 placeholder="이름 입력"
               ></b-form-input>
             </b-form-group>
-            <b-form-group label="이메일:" label-for="useraddr">
+            <b-form-group label="이메일:" label-for="useremail">
               <b-form-input
-                id="useraddr"
-                ref="address"
-                v-model="user.address"
+                id="useremail"
+                ref="email"
+                v-model="user.email"
                 required
                 placeholder="이메일 입력"
               ></b-form-input>
@@ -94,19 +94,19 @@
 </template>
 
 <script>
-import http from "@/api/http";
+import { mapState, mapActions } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "MemberRegister",
   data() {
     return {
-      isRegisterError: false,
-      ckidMsg: "아이디는 5~12자리",
-      isUsable: false,
       user: {
         id: "",
         password: "",
         name: "",
-        address: "",
+        email: "",
         phonenumber: "",
         gender: "",
       },
@@ -117,6 +117,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(memberStore, ["isUsable", "isRegisterError", "ckIdMsg"]),
     idChecked() {
       return {
         "text-danger":
@@ -133,6 +134,7 @@ export default {
     },
     typedId() {
       let result = this.user.id.length > 0 ? true : false;
+      this.setCkidMsgDefault();
       this.ckId();
       return result;
     },
@@ -146,65 +148,49 @@ export default {
     },
   },
   methods: {
+    ...mapActions(memberStore, [
+      "userRegister",
+      "idCheck",
+      "setRegisterErrorFalse",
+      "setRegisterErrorTrue",
+      "setCkidMsgDefault",
+    ]),
     ckId() {
       if (this.user.id.length >= 5 && this.user.id.length <= 12) {
-        http
-          .post("/user/idCheck", {
-            id: this.user.id,
-          })
-          .then(({ data }) => {
-            this.isUsable = false;
-            this.ckidMsg = "사용불가능";
-            if (data === "success") {
-              this.ckidMsg = "사용가능";
-              this.isUsable = true;
-            }
-          });
+        this.idCheck(this.user.id);
       } else {
-        this.ckidMsg = "아이디는 5~12자리";
+        this.setCkidMsgDefault();
       }
     },
     checkValue() {
       // 사용자 입력값 체크하기
-      this.isRegisterError = false;
-      !this.user.id && ((this.isRegisterError = true), this.$refs.id.focus());
+      this.setRegisterErrorFalse();
+      !this.user.id && (this.setRegisterErrorTrue(), this.$refs.id.focus());
+      !this.isRegisterError &&
+        !this.isUsable &&
+        (this.setRegisterErrorTrue(), this.$refs.id.focus());
       !this.isRegisterError &&
         !this.user.password &&
-        ((this.isRegisterError = true), this.$refs.password.focus());
+        (this.setRegisterErrorTrue(), this.$refs.password.focus());
       !this.isRegisterError &&
         !this.user.name &&
-        ((this.isRegisterError = true), this.$refs.name.focus());
+        (this.setRegisterErrorTrue(), this.$refs.name.focus());
       !this.isRegisterError &&
-        !this.user.address &&
-        ((this.isRegisterError = true), this.$refs.address.focus());
+        !this.user.email &&
+        (this.setRegisterErrorTrue(), this.$refs.email.focus());
       !this.isRegisterError &&
         !this.user.phonenumber &&
-        ((this.isRegisterError = true), this.$refs.phonenumber.focus());
+        (this.setRegisterErrorTrue(), this.$refs.phonenumber.focus());
       !this.isRegisterError &&
         !this.user.gender &&
-        ((this.isRegisterError = true), this.$refs.gender.focus());
+        (this.setRegisterErrorTrue(), this.$refs.gender.focus());
       // 만약, 내용이 다 입력되어 있다면 register
       if (!this.isRegisterError) this.confirm();
     },
-    confirm() {
+    async confirm() {
       this.user.phonenumber = this.$refs.phonenumber.value;
-      http
-        .post("/user/register", {
-          id: this.user.id,
-          password: this.user.password,
-          name: this.user.name,
-          address: this.user.address,
-          phonenumber: this.user.phonenumber,
-          gender: this.user.gender,
-        })
-        .then(({ data }) => {
-          let msg = "계정 생성 실패";
-          if (data === "success") {
-            msg = "계정 생성 성공";
-          }
-          alert(msg);
-          this.$router.push({ name: "home" });
-        });
+      await this.userRegister(this.user);
+      this.$router.push({ name: "signIn" });
     },
     movePage() {
       this.$router.push({ name: "home" });

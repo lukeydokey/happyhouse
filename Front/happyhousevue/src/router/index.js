@@ -1,8 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
-
 import store from "@/store/index.js";
+import HomeView from "../views/HomeView.vue";
 
 Vue.use(VueRouter);
 
@@ -31,11 +30,11 @@ const routes = [
     name: "home",
     component: HomeView,
   },
-  {
-    path: "/map",
-    name: "map",
-    component: () => import("@/views/MemberView.vue"),
-  },
+  // {
+  //   path: "/map",
+  //   name: "map",
+  //   component: () => import("@/views/MapView.vue"),
+  // },
   {
     path: "/user",
     name: "user",

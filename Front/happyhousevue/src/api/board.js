@@ -21,8 +21,19 @@ function modifyArticle(article, success, fail) {
     .catch(fail);
 }
 
+function addComment(articleno, success, fail) {
+  api.get(`/comment/${articleno}`).then(success).catch(fail);
+}
+
 function deleteArticle(articleno, success, fail) {
   api.delete(`/board/${articleno}`).then(success).catch(fail);
 }
 
-export { listArticle, writeArticle, getArticle, modifyArticle, deleteArticle };
+export {
+  listArticle,
+  writeArticle,
+  getArticle,
+  modifyArticle,
+  deleteArticle,
+  addComment,
+};

@@ -16,18 +16,13 @@
         </b-col>
         <b-col></b-col>
       </b-row>
-      <b-button
-        type="button"
-        variant="primary"
-        v-if="loginInfo"
-        @click="moveApt"
-      >
+      <b-button type="button" variant="primary" v-if="isLogin" @click="moveApt">
         Start
       </b-button>
       <b-button
         type="button"
         variant="primary"
-        v-if="!loginInfo"
+        v-if="!isLogin"
         @click="moveLogin"
       >
         Join
@@ -38,13 +33,15 @@
 
 <script>
 import { mapState } from "vuex";
+const memberStore = "memberStore";
+
 export default {
   name: "HomeView",
   props: {
     msg: String,
   },
   computed: {
-    ...mapState(["loginInfo"]),
+    ...mapState(memberStore, ["isLogin"]),
   },
   methods: {
     moveLogin() {

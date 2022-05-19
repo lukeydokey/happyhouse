@@ -16,7 +16,7 @@
             <b-form-group label="아이디:" label-for="userid">
               <b-form-input
                 id="userid"
-                v-model="user.userid"
+                v-model="user.id"
                 ref="id"
                 required
                 placeholder="아이디 입력...."
@@ -28,7 +28,7 @@
                 type="password"
                 id="userpwd"
                 ref="password"
-                v-model="user.userpwd"
+                v-model="user.password"
                 required
                 placeholder="비밀번호 입력...."
                 @keyup.enter="confirm"
@@ -57,47 +57,47 @@
 </template>
 
 <script>
-import http from "@/api/http";
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "MemberLogin",
   data() {
     return {
-      isLoginError: false,
       user: {
-        userid: "",
-        userpwd: "",
+        id: "",
+        password: "",
       },
     };
   },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError"]),
+  },
   methods: {
-    ...mapActions(["setLoginInfo"]),
+    ...mapActions(memberStore, [
+      "userConfirm",
+      "getUserInfo",
+      "setIsLoginErrorFalse",
+      "setIsLoginErrorTrue",
+    ]),
     checkValue() {
       // 사용자 입력값 체크하기
-      // isbn, 제목, 저자, 가격, 설명이 없을 경우 각 항목에 맞는 메세지를 출력
-      this.isLoginError = false;
-      !this.user.userid && ((this.isLoginError = true), this.$refs.id.focus());
+      this.setIsLoginErrorFalse();
+      !this.user.id && (this.setIsLoginErrorTrue(), this.$refs.id.focus());
       !this.isLoginError &&
-        !this.user.userpwd &&
-        ((this.isLoginError = true), this.$refs.password.focus());
+        !this.user.password &&
+        (this.setIsLoginErrorTrue(), this.$refs.password.focus());
 
       if (!this.isLoginError) this.confirm();
     },
-    confirm() {
-      http
-        .post("/user", {
-          id: this.user.userid,
-          password: this.user.userpwd,
-        })
-        .then(({ data }) => {
-          let msg = "아이디 혹은 비밀번호가 틀렸습니다.";
-          if (data === "success") {
-            msg = "로그인 성공";
-            this.setLoginInfo(this.user.userid);
-          }
-          alert(msg);
-          this.$router.push("/");
-        });
+    async confirm() {
+      await this.userConfirm(this.user);
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+        this.$router.push({ name: "home" });
+      }
     },
     movePage() {
       this.$router.push({ name: "signUp" });
