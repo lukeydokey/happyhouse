@@ -41,21 +41,37 @@
               아파트정보</router-link
             ></b-nav-item
           >
-          <b-nav-item-dropdown right>
+          <b-nav-item-dropdown v-if="!isLogin" right>
             <template #button-content>
               <b-icon icon="people" font-scale="2"></b-icon>
             </template>
-            <b-dropdown-item href="#" v-if="!isLogin"
+            <b-dropdown-item href="#"
               ><router-link :to="{ name: 'signUp' }" class="link"
                 ><b-icon icon="person-circle"></b-icon> 회원가입</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item href="#" v-if="!isLogin"
+            <b-dropdown-item href="#"
               ><router-link :to="{ name: 'signIn' }" class="link"
                 ><b-icon icon="key"></b-icon> 로그인</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item href="#" v-if="isLogin" @click="logout"
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown v-else right>
+            <template #button-content>
+              <b-icon icon="people" font-scale="2"></b-icon>
+            </template>
+            <b-dropdown-item class="align-self-center"
+              ><router-link
+                :to="{ name: 'mypage' }"
+                class="link align-self-center"
+                ><b-avatar
+                  variant="primary"
+                  v-text="userInfo ? userInfo.id.charAt(0).toUpperCase() : ''"
+                ></b-avatar
+                >{{ userInfo.name }}({{ userInfo.id }})</router-link
+              >
+            </b-dropdown-item>
+            <b-dropdown-item href="#" @click="logout"
               ><router-link :to="{ name: 'home' }" class="link"
                 ><b-icon icon="key"></b-icon> 로그아웃</router-link
               ></b-dropdown-item
@@ -74,7 +90,7 @@ const memberStore = "memberStore";
 export default {
   name: "HeaderNaviBar",
   computed: {
-    ...mapState(memberStore, ["isLogin"]),
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   methods: {
     ...mapActions(memberStore, ["delLoginInfo"]),
