@@ -19,6 +19,8 @@ import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
 
+import io.swagger.annotations.ApiOperation;
+
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/map")
@@ -56,7 +58,7 @@ public class HouseMapController {
 	} 
 	
 	
-	// 아파트 실거래가 파싱을 위한 서비스
+	@ApiOperation(value = "아파트 실 거래가 파싱용 ")
 	@GetMapping("/save")
 	public void save() throws Exception{
 		haHouseMapService.save();

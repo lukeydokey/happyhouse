@@ -1,12 +1,22 @@
 package com.ssafy.happyhouse.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "User (유저)", description = "id, 비밀번호, 이름, 이메일, 전화번호, 성별을 가진   Domain Class")
 public class UserDto {
-	
+
+	@ApiModelProperty(value = "아이디")
 	private String id;
+	@ApiModelProperty(value = "비밀번호")
 	private String password;
+	@ApiModelProperty(value = "이름")
 	private String name;
-	private String address;
+	@ApiModelProperty(value = "이메일")
+	private String email;
+	@ApiModelProperty(value = "전화번호")
 	private String phonenumber;
+	@ApiModelProperty(value = "성별")
 	private String gender;
 	
 	
@@ -21,12 +31,12 @@ public class UserDto {
 		this.password = password;
 	}
 
-	public UserDto(String id, String password, String name, String address, String phonenumber, String gender) {
+	public UserDto(String id, String password, String name, String email, String phonenumber, String gender) {
 		super();
 		this.id = id;
 		this.password = password;
 		this.name = name;
-		this.address = address;
+		this.email = email;
 		this.phonenumber = phonenumber;
 		this.gender = gender;
 	}
@@ -55,12 +65,12 @@ public class UserDto {
 		this.name = name;
 	}
 	
-	public String getAddress() {
-		return address;
+	public String getEmail() {
+		return email;
 	}
 	
-	public void setAddress(String address) {
-		this.address = address;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public String getPhonenumber() {
@@ -80,7 +90,7 @@ public class UserDto {
 
 	@Override
 	public String toString() {
-		return "UserDto [id=" + id + ", password=" + password + ", name=" + name + ", address=" + address
+		return "UserDto [id=" + id + ", password=" + password + ", name=" + name + ", email=" + email
 				+ ", phonenumber=" + phonenumber + ", gender=" + gender + "]";
 	}
 

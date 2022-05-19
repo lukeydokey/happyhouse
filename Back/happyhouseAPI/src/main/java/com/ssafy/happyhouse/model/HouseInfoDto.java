@@ -1,24 +1,46 @@
 package com.ssafy.happyhouse.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "HouseInfo (아파트 정보)", description = "아파트 정보를 가진   Domain Class")
 public class HouseInfoDto {
 
+	@ApiModelProperty(value = "아파트 코드")
 	private int aptCode;
+	@ApiModelProperty(value = "아파트 이름")
 	private String aptName;
+	@ApiModelProperty(value = "동 코드")
 	private String dongCode;
+	@ApiModelProperty(value = "동 이름")
 	private String dongName;
+	@ApiModelProperty(value = "시도 이름")
 	private String sidoName;
+	@ApiModelProperty(value = "구군 이름")
 	private String gugunName;
+	@ApiModelProperty(value = "건축 연도")
 	private int buildYear;
+	@ApiModelProperty(value = "지번 주소")
 	private String jibun;
+	@ApiModelProperty(value = "도로명 주소")
 	private String road;
+	@ApiModelProperty(value = "위도")
 	private String lat;
+	@ApiModelProperty(value = "경도")
 	private String lng;
+	@ApiModelProperty(value = "이미지")
 	private String img;
+	@ApiModelProperty(value = "최근 가격")
 	private String recentPrice;
+	@ApiModelProperty(value = "거래 년도")
 	private String dealYear;
+	@ApiModelProperty(value = "거래 월")
 	private String dealMonth;
+	@ApiModelProperty(value = "거래 일자")
 	private String dealDay;
+	@ApiModelProperty(value = "면적")
 	private String area;
+	@ApiModelProperty(value = "층")
 	private String floor;
 
 	public int getAptCode() {
