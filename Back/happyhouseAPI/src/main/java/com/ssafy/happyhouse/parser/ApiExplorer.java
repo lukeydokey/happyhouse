@@ -17,8 +17,8 @@ public class ApiExplorer {
     	
         try {
 	    	StringBuilder urlBuilder = new StringBuilder("http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev"); /*URL*/
-	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=YE4iuvCFLqrX2uhAnUQyWnyvqIN8tZTGMxeI8O4PvUkj19xtA9r6c%2F6wddUdReXtMAk1AA05FQ7LvJD4ceS7sg%3D%3D"); /*카카오 계정 Service Key*/
-//	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=qzf1cql0Ez5zQHvQqlaF8RsVuDUPRxQxZsZvCYqoEtGN22W%2FDb%2Blg5qPRGhcnnM2YJqOkchM2qV1U1X2mmnkAQ%3D%3D"); /*네이버 계정 Service Key*/
+//	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=YE4iuvCFLqrX2uhAnUQyWnyvqIN8tZTGMxeI8O4PvUkj19xtA9r6c%2F6wddUdReXtMAk1AA05FQ7LvJD4ceS7sg%3D%3D"); /*카카오 계정 Service Key*/
+	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=qzf1cql0Ez5zQHvQqlaF8RsVuDUPRxQxZsZvCYqoEtGN22W%2FDb%2Blg5qPRGhcnnM2YJqOkchM2qV1U1X2mmnkAQ%3D%3D"); /*네이버 계정 Service Key*/
 	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
 	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("250", "UTF-8")); /*한 페이지 결과 수*/
 	        urlBuilder.append("&" + URLEncoder.encode("LAWD_CD","UTF-8") + "=" + URLEncoder.encode(gCode, "UTF-8")); /*지역코드*/

@@ -65,12 +65,12 @@ public class UserDto {
 		this.name = name;
 	}
 	
-	public String getAddress() {
+	public String getEmail() {
 		return email;
 	}
 	
-	public void setAddress(String address) {
-		this.email = address;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public String getPhonenumber() {

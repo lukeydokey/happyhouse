@@ -41,10 +41,10 @@ public class UserController {
 	private UserService userService;
 	
 	@ApiOperation(value = "아이디 중복 체크 요청을 한다. 그리고 출력결과 여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PostMapping("/idCheck")
-	public ResponseEntity<String> idCheck(@RequestBody UserDto user) throws Exception{
+	@GetMapping("/idCheck/{userid}")
+	public ResponseEntity<String> idCheck(@PathVariable("userid") @ApiParam(value = "중복체크할 회원의 아이디.", required = true) String userid) throws Exception{
 		logger.debug("idCheck - 호출");
-		if (userService.idCheck(user.getId()) == 0) {
+		if (userService.idCheck(userid) == 0) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

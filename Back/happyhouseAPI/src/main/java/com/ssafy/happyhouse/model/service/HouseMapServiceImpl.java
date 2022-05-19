@@ -85,10 +85,14 @@ public class HouseMapServiceImpl implements HouseMapService {
 		
 		int cntApt = houseMapMapper.countApt() + 1;
 		for(SidoGugunCodeDto gugun : list) {
-			if(Long.parseLong(gugun.getGugunCode())>2700000000L) {
-				System.out.println("break");
-				break;
-//				continue;
+//			if(Long.parseLong(gugun.getGugunCode())>2700000000L) {
+//				System.out.println("break");
+//				break;
+////				continue;
+//			}
+			if(Long.parseLong(gugun.getGugunCode())<4170000000L||Long.parseLong(gugun.getGugunCode())>4600000000L) {
+				
+				continue;
 			}
 			for(int year=2019;year<=2019;year++) {
 				for(int month=1;month<=12;month++) {
