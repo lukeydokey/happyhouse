@@ -57,7 +57,7 @@
             </template>
             <b-dropdown-item class="align-self-center"
               ><router-link
-                :to="{ name: 'mypage' }"
+                :to="{ name: 'myPage' }"
                 class="link align-self-center"
                 ><b-avatar
                   variant="primary"
