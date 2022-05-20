@@ -1,9 +1,5 @@
 <template>
-  <b-container
-    class="justify-content-md-center mt-10 category"
-    style="background-color: red; width: 100%"
-  >
-    <b-button v-b-toggle.sidebar-right>Toggle Sidebar</b-button>
+  <div class="fluid-container">
     <b-sidebar id="sidebar-right" title="Sidebar" right shadow>
       <b-card bg-variant="first">
         <h3 class="underline-orange">
@@ -17,17 +13,19 @@
         <b-row>
           <house-list />
           <house-detail />
+          <house-area />
         </b-row>
       </b-card>
     </b-sidebar>
-    <house-map style="width: 100%; height: 500px"></house-map>
-  </b-container>
+    <house-map style="width: 100%; height: 100%"> </house-map>
+  </div>
 </template>
 <script>
 import HouseSearchBar from "@/components/house/HouseSearchBar.vue";
 import HouseList from "@/components/house/HouseList.vue";
 import HouseDetail from "@/components/house/HouseDetail.vue";
 import HouseMap from "@/components/house/HouseMap.vue";
+import HouseArea from "@/components/house/HouseArea.vue";
 
 export default {
   name: "HouseView",
@@ -36,10 +34,15 @@ export default {
     HouseList,
     HouseDetail,
     HouseMap,
+    HouseArea,
   },
 };
 </script>
 <style scoped>
+.fluid-container {
+  width: 100vw;
+  height: 90vh;
+}
 .underline-orange {
   display: inline-block;
   background: linear-gradient(
@@ -48,13 +51,7 @@ export default {
     rgba(231, 149, 27, 0.3) 30%
   );
 }
-html,
 body {
-  height: 100%;
   margin: 0;
-  padding: 0;
-}
-body {
-  overflow: hidden;
 }
 </style>

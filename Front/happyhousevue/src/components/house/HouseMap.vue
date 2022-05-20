@@ -1,5 +1,18 @@
 <template>
-  <b-container id="map"></b-container>
+  <div class="fluid-container" style="width: 140px; z-index: 3" id="map">
+    <b-card
+      title="오늘의 정보"
+      img-src="https://picsum.photos/600/300/?image=25"
+      img-alt="Image"
+      img-top
+      tag="article"
+      style="max-width: 20rem; z-index: 4"
+      class="mb-2 float-right"
+    >
+      <b-text>추천 정보/뉴스가 들어갈 자리</b-text>
+      <b-button variant="primary" v-b-toggle.sidebar-right>매물 검색</b-button>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -132,4 +145,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fluid-container {
+  padding: 0px;
+  width: 100vw;
+  height: 100px;
+}
+</style>
