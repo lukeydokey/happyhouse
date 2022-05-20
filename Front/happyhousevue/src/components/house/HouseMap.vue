@@ -17,7 +17,7 @@
 
 <script>
 import { eventBus } from "@/main.js";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 const houseStore = "houseStore";
 
@@ -43,10 +43,12 @@ export default {
           latlng: new kakao.maps.LatLng(33.451393, 126.570738),
         },
       ],
+      markers: [],
       // 화면에 표시되어있는 marker들
     };
   },
   methods: {
+    ...mapActions(houseStore, ["pushMarker"]),
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -79,6 +81,7 @@ export default {
       this.map.panTo(moveLatLon);
     },
     displayMarkers(positions) {
+      console.log("display");
       // 1. 현재 표시되어있는 marker들이 있다면 marker에 등록된 map을 없애준다.
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
@@ -102,7 +105,7 @@ export default {
         });
         this.markers.push(marker);
       });
-
+      console.log(this.markers);
       // 4. 지도를 이동시켜주기
       // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
       const bounds = positions.reduce(
@@ -128,7 +131,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(houseStore, ["houses", "markers", "house"]),
+    ...mapState(houseStore, ["houses", "house", "checkMarkersLenght"]),
   },
   created() {
     // this.displayMarkers(this.markerPositions);
