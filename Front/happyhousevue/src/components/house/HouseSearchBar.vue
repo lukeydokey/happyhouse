@@ -72,7 +72,7 @@ export default {
       this.dongCode = null;
       if (this.gugunCode) this.getDong(this.gugunCode);
     },
-    searchApt() {
+    async searchApt() {
       console.log(this.dongCode);
       if (this.dongCode) this.getHouseList(this.dongCode);
     },

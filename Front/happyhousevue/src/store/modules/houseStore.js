@@ -1,4 +1,5 @@
 import { sidoList, gugunList, dongList, houseList } from "@/api/house.js";
+import { eventBus } from "@/main.js";
 
 const houseStore = {
   namespaced: true,
@@ -40,6 +41,7 @@ const houseStore = {
     SET_HOUSE_LIST(state, houses) {
       console.log(houses);
       state.houses = houses;
+      eventBus.$emit("apartUpdated", new Date());
     },
     SET_DETAIL_HOUSE(state, house) {
       console.log("Mutations", house);

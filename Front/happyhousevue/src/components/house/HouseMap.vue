@@ -3,6 +3,11 @@
 </template>
 
 <script>
+import { eventBus } from "@/main.js";
+import { mapState } from "vuex";
+
+const houseStore = "houseStore";
+
 export default {
   data() {
     return {
@@ -37,6 +42,31 @@ export default {
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+      // this.displayMarkers(this.markerPositions);
+    },
+    update() {
+      console.log("업데이트됐다.");
+      this.markerPositions = [];
+      var step;
+      for (step = 0; step < this.houses.data.length; step++) {
+        console.log(this.houses.data[step]);
+        this.markerPositions.push({
+          title: this.houses.data[step].aptName,
+          latlng: new kakao.maps.LatLng(
+            this.houses.data[step].lat,
+            this.houses.data[step].lng,
+          ),
+        });
+      }
+      // houses.forEach((house) => {
+      //   const marker = new kakao.maps.Marker({
+      //     map: this.map,
+      //     position: position.latlng, // 마커의 위치
+      //     title: position.title, // 마우스 오버 시 표시할 제목
+      //     image: markerImage, // 마커의 이미지
+      //   });
+      //   this.markers.push(marker);
+      // });
       this.displayMarkers(this.markerPositions);
     },
     displayMarkers(positions) {
@@ -88,8 +118,16 @@ export default {
       this.initMap();
     }
   },
+  computed: {
+    ...mapState(houseStore, ["houses"]),
+  },
   created() {
-    this.displayMarkers(this.markerPositions);
+    // this.displayMarkers(this.markerPositions);
+
+    eventBus.$on("apartUpdated", (data) => {
+      console.log(data);
+      this.update();
+    });
   },
 };
 </script>
