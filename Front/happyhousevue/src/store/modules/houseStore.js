@@ -40,15 +40,15 @@ const houseStore = {
       state.dongs = [{ value: null, text: "선택하세요" }];
     },
     SET_HOUSE_LIST(state, houses) {
-      console.log(houses);
+      // console.log(houses);
       state.houses = houses;
-      eventBus.$emit("apartUpdated", new Date());
+      eventBus.$emit("apartUpdated", "apartUpdated");
     },
     SET_DETAIL_HOUSE(state, house) {
-      console.log("Mutations", house);
+      // console.log("Mutations", house);
       state.house = house;
 
-      eventBus.$emit("detailApart", new Date());
+      eventBus.$emit("detailApart", "detailApart");
     },
   },
 

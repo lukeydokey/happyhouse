@@ -60,6 +60,10 @@ export default {
     },
     moveMap() {
       console.log("맵이동");
+      var moveLatLon = new kakao.maps.LatLng(this.house.lat, this.house.lng);
+
+      // 지도 중심을 이동 시킵니다
+      this.map.panTo(moveLatLon);
     },
     displayMarkers(positions) {
       // 1. 현재 표시되어있는 marker들이 있다면 marker에 등록된 map을 없애준다.
@@ -111,7 +115,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(houseStore, ["houses", "markers"]),
+    ...mapState(houseStore, ["houses", "markers", "house"]),
   },
   created() {
     // this.displayMarkers(this.markerPositions);
