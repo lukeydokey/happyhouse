@@ -1,61 +1,20 @@
 <template>
-  <b-container v-if="houseSelected" class="bv-example-row">
-    <b-row>
-      <b-col
-        ><h3>{{ houseSelected.aptName }}</h3></b-col
-      >
-    </b-row>
-    <b-row>
-      <b-col>
-        <b-alert show variant="secondary"
-          >일련번호 : {{ houseSelected.aptCode }}</b-alert
-        >
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <b-alert show variant="primary"
-          >아파트 이름 : {{ houseSelected.aptName }}
-        </b-alert>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <b-alert show variant="info"
-          >법정동 : {{ houseSelected.dongName }}
-        </b-alert>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <b-alert show variant="warning"
-          >층수 : {{ houseSelected.floor }}층</b-alert
-        >
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <b-alert show variant="danger"
-          >거래금액 :
-          {{
-            (parseInt(houseSelected.recentPrice.replace(",", "")) * 10000)
-              | price
-          }}원</b-alert
-        >
-      </b-col>
-    </b-row>
+  <b-container v-if="house" class="bv-example-row">
+    <deal-table class="mt-3" />
   </b-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import DealTable from "@/components/house/DealTable.vue";
 
 const houseStore = "houseStore";
 
 export default {
+  components: { DealTable },
   name: "HouseDetail",
   computed: {
-    ...mapState(houseStore, ["houseSelected"]),
+    ...mapState(houseStore, ["house"]),
     // house() {
     //   return this.$store.state.house;
     // },

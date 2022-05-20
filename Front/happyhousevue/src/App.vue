@@ -19,9 +19,15 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "JUA";
+  src: url("@/assets/font/SpoqaHanSansNeo-Medium.ttf");
+}
+.fontjua {
+  font-family: "JUA";
+}
 body {
   margin: 0;
-  font-family: "BM JUA", "배달의민족 주아", sans-serif;
 }
 a {
   text-decoration: none;

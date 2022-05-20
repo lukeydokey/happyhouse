@@ -29,13 +29,21 @@
 </template>
 
 <script>
+import { eventBus } from "@/main";
+import { mapState, mapActions } from "vuex";
+const houseStore = "houseStore";
+
 export default {
   data() {
     return {
       currentValue: this.value,
     };
   },
+  computed: {
+    ...mapState(houseStore, ["range"]),
+  },
   methods: {
+    ...mapActions(houseStore, ["setRange"]),
     dragElement(elmnt, initVal) {
       let clientX_gab = 0,
         clientX = 0;
@@ -78,7 +86,11 @@ export default {
         }
         elmnt.querySelector("span").innerText =
           Math.round((leftVal / parentElmnt.clientWidth) * 1000) + "M";
-
+        // this.set(Math.round((leftVal / parentElmnt.clientWidth) * 1000));
+        eventBus.$emit(
+          "change",
+          Math.round((leftVal / parentElmnt.clientWidth) * 1000),
+        );
         elmnt.style.left = leftVal + "px";
       }
 
@@ -90,9 +102,19 @@ export default {
         document.removeEventListener("touchmove", elementDrag);
       }
     },
+    set(input) {
+      this.setRange(input);
+    },
   },
   mounted() {
     this.dragElement(document.getElementById("circle"), 0);
+  },
+  created() {
+    // this.displayMarkers(this.markerPositions);
+
+    eventBus.$on("change", (data) => {
+      this.set(data);
+    });
   },
 };
 </script>
@@ -154,6 +176,7 @@ HTML CSS JSResult Skip Results Iframe EDIT ON .container {
   transition: all 0.5s;
   white-space: nowrap;
   text-align: center;
+  font-family: "JUA";
 }
 
 .seek-bar > .circle.s_on > span {

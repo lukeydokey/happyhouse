@@ -8,7 +8,7 @@
       shadow
       bg-color="#F5F5F5"
     >
-      <b-card bg-variant="first">
+      <b-card bg-variant="first" class="fontjua">
         <h4 class="small-title">위치 검색</h4>
         <b-row>
           <b-col>
@@ -18,8 +18,6 @@
         <h4 class="small-title">아파트 목록</h4>
         <b-row>
           <house-list />
-          <house-detail />
-          <house-area />
         </b-row>
       </b-card>
     </b-sidebar>
@@ -29,18 +27,14 @@
 <script>
 import HouseSearchBar from "@/components/house/HouseSearchBar.vue";
 import HouseList from "@/components/house/HouseList.vue";
-import HouseDetail from "@/components/house/HouseDetail.vue";
 import HouseMap from "@/components/house/HouseMap.vue";
-import HouseArea from "@/components/house/HouseArea.vue";
 
 export default {
   name: "HouseView",
   components: {
     HouseSearchBar,
     HouseList,
-    HouseDetail,
     HouseMap,
-    HouseArea,
   },
 };
 </script>

@@ -9,13 +9,18 @@
       style="max-width: 20rem; z-index: 4"
       class="mb-2 float-right"
     >
-      <b-text>추천 정보/뉴스가 들어갈 자리</b-text>
+      <div>추천 정보/부동산 뉴스가 들어갈 자리</div>
+      <strong>
+        맵에 핀이 안 뜨면 상단바의 홈 버튼을 눌렀다가 아파트 버튼을 누르면
+        됩니다.
+      </strong>
       <b-button variant="primary" v-b-toggle.sidebar-right>매물 검색</b-button>
     </b-card>
   </div>
 </template>
 
 <script>
+/*global kakao*/
 import { eventBus } from "@/main.js";
 import { mapState, mapActions } from "vuex";
 
@@ -50,6 +55,7 @@ export default {
   methods: {
     ...mapActions(houseStore, ["pushMarker"]),
     initMap() {
+      console.log();
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(37.575869, 126.976859, 16),
@@ -87,8 +93,8 @@ export default {
         });
       }
 
-      const imgSrc = require("@/assets/map/marker.png");
-      const imgSize = new kakao.maps.Size(24, 35);
+      const imgSrc = require("@/assets/map/apart.png");
+      const imgSize = new kakao.maps.Size(42, 63);
       const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
       positions.forEach((position) => {
@@ -117,7 +123,7 @@ export default {
     if (!window.kakao || !window.kakao.maps) {
       const script = document.createElement("script");
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8c0ee03dd52a78f74e077c0615724e49`;
-      /* global kakao */
+
       script.addEventListener("load", () => {
         kakao.maps.load(this.initMap);
       });

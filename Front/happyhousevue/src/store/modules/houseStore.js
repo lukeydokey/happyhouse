@@ -10,12 +10,15 @@ const houseStore = {
     houses: [],
     house: null,
     markers: [],
+    range: 0,
   },
 
   getters: {
     checkMarkersLenght: function (state) {
-      console.log("결과", state.markers.length);
       return state.markers.length;
+    },
+    getSelected: function (state) {
+      return state.house;
     },
   },
 
@@ -50,7 +53,6 @@ const houseStore = {
           item.setMap(null);
         });
       }
-      console.log(state.markers);
     },
     SET_HOUSE_LIST(state, houses) {
       // console.log(houses);
@@ -65,6 +67,9 @@ const houseStore = {
     },
     PUSH_MARKER(state, marker) {
       state.markers.push(marker);
+    },
+    SET_RANGE(state, range) {
+      state.range = range;
     },
   },
 
@@ -118,7 +123,6 @@ const houseStore = {
       commit("CLEAR_DONG_LIST");
     },
     clearMarkers: ({ commit }) => {
-      console.log("clear");
       commit("CLEAR_MARKERS");
     },
     getHouseList: ({ commit }, dongCode) => {
@@ -140,6 +144,9 @@ const houseStore = {
       // 나중에 house.일련번호를 이용하여 API 호출
       // console.log(commit, house);
       commit("SET_DETAIL_HOUSE", house);
+    },
+    setRange: ({ commit }, range) => {
+      commit("SET_RANGE", range);
     },
   },
 };
