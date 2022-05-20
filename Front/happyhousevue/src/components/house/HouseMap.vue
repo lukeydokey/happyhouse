@@ -62,7 +62,6 @@ export default {
       this.markerPositions = [];
       var step;
       for (step = 0; step < this.houses.data.length; step++) {
-        console.log(this.houses.data[step]);
         this.markerPositions.push({
           title: this.houses.data[step].aptName,
           latlng: new kakao.maps.LatLng(
@@ -73,47 +72,45 @@ export default {
       }
       this.displayMarkers(this.markerPositions);
     },
-    moveMap() {
-      console.log("맵이동");
-      var moveLatLon = new kakao.maps.LatLng(this.house.lat, this.house.lng);
-
-      // 지도 중심을 이동 시킵니다
+    moveMap(selected) {
+      var moveLatLon = new kakao.maps.LatLng(selected.lat, selected.lng);
       this.map.panTo(moveLatLon);
+      if (this.map.getLevel() == 14) {
+        //지도 동기화 오류 상태
+        this.map.setLevel(4);
+      }
     },
     displayMarkers(positions) {
-      console.log("display");
-      // 1. 현재 표시되어있는 marker들이 있다면 marker에 등록된 map을 없애준다.
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
           item.setMap(null);
         });
       }
 
-      // 2. 마커 이미지 커스터마이징 하기
-      // javascript 영역에서 assets의 정보 가져오기
       const imgSrc = require("@/assets/map/marker.png");
       const imgSize = new kakao.maps.Size(24, 35);
       const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
-      // 3. 마커 표시하기
       positions.forEach((position) => {
         const marker = new kakao.maps.Marker({
           map: this.map,
-          position: position.latlng, // 마커의 위치
-          title: position.title, // 마우스 오버 시 표시할 제목
-          image: markerImage, // 마커의 이미지
+          position: position.latlng,
+          title: position.title,
+          image: markerImage,
         });
         this.markers.push(marker);
       });
-      console.log(this.markers);
-      // 4. 지도를 이동시켜주기
-      // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
+
       const bounds = positions.reduce(
         (bounds, position) => bounds.extend(position.latlng),
         new kakao.maps.LatLngBounds(),
       );
 
       this.map.setBounds(bounds);
+      // console.log(this.map.getLevel());
+      if (this.map.getLevel() > 10) {
+        this.moveMap(this.houses.data[0]);
+      }
     },
   },
   mounted() {
@@ -142,7 +139,7 @@ export default {
     });
     eventBus.$on("detailApart", (data) => {
       console.log(data);
-      this.moveMap();
+      this.moveMap(this.house);
     });
   },
 };
