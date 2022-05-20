@@ -10,11 +10,11 @@
         >
           <b-form-input
             id="userid"
-            :disabled="isUserid"
-            v-model="article.userid"
+            v-model="articleInfo.userid"
             type="text"
             required
-            placeholder="작성자 입력..."
+            disabled
+            ref="userid"
           ></b-form-input>
         </b-form-group>
 
@@ -26,7 +26,7 @@
         >
           <b-form-input
             id="subject"
-            v-model="article.subject"
+            v-model="articleInfo.subject"
             type="text"
             required
             placeholder="제목 입력..."
@@ -36,7 +36,7 @@
         <b-form-group id="content-group" label="내용:" label-for="content">
           <b-form-textarea
             id="content"
-            v-model="article.content"
+            v-model="articleInfo.content"
             placeholder="내용 입력..."
             rows="10"
             max-rows="15"
@@ -60,101 +60,78 @@
 </template>
 
 <script>
-import http from "@/api/http";
+import { mapActions, mapState } from "vuex";
+const boardStore = "boardStore";
+const memberStore = "memberStore";
 
 export default {
   name: "BoardInputItem",
   data() {
     return {
-      article: {
+      articleInfo: {
         articleno: 0,
         userid: "",
         subject: "",
         content: "",
       },
-      isUserid: false,
     };
   },
   props: {
     type: { type: String },
   },
-  created() {
-    if (this.type === "modify") {
-      http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
-        // this.article.articleno = data.article.articleno;
-        // this.article.userid = data.article.userid;
-        // this.article.subject = data.article.subject;
-        // this.article.content = data.article.content;
-        this.article = data;
-      });
-      this.isUserid = true;
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+    ...mapState(boardStore, ["article", "message"]),
+  },
+  mounted() {
+    this.articleInfo.userid = this.userInfo.id;
+    if (this.type != "register") {
+      this.articleInfo.articleno = this.article.articleno;
+      this.articleInfo.subject = this.article.subject;
+      this.articleInfo.content = this.article.content;
     }
   },
   methods: {
+    ...mapActions(boardStore, ["writeArticle", "modifyArticle"]),
     onSubmit(event) {
       event.preventDefault();
 
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
-      err &&
-        !this.article.subject &&
+      !this.articleInfo.subject &&
         ((msg = "제목 입력해주세요"),
         (err = false),
         this.$refs.subject.focus());
       err &&
-        !this.article.content &&
+        !this.articleInfo.content &&
         ((msg = "내용 입력해주세요"),
         (err = false),
         this.$refs.content.focus());
 
       if (!err) alert(msg);
-      else
-        this.type === "register" ? this.registArticle() : this.modifyArticle();
+      else this.type === "register" ? this.registArticle() : this.modiArticle();
     },
     onReset(event) {
       event.preventDefault();
-      this.article.articleno = 0;
-      this.article.subject = "";
-      this.article.content = "";
+      this.articleInfo.articleno = 0;
+      this.articleInfo.subject = "";
+      this.articleInfo.content = "";
       this.$router.push({ name: "boardList" });
     },
     registArticle() {
-      http
-        .post(`/board`, {
-          userid: this.article.userid,
-          subject: this.article.subject,
-          content: this.article.content,
-        })
-        .then(({ data }) => {
-          let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "등록이 완료되었습니다.";
-          }
-          alert(msg);
-          this.moveList();
-        });
+      let info = {
+        userid: this.articleInfo.userid,
+        subject: this.articleInfo.subject,
+        content: this.articleInfo.content,
+      };
+      this.writeArticle(info);
+      alert("글작성 성공!!");
+      this.moveList();
     },
-    modifyArticle() {
-      http
-        .put(`/board/${this.article.articleno}`, {
-          articleno: this.article.articleno,
-          userid: this.article.userid,
-          subject: this.article.subject,
-          content: this.article.content,
-        })
-        .then(({ data }) => {
-          let msg = "수정 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "수정이 완료되었습니다.";
-          }
-          alert(msg);
-          // 현재 route를 /list로 변경.
-          this.$router.push({ name: "boardList" });
-        });
+    modiArticle() {
+      this.modifyArticle(JSON.stringify(this.articleInfo));
+      alert("수정 완료!!!");
+      this.moveList();
     },
     moveList() {
       this.$router.push({ name: "boardList" });

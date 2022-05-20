@@ -78,7 +78,7 @@ const routes = [
         component: () => import("@/components/board/BoardRegister.vue"),
       },
       {
-        path: "detail/:articleno",
+        path: "detail",
         name: "boardDetail",
         beforeEnter: onlyAuthUser,
         component: () => import("@/components/board/BoardDetail.vue"),
