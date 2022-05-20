@@ -30,11 +30,6 @@ const routes = [
     name: "home",
     component: HomeView,
   },
-  // {
-  //   path: "/map",
-  //   name: "map",
-  //   component: () => import("@/views/MapView.vue"),
-  // },
   {
     path: "/user",
     name: "user",
@@ -52,9 +47,16 @@ const routes = [
       },
       {
         path: "mypage",
-        name: "mypage",
+        name: "myPage",
         beforeEnter: onlyAuthUser,
         component: () => import("@/components/user/MemberMyPage.vue"),
+      },
+      {
+        path: "modify",
+        name: "modify",
+        props: true,
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/components/user/MemberModify.vue"),
       },
     ],
   },

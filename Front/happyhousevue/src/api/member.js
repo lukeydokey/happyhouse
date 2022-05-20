@@ -22,6 +22,14 @@ async function register(user, success, fail) {
     .catch(fail);
 }
 
+async function updateInfo(user, success, fail) {
+  await api.put(`/user/update`, JSON.stringify(user)).then(success).catch(fail);
+}
+
+function delUser(userid, success, fail) {
+  console.log(userid);
+  api.delete(`/user/delete/${userid}`).then(success).catch(fail);
+}
 // function logout(success, fail)
 
-export { login, findById, checkId, register };
+export { login, findById, checkId, register, updateInfo, delUser };

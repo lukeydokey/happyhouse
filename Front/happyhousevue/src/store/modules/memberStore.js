@@ -3,6 +3,8 @@ import { login } from "@/api/member.js";
 import { findById } from "../../api/member";
 import { checkId } from "@/api/member.js";
 import { register } from "@/api/member.js";
+import { delUser } from "@/api/member.js";
+import { updateInfo } from "@/api/member.js";
 
 const memberStore = {
   namespaced: true,
@@ -79,6 +81,33 @@ const memberStore = {
             commit("SET_IS_REGISTER_ERROR", false);
           } else {
             commit("SET_IS_REGISTER_ERROR", true);
+          }
+        },
+        () => {},
+      );
+    },
+    async userUpdate({ commit }, user) {
+      await updateInfo(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_IS_REGISTER_ERROR", false);
+          } else {
+            commit("SET_IS_REGISTER_ERROR", true);
+          }
+        },
+        () => {},
+      );
+    },
+    userDelete({ commit }, userid) {
+      delUser(
+        userid,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_IS_LOGIN", false);
+            commit("CLEAR_USER_INFO");
+          } else {
+            alert("탈퇴 실패");
           }
         },
         () => {},

@@ -1,4 +1,5 @@
 import { sidoList, gugunList, dongList, houseList } from "@/api/house.js";
+import { eventBus } from "@/main.js";
 
 const houseStore = {
   namespaced: true,
@@ -8,6 +9,7 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
+    markers: [],
   },
 
   getters: {},
@@ -38,12 +40,15 @@ const houseStore = {
       state.dongs = [{ value: null, text: "선택하세요" }];
     },
     SET_HOUSE_LIST(state, houses) {
-      console.log(houses);
+      // console.log(houses);
       state.houses = houses;
+      eventBus.$emit("apartUpdated", "apartUpdated");
     },
     SET_DETAIL_HOUSE(state, house) {
-      console.log("Mutations", house);
+      // console.log("Mutations", house);
       state.house = house;
+
+      eventBus.$emit("detailApart", "detailApart");
     },
   },
 

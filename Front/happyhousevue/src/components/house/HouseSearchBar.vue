@@ -61,19 +61,19 @@ export default {
     ]),
 
     gugunList() {
-      console.log(this.sidoCode);
+      // console.log(this.sidoCode);
       this.clearGugunList();
       this.gugunCode = null;
       if (this.sidoCode) this.getGugun(this.sidoCode);
     },
     dongList() {
-      console.log(this.gugunCode);
+      // console.log(this.gugunCode);
       this.clearDongList();
       this.dongCode = null;
       if (this.gugunCode) this.getDong(this.gugunCode);
     },
-    searchApt() {
-      console.log(this.dongCode);
+    async searchApt() {
+      // console.log(this.dongCode);
       if (this.dongCode) this.getHouseList(this.dongCode);
     },
   },

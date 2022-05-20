@@ -3,6 +3,11 @@
 </template>
 
 <script>
+import { eventBus } from "@/main.js";
+import { mapState } from "vuex";
+
+const houseStore = "houseStore";
+
 export default {
   data() {
     return {
@@ -16,14 +21,16 @@ export default {
           title: "생태연못",
           latlng: new kakao.maps.LatLng(33.450936, 126.569477),
         },
-        { title: "텃밭", latlng: new kakao.maps.LatLng(33.450705, 126.570677) },
+        {
+          title: "텃밭",
+          latlng: new kakao.maps.LatLng(33.450705, 126.570177),
+        },
         {
           title: "근린공원",
           latlng: new kakao.maps.LatLng(33.451393, 126.570738),
         },
       ],
       // 화면에 표시되어있는 marker들
-      markers: [],
     };
   },
   methods: {
@@ -34,7 +41,29 @@ export default {
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+      // this.displayMarkers(this.markerPositions);
+    },
+    update() {
+      this.markerPositions = [];
+      var step;
+      for (step = 0; step < this.houses.data.length; step++) {
+        console.log(this.houses.data[step]);
+        this.markerPositions.push({
+          title: this.houses.data[step].aptName,
+          latlng: new kakao.maps.LatLng(
+            this.houses.data[step].lat,
+            this.houses.data[step].lng,
+          ),
+        });
+      }
       this.displayMarkers(this.markerPositions);
+    },
+    moveMap() {
+      console.log("맵이동");
+      var moveLatLon = new kakao.maps.LatLng(this.house.lat, this.house.lng);
+
+      // 지도 중심을 이동 시킵니다
+      this.map.panTo(moveLatLon);
     },
     displayMarkers(positions) {
       // 1. 현재 표시되어있는 marker들이 있다면 marker에 등록된 map을 없애준다.
@@ -85,8 +114,20 @@ export default {
       this.initMap();
     }
   },
+  computed: {
+    ...mapState(houseStore, ["houses", "markers", "house"]),
+  },
   created() {
-    this.displayMarkers(this.markerPositions);
+    // this.displayMarkers(this.markerPositions);
+
+    eventBus.$on("apartUpdated", (data) => {
+      console.log(data);
+      this.update();
+    });
+    eventBus.$on("detailApart", (data) => {
+      console.log(data);
+      this.moveMap();
+    });
   },
 };
 </script>

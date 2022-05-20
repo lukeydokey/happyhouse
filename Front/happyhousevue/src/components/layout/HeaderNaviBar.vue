@@ -18,17 +18,12 @@
         <b-navbar-nav>
           <b-nav-item href="#"
             ><router-link :to="{ name: 'home' }" class="link"
-              ><b-icon icon="house" font-scale="1.5"></b-icon> 홈</router-link
+              ><b-icon icon="house" font-scale="2"></b-icon> 홈</router-link
             ></b-nav-item
           >
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item href="#"
-            ><router-link :to="{ name: 'map' }" class="link"
-              ><b-icon icon="question-square-fill" font-scale="2"></b-icon>지도
-            </router-link></b-nav-item
-          >
           <b-nav-item href="#"
             ><router-link :to="{ name: 'board' }" class="link"
               ><b-icon icon="question-square-fill" font-scale="2"></b-icon> Q &
@@ -62,7 +57,7 @@
             </template>
             <b-dropdown-item class="align-self-center"
               ><router-link
-                :to="{ name: 'mypage' }"
+                :to="{ name: 'myPage' }"
                 class="link align-self-center"
                 ><b-avatar
                   variant="primary"
