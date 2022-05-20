@@ -1,20 +1,16 @@
 <template>
   <b-row
-    class="m-2"
     @click="selectHouse"
     @mouseover="colorChange(true)"
     @mouseout="colorChange(false)"
     :class="{ 'mouse-over-bgcolor': isColor }"
+    style="width: 100%; margin: 0; cursor: pointer"
   >
-    <b-col cols="2" class="text-center align-self-center">
-      <b-img
-        thumbnail
-        src="https://picsum.photos/250/250/?image=58"
-        alt="Image 1"
-      ></b-img>
-    </b-col>
-    <b-col cols="10" class="align-self-center">
-      [{{ house.aptCode }}] {{ house.aptName }}
+    <b-col class="align-self-center mt-1">
+      <b>{{ house.aptName }}</b>
+      <br />{{ house.sidoName }} {{ house.gugunName }} {{ house.dongName }}
+      {{ house.jibun }}
+      <hr style="margin: 0; width: 100%" />
     </b-col>
   </b-row>
 </template>
@@ -53,6 +49,6 @@ export default {
   width: 50px;
 }
 .mouse-over-bgcolor {
-  background-color: lightblue;
+  background-color: rgb(236, 236, 236);
 }
 </style>

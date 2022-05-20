@@ -1,15 +1,21 @@
 <template>
   <div class="fluid-container">
-    <b-sidebar id="sidebar-right" title="Sidebar" right shadow>
+    <b-sidebar
+      id="sidebar-right"
+      icon="house-fill"
+      title="HappyHouse"
+      right
+      shadow
+      bg-color="#F5F5F5"
+    >
       <b-card bg-variant="first">
-        <h3 class="underline-orange">
-          <b-icon icon="house-fill"></b-icon> House Service
-        </h3>
+        <h4 class="small-title">위치 검색</h4>
         <b-row>
           <b-col>
             <house-search-bar></house-search-bar>
           </b-col>
         </b-row>
+        <h4 class="small-title">아파트 목록</h4>
         <b-row>
           <house-list />
           <house-detail />
@@ -39,19 +45,24 @@ export default {
 };
 </script>
 <style scoped>
+.sidebar {
+  background-color: rgb(30, 67, 126);
+}
 .fluid-container {
   width: 100vw;
   height: 90vh;
 }
-.underline-orange {
+body {
+  margin: 0;
+}
+</style>
+<style>
+.small-title {
   display: inline-block;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 70%,
     rgba(231, 149, 27, 0.3) 30%
   );
-}
-body {
-  margin: 0;
 }
 </style>

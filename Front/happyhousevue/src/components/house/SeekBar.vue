@@ -76,9 +76,8 @@ export default {
         } else {
           leftVal = elmnt.offsetLeft + clientX_gab;
         }
-        elmnt.querySelector("span").innerText = Math.round(
-          (leftVal / parentElmnt.clientWidth) * 100,
-        );
+        elmnt.querySelector("span").innerText =
+          Math.round((leftVal / parentElmnt.clientWidth) * 1000) + "M";
 
         elmnt.style.left = leftVal + "px";
       }
@@ -93,7 +92,7 @@ export default {
     },
   },
   mounted() {
-    this.dragElement(document.getElementById("circle"), 20);
+    this.dragElement(document.getElementById("circle"), 0);
   },
 };
 </script>
@@ -134,8 +133,8 @@ HTML CSS JSResult Skip Results Iframe EDIT ON .container {
   pointer-events: none;
   position: absolute;
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -151,7 +150,7 @@ HTML CSS JSResult Skip Results Iframe EDIT ON .container {
   transform: translate(-50%, -50%);
   filter: none;
   color: #fff;
-  font-size: 18px;
+  font-size: 13px;
   transition: all 0.5s;
   white-space: nowrap;
   text-align: center;
@@ -164,7 +163,7 @@ HTML CSS JSResult Skip Results Iframe EDIT ON .container {
 .seek-bar > .circle.s_on > div > em:nth-child(2) {
   margin-top: -50px;
   background: #82bfee;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <b-row class="mt-4 mb-4 text-center">
+  <b-row class="ml-1 mr-1 mt-2 mb-4 text-center">
     <!-- <b-col class="sm-3">
       <b-form-input
         v-model.trim="dongCode"
@@ -14,16 +14,19 @@
       v-model="sidoCode"
       :options="sidos"
       @change="gugunList"
+      style="cursor: pointer"
     ></b-form-select>
     <b-form-select
       v-model="gugunCode"
       :options="guguns"
       @change="dongList"
+      style="cursor: pointer"
     ></b-form-select>
     <b-form-select
       v-model="dongCode"
       :options="dongs"
       @change="searchApt"
+      style="cursor: pointer"
     ></b-form-select>
   </b-row>
 </template>
