@@ -100,11 +100,11 @@ public class UserController {
 	}
 	
 	@ApiOperation(value = "계정 삭제 요청을 한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@DeleteMapping("/delete")
-	public ResponseEntity<String> delete(@RequestBody UserDto user){
+	@DeleteMapping("/delete/{userid}")
+	public ResponseEntity<String> delete(@PathVariable("userid") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userid){
 		logger.debug("modify - 호출");
 		try {
-			userService.deleteUser(user.getId());
+			userService.deleteUser(userid);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}catch(Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
