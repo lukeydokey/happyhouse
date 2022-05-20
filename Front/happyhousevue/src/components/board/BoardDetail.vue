@@ -17,7 +17,7 @@
           class="mr-2"
           >글수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
+        <b-button variant="outline-danger" size="sm" @click="delArticle"
           >글삭제</b-button
         >
       </b-col>
@@ -50,7 +50,7 @@
           <tbody>
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
             <board-list-item2
-              v-for="comment in commentList"
+              v-for="comment in comments"
               :key="comment.commentno"
               v-bind="comment"
             />
@@ -65,42 +65,34 @@
 
 <script>
 // import moment from "moment";
-import http from "@/api/http";
 import BoardInputItem2 from "@/components/board/item/BoardInputItem2.vue";
 import BoardListItem2 from "@/components/board/item/BoardListItem2.vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
+const boardStore = "boardStore";
 export default {
   name: "BoardDetail",
   components: {
     BoardInputItem2,
     BoardListItem2,
   },
-  data() {
-    return {
-      article: {},
-    };
-  },
   computed: {
+    ...mapState(boardStore, ["article", "message", "comments"]),
     message() {
       if (this.article.content)
         return this.article.content.split("\n").join("<br>");
       return "";
     },
-    ...mapGetters(["commentList"]),
-  },
-  created() {
-    http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
-      this.article = data;
-    });
-    this.$store.dispatch("clearComments");
-    this.$store.dispatch("updateComments", this.$route.params.articleno);
-    this.$on("updated", this.update);
   },
   methods: {
+    ...mapActions(boardStore, [
+      "clearComments",
+      "updateComments",
+      "deleteArticle",
+    ]),
     update() {
-      this.$store.dispatch("clearComments");
+      this.clearComments();
       console.log("업데이트 함수");
-      this.$store.dispatch("updateComments", this.$route.params.articleno);
+      this.updateComments(this.article.articleno);
     },
     listArticle() {
       this.$router.push({ name: "boardList" });
@@ -112,12 +104,11 @@ export default {
       });
       //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
-    deleteArticle() {
+    delArticle() {
       if (confirm("정말로 삭제?")) {
-        this.$router.replace({
-          name: "boardDelete",
-          params: { articleno: this.article.articleno },
-        });
+        this.deleteArticle(this.article.articleno);
+        alert("삭제 성공!!");
+        this.$router.push({ name: "boardList" });
       }
     },
   },

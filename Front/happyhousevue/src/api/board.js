@@ -15,14 +15,15 @@ function getArticle(articleno, success, fail) {
 }
 
 function modifyArticle(article, success, fail) {
-  api
-    .put(`/board/${article.articleno}`, JSON.stringify(article))
-    .then(success)
-    .catch(fail);
+  api.put(`/board/${article.articleno}`, article).then(success).catch(fail);
 }
 
 function addComment(articleno, success, fail) {
   api.get(`/comment/${articleno}`).then(success).catch(fail);
+}
+
+function writeComment(comment, success, fail) {
+  api.post(`/comment`, comment).then(success).catch(fail);
 }
 
 function deleteArticle(articleno, success, fail) {
@@ -36,4 +37,5 @@ export {
   modifyArticle,
   deleteArticle,
   addComment,
+  writeComment,
 };

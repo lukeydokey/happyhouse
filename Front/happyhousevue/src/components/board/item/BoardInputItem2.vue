@@ -45,14 +45,14 @@
 </template>
 
 <script>
-import http from "@/api/http";
+import { mapActions, mapState } from "vuex";
+const boardStore = "boardStore";
 
 export default {
   name: "BoardInputItem",
   data() {
     return {
       comment: {
-        articleno: this.$route.params.articleno,
         userid: "",
         content: "",
       },
@@ -62,8 +62,15 @@ export default {
   props: {
     type: { type: String },
   },
-
+  computed: {
+    ...mapState(boardStore, ["article"]),
+  },
   methods: {
+    ...mapActions(boardStore, [
+      "writeComment",
+      "updateComments",
+      "clearComments",
+    ]),
     onSubmit(event) {
       event.preventDefault();
 
@@ -87,14 +94,18 @@ export default {
       this.comment.userid = "";
       this.comment.content = "";
     },
-    async registComment() {
-      await http.post(`/comment`, {
-        articleno: this.$route.params.articleno,
+    registComment() {
+      let info = {
+        articleno: this.article.articleno,
         userid: this.comment.userid,
         content: this.comment.content,
-      });
+      };
+      // console.log(info);
+      this.writeComment(info);
+      this.clearComments();
+      this.updateComments(this.article.articleno);
       // .then(this.$store.dispatch("updateComments", this.comment.articleno))
-      await this.$emit("updated", "등록 완료!");
+      this.$emit("updated", "등록 완료!");
       this.comment.userid = "";
       this.comment.content = "";
     },
