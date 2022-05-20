@@ -31,7 +31,6 @@ export default {
         },
       ],
       // 화면에 표시되어있는 marker들
-      markers: [],
     };
   },
   methods: {
@@ -45,7 +44,6 @@ export default {
       // this.displayMarkers(this.markerPositions);
     },
     update() {
-      console.log("업데이트됐다.");
       this.markerPositions = [];
       var step;
       for (step = 0; step < this.houses.data.length; step++) {
@@ -58,16 +56,10 @@ export default {
           ),
         });
       }
-      // houses.forEach((house) => {
-      //   const marker = new kakao.maps.Marker({
-      //     map: this.map,
-      //     position: position.latlng, // 마커의 위치
-      //     title: position.title, // 마우스 오버 시 표시할 제목
-      //     image: markerImage, // 마커의 이미지
-      //   });
-      //   this.markers.push(marker);
-      // });
       this.displayMarkers(this.markerPositions);
+    },
+    moveMap() {
+      console.log("맵이동");
     },
     displayMarkers(positions) {
       // 1. 현재 표시되어있는 marker들이 있다면 marker에 등록된 map을 없애준다.
@@ -119,7 +111,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(houseStore, ["houses"]),
+    ...mapState(houseStore, ["houses", "markers"]),
   },
   created() {
     // this.displayMarkers(this.markerPositions);
@@ -127,6 +119,10 @@ export default {
     eventBus.$on("apartUpdated", (data) => {
       console.log(data);
       this.update();
+    });
+    eventBus.$on("detailApart", (data) => {
+      console.log(data);
+      this.moveMap();
     });
   },
 };

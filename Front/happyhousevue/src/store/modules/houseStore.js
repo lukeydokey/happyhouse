@@ -9,6 +9,7 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
+    markers: [],
   },
 
   getters: {},
@@ -46,6 +47,8 @@ const houseStore = {
     SET_DETAIL_HOUSE(state, house) {
       console.log("Mutations", house);
       state.house = house;
+
+      eventBus.$emit("detailApart", new Date());
     },
   },
 
