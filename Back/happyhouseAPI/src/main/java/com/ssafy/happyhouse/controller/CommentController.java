@@ -46,7 +46,8 @@ public class CommentController {
 	@GetMapping("{articleno}")
 	public ResponseEntity<List<CommentDto>> detailBoard(@PathVariable int articleno) {
 		logger.debug("commentList - 호출");
-		return new ResponseEntity<List<CommentDto>>(commentService.retrieveComment(articleno), HttpStatus.OK);
+		List<CommentDto> result = commentService.retrieveComment(articleno);
+		return new ResponseEntity<List<CommentDto>>(result, HttpStatus.OK);
 	}
 
     @ApiOperation(value = "새로운 게시글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)

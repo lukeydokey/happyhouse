@@ -90,7 +90,7 @@ public class HouseMapServiceImpl implements HouseMapService {
 //				break;
 ////				continue;
 //			}
-			if(Long.parseLong(gugun.getGugunCode())<4170000000L||Long.parseLong(gugun.getGugunCode())>4600000000L) {
+			if(Long.parseLong(gugun.getGugunCode())<4600000000L||Long.parseLong(gugun.getGugunCode())>5100000000L) {
 				
 				continue;
 			}
