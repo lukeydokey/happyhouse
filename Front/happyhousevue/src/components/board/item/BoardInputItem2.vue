@@ -19,7 +19,7 @@
           </b-form-group>
 
           <b-form-group
-            class="col-8"
+            class="col-9"
             id="content-group"
             label="내용:"
             label-for="content"
@@ -28,15 +28,19 @@
               id="content"
               v-model="comment.content"
               placeholder="내용 입력..."
-              rows="5"
+              rows="3"
               max-rows="10"
             ></b-form-textarea>
           </b-form-group>
         </b-row>
-        <b-button type="submit" variant="primary" class="m-1"
-          >댓글작성</b-button
-        >
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+        <b-row align-h="end">
+          <b-button type="submit" variant="primary" class="m-1"
+            >댓글작성</b-button
+          >
+          <b-button type="reset" variant="danger" class="m-1 mr-3"
+            >초기화</b-button
+          >
+        </b-row>
       </b-form>
     </b-col>
   </b-row>

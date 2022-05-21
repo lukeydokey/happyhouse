@@ -9,7 +9,7 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right">
+      <b-col class="text-right" v-if="isMyArticle">
         <b-button
           variant="outline-info"
           size="sm"
@@ -67,6 +67,7 @@ import BoardInputItem2 from "@/components/board/item/BoardInputItem2.vue";
 import BoardListItem2 from "@/components/board/item/BoardListItem2.vue";
 import { mapActions, mapState } from "vuex";
 const boardStore = "boardStore";
+const memberStore = "memberStore";
 export default {
   name: "BoardDetail",
   components: {
@@ -75,10 +76,14 @@ export default {
   },
   computed: {
     ...mapState(boardStore, ["article", "message", "comments"]),
+    ...mapState(memberStore, ["userInfo"]),
     message() {
       if (this.article.content)
         return this.article.content.split("\n").join("<br>");
       return "";
+    },
+    isMyArticle() {
+      return this.article.userid === this.userInfo.id ? true : false;
     },
   },
   methods: {

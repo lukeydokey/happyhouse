@@ -6,6 +6,7 @@ import {
   deleteArticle,
   getComments,
   writeComment,
+  deleteComment,
 } from "@/api/board.js";
 
 const boardStore = {
@@ -40,6 +41,8 @@ const boardStore = {
     SET_COMMENT_LIST(state, comments) {
       comments.forEach((comment) => {
         state.comments.push({
+          articleno: comment.articleno,
+          commentno: comment.commentno,
           userid: comment.userid,
           regtime: comment.regtime,
           content: comment.content,
@@ -137,6 +140,17 @@ const boardStore = {
     },
     clearComments({ commit }) {
       commit("CLEAR_COMMENTS");
+    },
+    deleteComment({ commit }, commentno) {
+      deleteComment(
+        commentno,
+        ({ data }) => {
+          if (data === "success") commit("CLEAR_COMMENTS");
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     },
   },
 };
