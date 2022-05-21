@@ -14,7 +14,7 @@
               >모든 정보를 기입 하세요.</b-alert
             >
             <b-form-group label="아이디:" label-for="userid">
-              <b-form-input id="userid" ref="id" disabled :value="userInfo.id">
+              <b-form-input id="userid" ref="id" disabled :value="user.id">
               </b-form-input>
             </b-form-group>
             <b-form-group label="비밀번호:" label-for="userpwd">
@@ -22,7 +22,7 @@
                 type="password"
                 ref="password"
                 id="userpwd"
-                v-model="userInfo.password"
+                v-model="user.password"
                 placeholder="비밀번호 입력"
                 required
               ></b-form-input>
@@ -31,7 +31,7 @@
               <b-form-input
                 id="username"
                 ref="name"
-                v-model="userInfo.name"
+                v-model="user.name"
                 required
                 placeholder="이름 입력"
               ></b-form-input>
@@ -40,7 +40,7 @@
               <b-form-input
                 id="useremail"
                 ref="email"
-                v-model="userInfo.email"
+                v-model="user.email"
                 required
                 placeholder="이메일 입력"
               ></b-form-input>
@@ -49,9 +49,10 @@
               <b-form-input
                 id="usertel"
                 ref="phonenumber"
+                @input="(value) => (user.phonenumber = value)"
                 required
                 placeholder="전화번호 입력"
-                v-model="userInfo.phonenumber"
+                :value="user.phonenumber | phoneNum"
               ></b-form-input>
             </b-form-group>
             <b-form-group label="성별:" label-for="usergender">
@@ -60,7 +61,7 @@
                 ref="gender"
                 disabled
                 :options="options"
-                v-model="userInfo.gender"
+                v-model="user.gender"
                 size="sm"
               ></b-form-select>
             </b-form-group>
@@ -94,11 +95,23 @@ export default {
   name: "MemberModify",
   data() {
     return {
+      user: {
+        id: "",
+        password: "",
+        name: "",
+        email: "",
+        phonenumber: "",
+        gender: "",
+      },
       options: [
         { value: "남성", text: "남성" },
         { value: "여성", text: "여성" },
       ],
     };
+  },
+  created() {
+    this.user = { ...this.userInfo };
+    this.user.phonenumber = this.userInfo.phonenumber.replace("-", "");
   },
   computed: {
     ...mapState(memberStore, ["isRegisterError", "userInfo"]),
