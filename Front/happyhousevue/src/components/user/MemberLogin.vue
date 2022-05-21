@@ -74,6 +74,9 @@ export default {
   computed: {
     ...mapState(memberStore, ["isLogin", "isLoginError"]),
   },
+  destroyed() {
+    this.setIsLoginErrorFalse();
+  },
   methods: {
     ...mapActions(memberStore, [
       "userConfirm",
