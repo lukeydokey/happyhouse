@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	@Transactional
-	public boolean deleteBoard(int articleno) {
-		return commentMapper.deleteBoard(articleno) == 1;
+	public boolean deleteComment(int commentno) {
+		return commentMapper.deleteComment(commentno) == 1;
 	}
 }

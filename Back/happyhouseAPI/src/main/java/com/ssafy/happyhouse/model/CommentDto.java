@@ -65,6 +65,12 @@ public class CommentDto {
 		this.regtime = regtime;
 	}
 
+	@Override
+	public String toString() {
+		return "CommentDto [commentno=" + commentno + ", articleno=" + articleno + ", userid=" + userid + ", content="
+				+ content + ", regtime=" + regtime + "]";
+	}
+
 	
 
 }

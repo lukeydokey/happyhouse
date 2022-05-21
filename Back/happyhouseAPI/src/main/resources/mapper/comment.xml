@@ -38,10 +38,10 @@
 	</update>
 
 	<!-- 게시글 삭제 -->
-	<delete id="deleteBoard" parameterType="int">
+	<delete id="deleteComment" parameterType="int">
 		delete 
-		from board 
-		where articleno = #{articleno}
+		from comment 
+		where commentno = #{commentno}
 	</delete>
 
 </mapper>
