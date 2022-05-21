@@ -11,7 +11,7 @@ import {
 
 const boardStore = {
   namespaced: true,
-  state: { comments: [], articles: [], article: null },
+  state: { comments: [], articles: [], article: null, articleslength: 0 },
   getters: {
     commentList(state) {
       return state.comments;
@@ -27,10 +27,12 @@ const boardStore = {
           regtime: article.regtime,
           hit: article.hit,
         });
+        state.articleslength += 1;
       });
     },
     CLEAR_ARTICLE_LIST(state) {
       state.articles = [];
+      state.articleslength = 0;
     },
     SET_ARTICLE(state, article) {
       state.article = article;

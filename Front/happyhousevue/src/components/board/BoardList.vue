@@ -19,9 +19,21 @@
           hover
           :items="articles"
           :fields="fields"
+          :current-page="curPage"
+          :per-page="perPage"
           @row-clicked="viewArticle"
         >
         </b-table>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-pagination
+          align="center"
+          v-model="curPage"
+          :per-page="perPage"
+          :total-rows="articleslength"
+        ></b-pagination>
       </b-col>
     </b-row>
   </b-container>
@@ -35,6 +47,8 @@ export default {
   name: "BoardList",
   data() {
     return {
+      curPage: 1,
+      perPage: 5,
       fields: [
         { key: "articleno", label: "글번호", tdClass: "tdClass" },
         { key: "subject", label: "제목", tdClass: "tdSubject" },
@@ -45,7 +59,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(boardStore, ["articles"]),
+    ...mapState(boardStore, ["articles", "articleslength"]),
   },
   created() {
     let param = {

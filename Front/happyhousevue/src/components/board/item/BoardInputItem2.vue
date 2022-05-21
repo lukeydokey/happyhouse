@@ -32,14 +32,14 @@
               max-rows="10"
             ></b-form-textarea>
           </b-form-group>
-        </b-row>
-        <b-row align-h="end">
-          <b-button type="submit" variant="primary" class="m-1"
-            >댓글작성</b-button
-          >
-          <b-button type="reset" variant="danger" class="m-1 mr-3"
-            >초기화</b-button
-          >
+          <b-col class="text-right">
+            <b-button type="submit" variant="primary" class="m-1"
+              >댓글작성</b-button
+            >
+            <b-button type="reset" variant="danger" class="m-1 mr-3"
+              >초기화</b-button
+            >
+          </b-col>
         </b-row>
       </b-form>
     </b-col>
