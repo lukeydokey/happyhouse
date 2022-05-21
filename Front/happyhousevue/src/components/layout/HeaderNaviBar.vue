@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" variant="transparent">
+    <b-navbar toggleable="lg" :variant="navBarColor">
       <b-navbar-brand href="#">
         <router-link to="/">
           <img
@@ -53,7 +53,7 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown v-else right>
             <template #button-content>
-              <b-icon icon="people" font-scale="2"></b-icon>
+              <b-icon icon="people" font-scale="2" variant="active"></b-icon>
             </template>
             <b-dropdown-item class="align-self-center"
               ><router-link
@@ -81,10 +81,15 @@
 <script>
 import { mapState, mapActions } from "vuex";
 const memberStore = "memberStore";
+const houseStore = "houseStore";
 export default {
   name: "HeaderNaviBar",
   computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
+    ...mapState(houseStore, ["isSearching"]),
+    navBarColor() {
+      return this.isSearching ? "dark" : "transparent";
+    },
   },
   methods: {
     ...mapActions(memberStore, ["delLoginInfo"]),

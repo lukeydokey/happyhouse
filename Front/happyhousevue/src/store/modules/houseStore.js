@@ -10,9 +10,18 @@ const houseStore = {
     houses: [],
     house: null,
     markers: [],
+    range: 0,
+    isSearching: false,
   },
 
-  getters: {},
+  getters: {
+    checkMarkersLenght: function (state) {
+      return state.markers.length;
+    },
+    getSelected: function (state) {
+      return state.house;
+    },
+  },
 
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -39,6 +48,13 @@ const houseStore = {
     CLEAR_DONG_LIST(state) {
       state.dongs = [{ value: null, text: "선택하세요" }];
     },
+    CLEAR_MARKERS(state) {
+      if (this.checkMarkersLenght > 0) {
+        state.markers.forEach((item) => {
+          item.setMap(null);
+        });
+      }
+    },
     SET_HOUSE_LIST(state, houses) {
       // console.log(houses);
       state.houses = houses;
@@ -49,6 +65,15 @@ const houseStore = {
       state.house = house;
 
       eventBus.$emit("detailApart", "detailApart");
+    },
+    PUSH_MARKER(state, marker) {
+      state.markers.push(marker);
+    },
+    SET_RANGE(state, range) {
+      state.range = range;
+    },
+    SET_IS_SEARCHING(state, isSearching) {
+      state.isSearching = isSearching;
     },
   },
 
@@ -101,6 +126,9 @@ const houseStore = {
     clearDongList: ({ commit }) => {
       commit("CLEAR_DONG_LIST");
     },
+    clearMarkers: ({ commit }) => {
+      commit("CLEAR_MARKERS");
+    },
     getHouseList: ({ commit }, dongCode) => {
       const params = { dong: dongCode };
       houseList(
@@ -113,10 +141,19 @@ const houseStore = {
         },
       );
     },
+    pushMarker: ({ commit }, marker) => {
+      commit("PUSH_MARKER", marker);
+    },
     detailHouse: ({ commit }, house) => {
       // 나중에 house.일련번호를 이용하여 API 호출
       // console.log(commit, house);
       commit("SET_DETAIL_HOUSE", house);
+    },
+    setRange: ({ commit }, range) => {
+      commit("SET_RANGE", range);
+    },
+    setIsSearching: ({ commit }, curState) => {
+      commit("SET_IS_SEARCHING", curState);
     },
   },
 };

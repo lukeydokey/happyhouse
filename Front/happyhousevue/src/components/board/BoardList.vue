@@ -13,55 +13,80 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col v-if="articles.length">
-        <b-table-simple hover responsive>
-          <b-thead head-variant="dark">
-            <b-tr>
-              <b-th>글번호</b-th>
-              <b-th>제목</b-th>
-              <b-th>조회수</b-th>
-              <b-th>작성자</b-th>
-              <b-th>작성일</b-th>
-            </b-tr>
-          </b-thead>
-          <tbody>
-            <!-- 하위 component인 ListRow에 데이터 전달(props) -->
-            <board-list-item
-              v-for="article in articles"
-              :key="article.articleno"
-              v-bind="article"
-            />
-          </tbody>
-        </b-table-simple>
+      <b-col>
+        <b-table
+          striped
+          hover
+          :items="articles"
+          :fields="fields"
+          :current-page="curPage"
+          :per-page="perPage"
+          @row-clicked="viewArticle"
+        >
+        </b-table>
       </b-col>
-      <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-pagination
+          align="center"
+          v-model="curPage"
+          :per-page="perPage"
+          :total-rows="articleslength"
+        ></b-pagination>
+      </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import http from "@/api/http";
-import BoardListItem from "@/components/board/item/BoardListItem";
+import { mapActions, mapState } from "vuex";
+const boardStore = "boardStore";
 
 export default {
   name: "BoardList",
-  components: {
-    BoardListItem,
-  },
   data() {
     return {
-      articles: [],
+      curPage: 1,
+      perPage: 5,
+      fields: [
+        { key: "articleno", label: "글번호", tdClass: "tdClass" },
+        { key: "subject", label: "제목", tdClass: "tdSubject" },
+        { key: "userid", label: "작성자", tdClass: "tdClass" },
+        { key: "regtime", label: "작성일", tdClass: "tdClass" },
+        { key: "hit", label: "조회수", tdClass: "tdClass" },
+      ],
     };
   },
+  computed: {
+    ...mapState(boardStore, ["articles", "articleslength"]),
+  },
   created() {
-    http.get(`/board`).then(({ data }) => {
-      this.articles = data;
-      console.log(this.articles);
-    });
+    let param = {
+      pg: 1,
+      spp: 20,
+      key: null,
+      word: null,
+    };
+    this.listArticle(param);
   },
   methods: {
+    ...mapActions(boardStore, [
+      "listArticle",
+      "getArticle",
+      "getComments",
+      "clearComments",
+    ]),
     moveWrite() {
       this.$router.push({ name: "boardRegister" });
+    },
+    viewArticle(article) {
+      this.getArticle(article.articleno);
+      this.clearComments();
+      this.getComments(article.articleno);
+      this.$router.push({
+        name: "boardDetail",
+      });
     },
   },
 };

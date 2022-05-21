@@ -19,6 +19,23 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "JUA";
+  src: url("@/assets/font/BMJUA_ttf.ttf");
+}
+.fontjua {
+  font-family: "JUA";
+}
+@font-face {
+  font-family: "SANS";
+  src: url("@/assets/font/SpoqaHanSansNeo-Medium.ttf");
+}
+.fontsans {
+  font-family: "SANS";
+}
+body {
+  margin: 0;
+}
 a {
   text-decoration: none;
 }
