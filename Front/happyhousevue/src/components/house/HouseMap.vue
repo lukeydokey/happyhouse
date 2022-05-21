@@ -7,9 +7,9 @@
       img-top
       tag="article"
       style="max-width: 20rem; z-index: 4"
-      class="mb-2 float-right"
+      class="mb-2 float-right fontsans"
     >
-      <div>추천 정보/부동산 뉴스가 들어갈 자리</div>
+      <div>추천 정보/뉴스/웹 크롤링 내용이 들어갈 자리</div>
       <strong>
         맵에 핀이 안 뜨면 상단바의 홈 버튼을 눌렀다가 아파트 버튼을 누르면
         됩니다.
