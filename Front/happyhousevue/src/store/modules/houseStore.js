@@ -11,6 +11,7 @@ const houseStore = {
     house: null,
     markers: [],
     range: 0,
+    isSearching: false,
   },
 
   getters: {
@@ -70,6 +71,9 @@ const houseStore = {
     },
     SET_RANGE(state, range) {
       state.range = range;
+    },
+    SET_IS_SEARCHING(state, isSearching) {
+      state.isSearching = isSearching;
     },
   },
 
@@ -147,6 +151,9 @@ const houseStore = {
     },
     setRange: ({ commit }, range) => {
       commit("SET_RANGE", range);
+    },
+    setIsSearching: ({ commit }, curState) => {
+      commit("SET_IS_SEARCHING", curState);
     },
   },
 };

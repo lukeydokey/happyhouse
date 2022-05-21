@@ -18,7 +18,7 @@ function modifyArticle(article, success, fail) {
   api.put(`/board/${article.articleno}`, article).then(success).catch(fail);
 }
 
-function addComment(articleno, success, fail) {
+function getComments(articleno, success, fail) {
   api.get(`/comment/${articleno}`).then(success).catch(fail);
 }
 
@@ -36,6 +36,6 @@ export {
   getArticle,
   modifyArticle,
   deleteArticle,
-  addComment,
+  getComments,
   writeComment,
 };

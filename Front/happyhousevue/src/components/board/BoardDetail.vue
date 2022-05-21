@@ -42,9 +42,7 @@
         <b-table-simple hover responsive>
           <b-thead>
             <b-tr>
-              <b-th>작성자</b-th>
-              <b-th>댓글</b-th>
-              <b-th>작성일</b-th>
+              <b-th colspan="3">답변</b-th>
             </b-tr>
           </b-thead>
           <tbody>
@@ -59,7 +57,7 @@
       </b-col>
       <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
     </b-row>
-    <board-input-item2 v-on:updated="update" type="register" />
+    <board-input-item2 />
   </b-container>
 </template>
 
@@ -89,11 +87,6 @@ export default {
       "updateComments",
       "deleteArticle",
     ]),
-    update() {
-      this.clearComments();
-      console.log("업데이트 함수");
-      this.updateComments(this.article.articleno);
-    },
     listArticle() {
       this.$router.push({ name: "boardList" });
     },

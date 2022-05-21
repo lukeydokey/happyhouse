@@ -8,14 +8,12 @@
             id="userid-group"
             label="작성자:"
             label-for="userid"
-            description="작성자를 입력하세요."
           >
             <b-form-input
               id="userid"
-              :disabled="isUserid"
               v-model="comment.userid"
               type="text"
-              required
+              disabled
               placeholder="작성자 입력..."
             ></b-form-input>
           </b-form-group>
@@ -30,8 +28,8 @@
               id="content"
               v-model="comment.content"
               placeholder="내용 입력..."
-              rows="10"
-              max-rows="15"
+              rows="5"
+              max-rows="10"
             ></b-form-textarea>
           </b-form-group>
         </b-row>
@@ -47,7 +45,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 const boardStore = "boardStore";
-
+const memberStore = "memberStore";
 export default {
   name: "BoardInputItem",
   data() {
@@ -56,7 +54,6 @@ export default {
         userid: "",
         content: "",
       },
-      isUserid: false,
     };
   },
   props: {
@@ -64,24 +61,19 @@ export default {
   },
   computed: {
     ...mapState(boardStore, ["article"]),
+    ...mapState(memberStore, ["userInfo"]),
+  },
+  created() {
+    this.comment.userid = this.userInfo.id;
   },
   methods: {
-    ...mapActions(boardStore, [
-      "writeComment",
-      "updateComments",
-      "clearComments",
-    ]),
+    ...mapActions(boardStore, ["writeComment", "getComments", "clearComments"]),
     onSubmit(event) {
       event.preventDefault();
 
       let err = true;
       let msg = "";
-      !this.comment.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
-      err &&
-        !this.comment.content &&
+      !this.comment.content &&
         ((msg = "내용 입력해주세요"),
         (err = false),
         this.$refs.content.focus());
@@ -102,11 +94,10 @@ export default {
       };
       // console.log(info);
       this.writeComment(info);
+      alert("댓글 작성 완료!!");
       this.clearComments();
-      this.updateComments(this.article.articleno);
+      this.getComments(this.article.articleno);
       // .then(this.$store.dispatch("updateComments", this.comment.articleno))
-      this.$emit("updated", "등록 완료!");
-      this.comment.userid = "";
       this.comment.content = "";
     },
 

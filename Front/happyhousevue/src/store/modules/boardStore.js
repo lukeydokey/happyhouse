@@ -4,7 +4,7 @@ import {
   getArticle,
   modifyArticle,
   deleteArticle,
-  addComment,
+  getComments,
   writeComment,
 } from "@/api/board.js";
 
@@ -123,8 +123,8 @@ const boardStore = {
         },
       );
     },
-    updateComments({ commit }, articleno) {
-      addComment(
+    getComments({ commit }, articleno) {
+      getComments(
         articleno,
         ({ data }) => {
           // console.log(commit, response);

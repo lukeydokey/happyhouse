@@ -57,12 +57,19 @@ export default {
     this.listArticle(param);
   },
   methods: {
-    ...mapActions(boardStore, ["listArticle", "getArticle"]),
+    ...mapActions(boardStore, [
+      "listArticle",
+      "getArticle",
+      "getComments",
+      "clearComments",
+    ]),
     moveWrite() {
       this.$router.push({ name: "boardRegister" });
     },
     viewArticle(article) {
       this.getArticle(article.articleno);
+      this.clearComments();
+      this.getComments(article.articleno);
       this.$router.push({
         name: "boardDetail",
       });

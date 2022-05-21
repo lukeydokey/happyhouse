@@ -28,13 +28,23 @@
 import HouseSearchBar from "@/components/house/HouseSearchBar.vue";
 import HouseList from "@/components/house/HouseList.vue";
 import HouseMap from "@/components/house/HouseMap.vue";
-
+import { mapActions } from "vuex";
+const houseStore = "houseStore";
 export default {
   name: "HouseView",
   components: {
     HouseSearchBar,
     HouseList,
     HouseMap,
+  },
+  created() {
+    this.setIsSearching(true);
+  },
+  destroyed() {
+    this.setIsSearching(false);
+  },
+  methods: {
+    ...mapActions(houseStore, ["setIsSearching"]),
   },
 };
 </script>
