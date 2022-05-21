@@ -1,7 +1,7 @@
 <template>
   <div>
     <seek-bar></seek-bar>
-    <h5 class="text-center inline fontjua">
+    <h5 class="text-center inline fontsans">
       <b>근방 </b>
       <b class="meter">{{ range }}M </b>
       <b>내의 편의시설</b>

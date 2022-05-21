@@ -48,9 +48,9 @@ export default {
       let clientX_gab = 0,
         clientX = 0;
       let parentElmnt = elmnt.parentNode;
-      elmnt.querySelector("span").innerText = Math.round(initVal);
+      elmnt.querySelector("span").innerText = initVal + "M";
 
-      elmnt.style.left = (initVal / 100) * parentElmnt.clientWidth + "px";
+      elmnt.style.left = (initVal / 1000) * parentElmnt.clientWidth + "px";
       elmnt.onmousedown = dragMouseDown;
       elmnt.addEventListener("touchstart", dragMouseDown);
       function dragMouseDown(e) {
@@ -107,7 +107,7 @@ export default {
     },
   },
   mounted() {
-    this.dragElement(document.getElementById("circle"), 0);
+    this.dragElement(document.getElementById("circle"), this.range);
   },
   created() {
     // this.displayMarkers(this.markerPositions);

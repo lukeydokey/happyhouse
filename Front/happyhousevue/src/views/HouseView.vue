@@ -8,7 +8,7 @@
       shadow
       bg-color="#F5F5F5"
     >
-      <b-card bg-variant="first" class="fontjua">
+      <b-card bg-variant="first" class="fontsans">
         <h4 class="small-title">위치 검색</h4>
         <b-row>
           <b-col>
