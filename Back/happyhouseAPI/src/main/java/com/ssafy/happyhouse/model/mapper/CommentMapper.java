@@ -12,5 +12,5 @@ public interface CommentMapper {
 	public List<CommentDto> selectCommentByNo(int articleno);
 	public int insertBoard(CommentDto comment);
 	public int updateBoard(BoardDto board);
-	public int deleteBoard(int articleno);
+	public int deleteComment(int commentno);
 }
