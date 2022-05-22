@@ -179,8 +179,17 @@ export default {
     },
     drawCircle(data) {
       this.centerPosition = this.map.getCenter();
-
-      var length = data;
+      var length;
+      if (this.house) {
+        length = this.range;
+        this.centerPosition = new kakao.maps.LatLng(
+          this.house.lat,
+          this.house.lng,
+        );
+      } else {
+        length = data;
+      }
+      if (!(this.drawingCircle && this.drawingLine)) return;
       if (length > 0) {
         // 그려지고 있는 원의 중심좌표와 반지름입니다
         var circleOptions = {
@@ -249,7 +258,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(houseStore, ["houses", "house", "checkMarkersLenght"]),
+    ...mapState(houseStore, ["houses", "house", "checkMarkersLenght", "range"]),
   },
   created() {
     // this.displayMarkers(this.markerPositions);
@@ -261,6 +270,7 @@ export default {
     eventBus.$on("detailApart", (data) => {
       console.log(data);
       this.moveMap(this.house);
+      this.drawCircle(data);
     });
     eventBus.$on("click", (data) => {
       this.clickMove(data);

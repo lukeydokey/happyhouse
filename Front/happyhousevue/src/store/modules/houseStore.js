@@ -11,7 +11,6 @@ const houseStore = {
     house: null,
     markers: [],
     range: 0,
-    isSearching: false,
   },
 
   getters: {
@@ -64,16 +63,13 @@ const houseStore = {
       // console.log("Mutations", house);
       state.house = house;
 
-      eventBus.$emit("detailApart", "detailApart");
+      eventBus.$emit("detailApart", house);
     },
     PUSH_MARKER(state, marker) {
       state.markers.push(marker);
     },
     SET_RANGE(state, range) {
       state.range = range;
-    },
-    SET_IS_SEARCHING(state, isSearching) {
-      state.isSearching = isSearching;
     },
   },
 
@@ -151,9 +147,6 @@ const houseStore = {
     },
     setRange: ({ commit }, range) => {
       commit("SET_RANGE", range);
-    },
-    setIsSearching: ({ commit }, curState) => {
-      commit("SET_IS_SEARCHING", curState);
     },
   },
 };
