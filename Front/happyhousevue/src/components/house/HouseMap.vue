@@ -29,6 +29,22 @@ const houseStore = "houseStore";
 export default {
   data() {
     return {
+      centerPosition: null,
+      drawingLine: new kakao.maps.Polyline({
+        strokeWeight: 3, // 선의 두께입니다
+        strokeColor: "#00a0e9", // 선의 색깔입니다
+        strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+        strokeStyle: "solid", // 선의 스타일입니다
+      }),
+
+      drawingCircle: new kakao.maps.Circle({
+        strokeWeight: 1, // 선의 두께입니다
+        strokeColor: "#00a0e9", // 선의 색깔입니다
+        strokeOpacity: 0.1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+        strokeStyle: "solid", // 선의 스타일입니다
+        fillColor: "#00a0e9", // 채우기 색깔입니다
+        fillOpacity: 0.2, // 채우기 불투명도입니다
+      }),
       map: null,
       markerPositions: [
         {
@@ -71,6 +87,21 @@ export default {
 
         console.log(message);
       });
+      // kakao.maps.event.addListener(this.map, "dragend", function () {
+      //   // 지도 중심좌표를 얻어옵니다
+      //   eventBus.$emit("dragMove", "dragMove");
+      // });
+      // kakao.maps.event.addListener(this.map, "zoom_changed", function () {
+      //   // 지도의 현재 레벨을 얻어옵니다
+      //   eventBus.$emit("zoomChange", "zoomChange");
+      // });
+      // kakao.maps.event.addListener(this.map, "center_changed", function () {
+      //   // 지도의  레벨을 얻어옵니다
+      //   eventBus.$emit("centerChange", "centerChange");
+      // });
+      kakao.maps.event.addListener(this.map, "bounds_changed", function () {
+        eventBus.$emit("bounds_changed", "bounds_changed");
+      });
       // this.displayMarkers(this.markerPositions);
     },
     update() {
@@ -97,6 +128,78 @@ export default {
     },
     clickMove(moveLatLon) {
       this.map.panTo(moveLatLon);
+    },
+    // dragMove() {
+    //   if (this.map) var latlng = this.map.getCenter();
+
+    //   var message = "변경된 지도 중심좌표는 " + latlng.getLat() + " 이고, ";
+    //   message += "경도는 " + latlng.getLng() + " 입니다";
+
+    //   console.log(message);
+    // },
+    // zoomChange() {
+    //   var level = this.map.getLevel();
+
+    //   var message = "현재 지도 레벨은 " + level + " 입니다";
+    //   console.log(message);
+    // },
+    // centerChange() {
+    //   var level = this.map.getLevel();
+
+    //   // 지도의 중심좌표를 얻어옵니다
+    //   var latlng = this.map.getCenter();
+
+    //   var message = "지도 레벨은 " + level + " 이고";
+    //   message +=
+    //     "중심 좌표는 위도 " +
+    //     latlng.getLat() +
+    //     ", 경도 " +
+    //     latlng.getLng() +
+    //     "입니다";
+
+    //   console.log(message);
+    // },
+    boundsChanged() {
+      // 지도 영역정보를 얻어옵니다
+      var bounds = this.map.getBounds();
+
+      // 영역정보의 남서쪽 정보를 얻어옵니다
+      var swLatlng = bounds.getSouthWest();
+
+      // 영역정보의 북동쪽 정보를 얻어옵니다
+      var neLatlng = bounds.getNorthEast();
+
+      var message =
+        "<p>영역좌표는 남서쪽 위도, 경도는  " +
+        swLatlng.toString() +
+        "이고 <br>";
+      message += "북동쪽 위도, 경도는  " + neLatlng.toString() + "입니다 </p>";
+
+      console.log(message);
+    },
+    drawCircle(data) {
+      this.centerPosition = this.map.getCenter();
+
+      var length = data;
+      if (length > 0) {
+        // 그려지고 있는 원의 중심좌표와 반지름입니다
+        var circleOptions = {
+          center: this.centerPosition,
+          radius: length,
+        };
+
+        // 그려지고 있는 원의 옵션을 설정합니다
+        this.drawingCircle.setOptions(circleOptions);
+
+        // 그려지고 있는 원을 지도에 표시합니다
+        this.drawingCircle.setMap(this.map);
+
+        // 그려지고 있는 선을 지도에 표시합니다
+        this.drawingLine.setMap(this.map);
+      } else {
+        this.drawingCircle.setMap(null);
+        this.drawingLine.setMap(null);
+      }
     },
     displayMarkers(positions) {
       if (this.markers.length > 0) {
@@ -161,6 +264,25 @@ export default {
     });
     eventBus.$on("click", (data) => {
       this.clickMove(data);
+    });
+    eventBus.$on("rangeChange", (data) => {
+      this.drawCircle(data);
+    });
+    // eventBus.$on("dragMove", (data) => {
+    //   console.log(data);
+    //   this.dragMove();
+    // });
+    // eventBus.$on("zoomChange", (data) => {
+    //   console.log(data);
+    //   this.zoomChange();
+    // });
+    // eventBus.$on("centerChange", (data) => {
+    //   console.log(data);
+    //   this.centerChange();
+    // });
+    eventBus.$on("bounds_changed", (data) => {
+      console.log(data);
+      this.boundsChanged();
     });
   },
 };
