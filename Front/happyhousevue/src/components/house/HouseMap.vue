@@ -230,7 +230,6 @@ export default {
       const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
       positions.forEach((position) => {
-        console.log(position);
         const marker = new kakao.maps.Marker({
           map: this.map,
           position: position.latlng,
