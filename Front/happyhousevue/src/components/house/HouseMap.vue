@@ -62,6 +62,15 @@ export default {
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+      kakao.maps.event.addListener(this.map, "click", function (mouseEvent) {
+        // 클릭한 위도, 경도 정보를 가져옵니다
+        var latlng = mouseEvent.latLng;
+        eventBus.$emit("click", latlng);
+        var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
+        message += "경도는 " + latlng.getLng() + " 입니다";
+
+        console.log(message);
+      });
       // this.displayMarkers(this.markerPositions);
     },
     update() {
@@ -85,6 +94,9 @@ export default {
         //지도 동기화 오류 상태
         this.map.setLevel(4);
       }
+    },
+    clickMove(moveLatLon) {
+      this.map.panTo(moveLatLon);
     },
     displayMarkers(positions) {
       if (this.markers.length > 0) {
@@ -146,6 +158,9 @@ export default {
     eventBus.$on("detailApart", (data) => {
       console.log(data);
       this.moveMap(this.house);
+    });
+    eventBus.$on("click", (data) => {
+      this.clickMove(data);
     });
   },
 };
