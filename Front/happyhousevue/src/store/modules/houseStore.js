@@ -1,4 +1,10 @@
-import { sidoList, gugunList, dongList, houseList } from "@/api/house.js";
+import {
+  sidoList,
+  gugunList,
+  dongList,
+  houseList,
+  getHouseRecentInfo,
+} from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
 const houseStore = {
@@ -9,6 +15,7 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
+    houseRecentInfo: { aptCode: 0, min: [0, 0, 0, 0], max: [0, 0, 0, 0] },
     markers: [],
     range: 0,
   },
@@ -64,6 +71,32 @@ const houseStore = {
       state.house = house;
 
       eventBus.$emit("detailApart", house);
+    },
+    SET_HOUSE_RECENT_INFO(state, houseRecentInfo) {
+      state.houseRecentInfo.aptCode = houseRecentInfo[0].aptCode;
+      console.log(houseRecentInfo);
+      houseRecentInfo.forEach((info) => {
+        if (info.dealYear === "2019") {
+          state.houseRecentInfo.min[0] = info.min;
+          state.houseRecentInfo.max[0] = info.max;
+        } else if (info.dealYear === "2020") {
+          state.houseRecentInfo.min[1] = info.min;
+          state.houseRecentInfo.max[1] = info.max;
+        } else if (info.dealYear === "2021") {
+          state.houseRecentInfo.min[2] = info.min;
+          state.houseRecentInfo.max[2] = info.max;
+        } else if (info.dealYear === "2022") {
+          state.houseRecentInfo.min[3] = info.min;
+          state.houseRecentInfo.max[3] = info.max;
+        }
+      });
+    },
+    CLEAR_HOUSE_RECENT_INFO(state) {
+      state.houseRecentInfo = {
+        aptCode: 0,
+        min: [0, 0, 0, 0],
+        max: [0, 0, 0, 0],
+      };
     },
     PUSH_MARKER(state, marker) {
       state.markers.push(marker);
@@ -136,6 +169,20 @@ const houseStore = {
           console.log(error);
         },
       );
+    },
+    async getHouseRecentInfo({ commit }, aptCode) {
+      await getHouseRecentInfo(
+        aptCode,
+        (response) => {
+          commit("SET_HOUSE_RECENT_INFO", response.data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    clearHouseRecentInfo: ({ commit }) => {
+      commit("CLEAR_HOUSE_RECENT_INFO");
     },
     pushMarker: ({ commit }, marker) => {
       commit("PUSH_MARKER", marker);

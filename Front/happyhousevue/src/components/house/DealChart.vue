@@ -3,8 +3,8 @@
     <h5><b>최근 거래가격 차트</b></h5>
     <Bar
       :chart-options="chartOptions"
-      :chart-data="chartData"
       :chart-id="chartId"
+      :chart-data="chartData"
       :dataset-id-key="datasetIdKey"
       :plugins="plugins"
       :css-classes="cssClasses"
@@ -68,16 +68,13 @@ export default {
       type: Object,
       default: () => {},
     },
+    chartData: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
-      chartData: {
-        labels: ["2019", "2020", "2021", "2022"],
-        datasets: [
-          { label: "min", backgroundColor: "#99CC00", data: [40, 20, 12, 10] },
-          { label: "max", backgroundColor: "#99EEFF", data: [50, 30, 20, 30] },
-        ],
-      },
       chartOptions: {
         responsive: true,
       },

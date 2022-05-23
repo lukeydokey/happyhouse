@@ -18,4 +18,8 @@ function houseList(params, success, fail) {
   api.get(`/map/apt`, { params: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, dongList, houseList };
+async function getHouseRecentInfo(aptCode, success, fail) {
+  await api.get(`/map/aptRecentInfo/${aptCode}`).then(success).catch(fail);
+}
+
+export { sidoList, gugunList, dongList, houseList, getHouseRecentInfo };
