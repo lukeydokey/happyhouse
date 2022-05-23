@@ -28,15 +28,33 @@
       @change="searchApt"
       style="cursor: pointer"
     ></b-form-select>
+    <b-table-simple hover responsive class="mt-3">
+      <b-thead>
+        <b-tr>
+          <b-th colspan="3"><b>검색 순위 TOP 3</b></b-th>
+        </b-tr>
+      </b-thead>
+      <b-tbody>
+        <hot-place-item
+          v-for="(hotplace, index) in hotplaces"
+          :key="index"
+          :index="index"
+          v-bind="hotplace"
+        />
+      </b-tbody>
+    </b-table-simple>
   </b-row>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import HotPlaceItem from "./HotPlaceItem.vue";
 
 const houseStore = "houseStore";
+const searchStore = "searchStore";
 
 export default {
+  components: { HotPlaceItem },
   name: "HouseSearchBar",
   data() {
     return {
@@ -47,6 +65,7 @@ export default {
   },
   computed: {
     ...mapState(houseStore, ["sidos", "guguns", "dongs", "houses"]),
+    ...mapState(searchStore, ["hotplaces"]),
   },
   created() {
     this.clearSidoList();

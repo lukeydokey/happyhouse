@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import HouseListItem from "@/components/house/HouseListItem.vue";
+import HouseListItem from "@/components/house/sideBar/HouseListItem.vue";
 import { mapState } from "vuex";
 
 const houseStore = "houseStore";
