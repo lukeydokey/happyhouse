@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
+import com.ssafy.happyhouse.model.HouseRecentPricesDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 
 public interface HouseMapService {
@@ -14,5 +15,6 @@ public interface HouseMapService {
 	List<HouseInfoDto> getAptInDong(String dong) throws Exception;
 	List<HouseInfoDto> getAptWithName(String dong, String apt) throws Exception;
 	List<HouseDealDto> getAptDeal(String aptCode) throws Exception;
+	List<HouseRecentPricesDto>getAptRecentInfo(int aptCode) throws Exception;
 	void save() throws Exception;
 }

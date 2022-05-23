@@ -61,6 +61,13 @@
 		where aptcode = #{aptCode}
 	</select>
 	
+	<select id="getAptRecentInfo" parameterType="int" resultType="houseRecentPricesDto">
+		select aptcode, dealYear,  min(cast(replace(dealAmount,",","") as signed)) as min, max(cast(replace(dealAmount,",","") as signed)) as max
+		from housedeal
+		where aptCode = #{aptCode}
+		group by dealYear;
+	</select>
+	
 	<select id="countApt" resultType="int">
 		select count(aptCode)
 		from houseinfo

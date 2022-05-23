@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
+import com.ssafy.happyhouse.model.HouseRecentPricesDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
 import com.ssafy.happyhouse.parser.ApiExplorer;
@@ -49,6 +50,12 @@ public class HouseMapServiceImpl implements HouseMapService {
 	public List<HouseDealDto> getAptDeal(String aptCode) throws Exception {
 		return houseMapMapper.getAptDeal(aptCode);
 	}
+	
+	@Override
+	public List<HouseRecentPricesDto> getAptRecentInfo(int aptCode) throws Exception {
+		return houseMapMapper.getAptRecentInfo(aptCode);
+	}
+
 	@Override
 	public List<HouseInfoDto> getAptWithName(String dong, String apt) throws Exception {
 		List<HouseInfoDto> list = houseMapMapper.getAptInDong(dong);
