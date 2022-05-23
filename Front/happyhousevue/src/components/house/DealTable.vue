@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapState } from "vuex";
 
 const houseStore = "houseStore";
 export default {
@@ -47,9 +47,6 @@ export default {
         },
       ],
     };
-  },
-  methods: {
-    ...mapActions(houseStore, ["getHouseDealList"]),
   },
 
   props: {

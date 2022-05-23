@@ -13,7 +13,8 @@
 
 <script>
 import SeekBar from "@/components/house/SeekBar.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import { eventBus } from "@/main.js";
 const houseStore = "houseStore";
 
 export default {
@@ -24,12 +25,24 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    ...mapActions(houseStore, ["getSchoolList"]),
+  },
   computed: {
     ...mapState(houseStore, ["range", "house"]),
     // ...mapState(houseStore, ["houses"]),
     // // houses() {
     // //   return this.$store.state.houses;
     // // },
+  },
+  created() {
+    eventBus.$on("rangeChanged", (data) => {
+      this.getSchoolList({
+        lat: this.house.lat,
+        lng: this.house.lng,
+        range: data,
+      });
+    });
   },
 };
 </script>

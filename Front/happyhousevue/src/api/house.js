@@ -25,6 +25,9 @@ async function getHouseRecentInfo(aptCode, success, fail) {
 function houseDealList(params, success, fail) {
   api.get(`/map/aptDeal`, { params: params }).then(success).catch(fail);
 }
+function SchoolList(params, success, fail) {
+  api.get(`/map/school`, { params: params }).then(success).catch(fail);
+}
 
 export {
   sidoList,
@@ -33,4 +36,5 @@ export {
   houseList,
   getHouseRecentInfo,
   houseDealList,
+  SchoolList,
 };
