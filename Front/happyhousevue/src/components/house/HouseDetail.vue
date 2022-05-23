@@ -1,5 +1,6 @@
 <template>
   <b-container v-if="house" class="bv-example-row">
+    <deal-chart class="mt-3" />
     <deal-table class="mt-3" />
   </b-container>
 </template>
@@ -7,11 +8,12 @@
 <script>
 import { mapState } from "vuex";
 import DealTable from "@/components/house/DealTable.vue";
+import DealChart from "@/components/house/DealChart.vue";
 
 const houseStore = "houseStore";
 
 export default {
-  components: { DealTable },
+  components: { DealTable, DealChart },
   name: "HouseDetail",
   computed: {
     ...mapState(houseStore, ["house"]),
