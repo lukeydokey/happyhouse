@@ -121,7 +121,7 @@ HTML CSS JSResult Skip Results Iframe EDIT ON .container {
   overflow: hidden;
 }
 .seek-bar {
-  margin: 50px auto 20px;
+  margin: 20px auto 20px;
   position: relative;
   width: calc(87%);
   height: 10px;

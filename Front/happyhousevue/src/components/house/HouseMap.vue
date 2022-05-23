@@ -2,20 +2,13 @@
   <div class="fluid-container" style="width: 140px; z-index: 3" id="map">
     <b-card
       v-if="this.house"
-      title="오늘의 정보"
-      img-src="https://picsum.photos/600/300/?image=25"
-      img-alt="Image"
-      img-top
-      tag="article"
-      style="max-width: 20rem; z-index: 4"
+      style="width: 15vw; z-index: 4"
       class="mb-2 float-left fontsans"
     >
-      <div>추천 정보/뉴스/웹 크롤링 내용이 들어갈 자리</div>
-      <strong>
-        맵에 핀이 안 뜨면 상단바의 홈 버튼을 눌렀다가 아파트 버튼을 누르면
-        됩니다.
-      </strong>
-      <b-button variant="primary" @click="setnull">매물 검색</b-button>
+      <house-area />
+      <b-button variant="secondary" @click="setnull" class="float-right"
+        >창 닫기</b-button
+      >
     </b-card>
     <b-card
       title="오늘의 정보"
@@ -40,10 +33,12 @@
 /*global kakao*/
 import { eventBus } from "@/main.js";
 import { mapState, mapActions } from "vuex";
+import HouseArea from "@/components/house/HouseArea.vue";
 
 const houseStore = "houseStore";
 
 export default {
+  components: { HouseArea },
   data() {
     return {
       centerPosition: null,

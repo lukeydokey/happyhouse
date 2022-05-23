@@ -19,7 +19,6 @@
     </b-row>
     <div v-if="getSelected && getSelected.jibun == house.jibun">
       <house-detail />
-      <house-area />
     </div>
   </div>
 </template>
@@ -27,12 +26,11 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import HouseDetail from "@/components/house/HouseDetail.vue";
-import HouseArea from "@/components/house/HouseArea.vue";
 
 const houseStore = "houseStore";
 
 export default {
-  components: { HouseDetail, HouseArea },
+  components: { HouseDetail },
   name: "HouseListItem",
   // computed: {
   //   ...mapState(houseStore, ["house"]),
