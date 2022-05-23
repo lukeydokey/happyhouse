@@ -28,9 +28,10 @@
 import HouseSearchBar from "@/components/house/sideBar/HouseSearchBar.vue";
 import HouseList from "@/components/house/sideBar/HouseList.vue";
 import HouseMap from "@/components/house/HouseMap.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 const houseStore = "houseStore";
 const searchStore = "searchStore";
+const memberStore = "memberStore";
 export default {
   name: "HouseView",
   components: {
@@ -38,17 +39,27 @@ export default {
     HouseList,
     HouseMap,
   },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+  },
   created() {
     this.clearHotPlaces();
+    this.clearHotPlacesByGender();
     this.setIsSearching(true);
     this.getHotPlaces();
+    this.getHotPlacesByGender(this.userInfo.gender);
   },
   destroyed() {
     this.setIsSearching(false);
   },
   methods: {
     ...mapActions(houseStore, ["setIsSearching"]),
-    ...mapActions(searchStore, ["getHotPlaces", "clearHotPlaces"]),
+    ...mapActions(searchStore, [
+      "getHotPlaces",
+      "clearHotPlaces",
+      "getHotPlacesByGender",
+      "clearHotPlacesByGender",
+    ]),
   },
 };
 </script>

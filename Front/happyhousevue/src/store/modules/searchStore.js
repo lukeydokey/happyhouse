@@ -1,9 +1,11 @@
-import { getHotPlaces } from "@/api/search.js";
+import { getHotPlaces, search, getHotPlacesByGender } from "@/api/search.js";
 
 const searchStore = {
   namespaced: true,
   state: {
     hotplaces: [],
+    hotplacesbygender: [],
+    searchLog: [],
   },
   getters: {},
   mutations: {
@@ -14,6 +16,17 @@ const searchStore = {
     },
     CLEAR_HOT_PLACES: (state) => {
       state.hotplaces = [];
+    },
+    SET_HOT_PLACES_BY_GENDER: (state, hotplacesbygender) => {
+      hotplacesbygender.forEach((hotplace) => {
+        state.hotplacesbygender.push(hotplace);
+      });
+    },
+    CLEAR_HOT_PLACES_BY_GENDER: (state) => {
+      state.hotplacesbygender = [];
+    },
+    SET_SEARCH_LOG: (state, searchInfo) => {
+      state.searchLog.push(searchInfo);
     },
   },
   actions: {
@@ -29,6 +42,31 @@ const searchStore = {
     },
     clearHotPlaces({ commit }) {
       commit("CLEAR_HOT_PLACES");
+    },
+    getHotPlacesByGender({ commit }, gender) {
+      getHotPlacesByGender(
+        gender,
+        (response) => {
+          commit("SET_HOT_PLACES_BY_GENDER", response.data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    clearHotPlacesByGender({ commit }) {
+      commit("CLEAR_HOT_PLACES_BY_GENDER");
+    },
+    search({ commit }, searchInfo) {
+      search(
+        searchInfo,
+        (response) => {
+          if (response.data === "success") commit("SET_SEARCH_LOG", searchInfo);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     },
   },
 };
