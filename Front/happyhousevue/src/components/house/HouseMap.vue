@@ -58,25 +58,11 @@ export default {
         fillOpacity: 0.2, // 채우기 불투명도입니다
       }),
       map: null,
-      markerPositions: [
-        {
-          title: "카카오",
-          latlng: new kakao.maps.LatLng(33.450705, 126.570677),
-        },
-        {
-          title: "생태연못",
-          latlng: new kakao.maps.LatLng(33.450936, 126.569477),
-        },
-        {
-          title: "텃밭",
-          latlng: new kakao.maps.LatLng(33.450705, 126.570177),
-        },
-        {
-          title: "근린공원",
-          latlng: new kakao.maps.LatLng(33.451393, 126.570738),
-        },
-      ],
+      markerPositions: [],
+      schoolPositions: [],
+      parkPositions: [],
       markers: [],
+      schoolmarkers: [],
       // 화면에 표시되어있는 marker들
     };
   },
@@ -121,8 +107,7 @@ export default {
     },
     update() {
       this.markerPositions = [];
-      var step;
-      for (step = 0; step < this.houses.data.length; step++) {
+      for (var step = 0; step < this.houses.data.length; step++) {
         this.markerPositions.push({
           title: this.houses.data[step].aptName,
           latlng: new kakao.maps.LatLng(
@@ -139,7 +124,27 @@ export default {
             this.houses.data[step].jibun,
         });
       }
-      this.displayMarkers(this.markerPositions);
+      var imgSrc = require("@/assets/map/apart.png");
+      var imgSize = new kakao.maps.Size(42, 63);
+      this.displayMarkers(this.markerPositions, imgSrc, imgSize);
+    },
+    updateArea() {
+      this.schoolPositions = [];
+      console.log("스쿨");
+      console.log(this.schools);
+      for (var step = 0; step < this.schools.length; step++) {
+        this.schoolPositions.push({
+          title: this.schools[step].name,
+          latlng: new kakao.maps.LatLng(
+            this.schools[step].lat,
+            this.schools[step].lng,
+          ),
+          content: this.schools[step].address,
+        });
+      }
+      var imgSrc = require("@/assets/map/school.png");
+      var imgSize = new kakao.maps.Size(42, 63);
+      this.displayAreas(this.schoolPositions, imgSrc, imgSize);
     },
     moveMap(selected) {
       var moveLatLon = new kakao.maps.LatLng(selected.lat, selected.lng);
@@ -233,16 +238,13 @@ export default {
         this.drawingLine.setMap(null);
       }
     },
-    displayMarkers(positions) {
+    displayMarkers(positions, imgSrc, imgSize) {
+      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
           item.setMap(null);
         });
       }
-
-      const imgSrc = require("@/assets/map/apart.png");
-      const imgSize = new kakao.maps.Size(42, 63);
-      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
       positions.forEach((position) => {
         const marker = new kakao.maps.Marker({
@@ -312,6 +314,53 @@ export default {
         infowindow.close();
       };
     },
+    displayAreas(positions, imgSrc, imgSize) {
+      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+      if (this.schoolmarkers.length > 0) {
+        this.schoolmarkers.forEach((item) => {
+          item.setMap(null);
+        });
+      }
+
+      positions.forEach((position) => {
+        const marker = new kakao.maps.Marker({
+          map: this.map,
+          position: position.latlng,
+          title: position.title,
+          image: markerImage,
+        });
+
+        var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div id="content">' +
+            '<div id="siteNotice">' +
+            "</div>" +
+            '<h5 id="firstHeading" class="firstHeading"> ' +
+            position.title +
+            " </h5>" +
+            '<div id="bodyContent"><p>' +
+            position.content +
+            "</div>", // 인포윈도우에 표시할 내용
+        });
+
+        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+        // 이벤트 리스너로는 클로저를 만들어 등록합니다
+        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        kakao.maps.event.addListener(
+          marker,
+          "mouseover",
+          this.makeOverListener(this.map, marker, infowindow),
+          // overlay.setMap(this.map);
+        );
+        kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          this.makeOutListener(this.map, marker, infowindow),
+        );
+
+        this.schoolmarkers.push(marker);
+      });
+    },
   },
   mounted() {
     if (!window.kakao || !window.kakao.maps) {
@@ -328,7 +377,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(houseStore, ["houses", "house", "checkMarkersLenght", "range"]),
+    ...mapState(houseStore, [
+      "houses",
+      "house",
+      "schools",
+      "parks",
+      "checkMarkersLenght",
+      "range",
+    ]),
   },
   created() {
     // this.displayMarkers(this.markerPositions);
@@ -347,6 +403,10 @@ export default {
     });
     eventBus.$on("rangeChange", (data) => {
       this.drawCircle(data);
+    });
+    eventBus.$on("rangeChanged", (data) => {
+      console.log(data);
+      this.updateArea();
     });
     // eventBus.$on("dragMove", (data) => {
     //   console.log(data);

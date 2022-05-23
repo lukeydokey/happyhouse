@@ -5,7 +5,7 @@
     <h5 class="text-center inline fontsans">
       <b>{{ this.house.aptName }}<br /></b><b> 근방 </b>
       <b class="meter">{{ range }}M </b>
-      <b>내의 편의시설</b>
+      <b>내의 주변시설</b>
     </h5>
     <h4></h4>
   </div>
@@ -26,7 +26,7 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(houseStore, ["getSchoolList"]),
+    ...mapActions(houseStore, ["getSchoolList", "getParkList"]),
   },
   computed: {
     ...mapState(houseStore, ["range", "house"]),
@@ -37,10 +37,16 @@ export default {
   },
   created() {
     eventBus.$on("rangeChanged", (data) => {
+      console.log(data);
       this.getSchoolList({
         lat: this.house.lat,
         lng: this.house.lng,
-        range: data,
+        range: this.range,
+      });
+      this.getParkList({
+        lat: this.house.lat,
+        lng: this.house.lng,
+        range: this.range,
       });
     });
   },
