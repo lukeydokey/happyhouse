@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
+import com.ssafy.happyhouse.model.HouseRecentPricesDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
@@ -61,6 +62,11 @@ public class HouseMapController {
 	@GetMapping("/aptDeal")
 	public ResponseEntity<List<HouseDealDto>> aptDeal(@RequestParam("aptCode") String aptCode) throws Exception {
 		return new ResponseEntity<List<HouseDealDto>>(haHouseMapService.getAptDeal(aptCode), HttpStatus.OK);
+	}
+	
+	@GetMapping("/aptRecentInfo/{aptCode}")
+	public ResponseEntity<List<HouseRecentPricesDto>> aptRecentInfo(@PathVariable("aptCode") @ApiParam(value = "최근 거래가격 정보 가져올 아파트 코드", required = true) int aptCode) throws Exception {
+		return new ResponseEntity<List<HouseRecentPricesDto>>(haHouseMapService.getAptRecentInfo(aptCode), HttpStatus.OK);
 	}
 	
 	
