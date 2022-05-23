@@ -3,14 +3,14 @@ package com.ssafy.happyhouse.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "SchoolDto (학교 정보)", description = "학교 정보를 가진   Domain Class")
+@ApiModel(value = "ParkDto (공원 정보)", description = "공원 정보를 가진   Domain Class")
 public class ParkDto {
 
-	@ApiModelProperty(value = "학교 ID")
+	@ApiModelProperty(value = "공원 ID")
 	private String id;
-	@ApiModelProperty(value = "학교 이름")
+	@ApiModelProperty(value = "공원 이름")
 	private String name;
-	@ApiModelProperty(value = "학교 분류")
+	@ApiModelProperty(value = "공원 분류")
 	private String level;
 	@ApiModelProperty(value = "주소")
 	private String address;
