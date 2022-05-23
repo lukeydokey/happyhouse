@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
@@ -44,6 +45,10 @@ public class HouseMapServiceImpl implements HouseMapService {
 		return houseMapMapper.getAptInDong(dong);
 	}
 
+	@Override
+	public List<HouseDealDto> getAptDeal(String aptCode) throws Exception {
+		return houseMapMapper.getAptDeal(aptCode);
+	}
 	@Override
 	public List<HouseInfoDto> getAptWithName(String dong, String apt) throws Exception {
 		List<HouseInfoDto> list = houseMapMapper.getAptInDong(dong);
@@ -162,5 +167,6 @@ public class HouseMapServiceImpl implements HouseMapService {
 		
 		System.out.println("Transaction success");
 	}
+
 
 }

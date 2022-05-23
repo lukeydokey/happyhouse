@@ -55,6 +55,12 @@
 		where dongCode = #{dongCode} and aptName = #{aptName}
 	</select>
 	
+	<select id="getAptDeal" parameterType="String" resultType="houseDealDto">
+		select *
+		from housedeal
+		where aptcode = #{aptCode}
+	</select>
+	
 	<select id="countApt" resultType="int">
 		select count(aptCode)
 		from houseinfo

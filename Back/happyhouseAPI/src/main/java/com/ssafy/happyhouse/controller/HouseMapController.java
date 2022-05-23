@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
@@ -55,7 +56,12 @@ public class HouseMapController {
 	@GetMapping("/aptName")
 	public ResponseEntity<List<HouseInfoDto>> aptName(@RequestParam("dong") String dong, @RequestParam("apt") String apt) throws Exception {
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptWithName(dong, apt), HttpStatus.OK);
-	} 
+	}
+	
+	@GetMapping("/aptDeal")
+	public ResponseEntity<List<HouseDealDto>> aptDeal(@RequestParam("aptCode") String aptCode) throws Exception {
+		return new ResponseEntity<List<HouseDealDto>>(haHouseMapService.getAptDeal(aptCode), HttpStatus.OK);
+	}
 	
 	
 	@ApiOperation(value = "아파트 실 거래가 파싱용 ")
