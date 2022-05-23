@@ -20,6 +20,7 @@ const houseStore = {
     markers: [],
     range: 0,
     deals: [],
+    isSearching: false,
   },
   getters: {
     checkMarkersLenght: function (state) {
@@ -110,6 +111,9 @@ const houseStore = {
     },
     SET_HOUSENULL(state) {
       state.house = null;
+    },
+    SET_IS_SEARCHING(state, isSearching) {
+      state.isSearching = isSearching;
     },
   },
   actions: {
@@ -215,6 +219,9 @@ const houseStore = {
     },
     setHouseNull: ({ commit }) => {
       commit("SET_HOUSENULL");
+    },
+    setIsSearching: ({ commit }, isSearching) => {
+      commit("SET_IS_SEARCHING", isSearching);
     },
   },
 };
