@@ -7,8 +7,8 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import DealTable from "@/components/house/DealTable.vue";
-import DealChart from "@/components/house/DealChart.vue";
+import DealTable from "@/components/house/sideBar/DealTable.vue";
+import DealChart from "@/components/house/sideBar/DealChart.vue";
 
 const houseStore = "houseStore";
 

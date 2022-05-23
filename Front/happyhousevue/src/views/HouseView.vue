@@ -25,11 +25,12 @@
   </div>
 </template>
 <script>
-import HouseSearchBar from "@/components/house/HouseSearchBar.vue";
-import HouseList from "@/components/house/HouseList.vue";
+import HouseSearchBar from "@/components/house/sideBar/HouseSearchBar.vue";
+import HouseList from "@/components/house/sideBar/HouseList.vue";
 import HouseMap from "@/components/house/HouseMap.vue";
 import { mapActions } from "vuex";
 const houseStore = "houseStore";
+const searchStore = "searchStore";
 export default {
   name: "HouseView",
   components: {
@@ -38,13 +39,16 @@ export default {
     HouseMap,
   },
   created() {
+    this.clearHotPlaces();
     this.setIsSearching(true);
+    this.getHotPlaces();
   },
   destroyed() {
     this.setIsSearching(false);
   },
   methods: {
     ...mapActions(houseStore, ["setIsSearching"]),
+    ...mapActions(searchStore, ["getHotPlaces", "clearHotPlaces"]),
   },
 };
 </script>

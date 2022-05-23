@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import HouseDetail from "@/components/house/HouseDetail.vue";
+import HouseDetail from "@/components/house/sideBar/HouseDetail.vue";
 
 const houseStore = "houseStore";
 
