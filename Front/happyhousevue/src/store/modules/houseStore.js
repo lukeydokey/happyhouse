@@ -3,6 +3,7 @@ import {
   gugunList,
   dongList,
   houseList,
+  getHouseRecentInfo,
   houseDealList,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
@@ -15,6 +16,7 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
+    houseRecentInfo: { aptCode: 0, min: [0, 0, 0, 0], max: [0, 0, 0, 0] },
     markers: [],
     range: 0,
     deals: [],
@@ -76,6 +78,32 @@ const houseStore = {
       state.house = house;
 
       eventBus.$emit("detailApart", house);
+    },
+    SET_HOUSE_RECENT_INFO(state, houseRecentInfo) {
+      state.houseRecentInfo.aptCode = houseRecentInfo[0].aptCode;
+      console.log(houseRecentInfo);
+      houseRecentInfo.forEach((info) => {
+        if (info.dealYear === "2019") {
+          state.houseRecentInfo.min[0] = info.min;
+          state.houseRecentInfo.max[0] = info.max;
+        } else if (info.dealYear === "2020") {
+          state.houseRecentInfo.min[1] = info.min;
+          state.houseRecentInfo.max[1] = info.max;
+        } else if (info.dealYear === "2021") {
+          state.houseRecentInfo.min[2] = info.min;
+          state.houseRecentInfo.max[2] = info.max;
+        } else if (info.dealYear === "2022") {
+          state.houseRecentInfo.min[3] = info.min;
+          state.houseRecentInfo.max[3] = info.max;
+        }
+      });
+    },
+    CLEAR_HOUSE_RECENT_INFO(state) {
+      state.houseRecentInfo = {
+        aptCode: 0,
+        min: [0, 0, 0, 0],
+        max: [0, 0, 0, 0],
+      };
     },
     PUSH_MARKER(state, marker) {
       state.markers.push(marker);
@@ -149,6 +177,22 @@ const houseStore = {
         },
       );
     },
+    async getHouseRecentInfo({ commit }, aptCode) {
+      await this.clearHouseRecentInfo();
+      await getHouseRecentInfo(
+        aptCode,
+        (response) => {
+          commit("SET_HOUSE_RECENT_INFO", response.data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    async clearHouseRecentInfo({ commit }) {
+      await commit("CLEAR_HOUSE_RECENT_INFO");
+    },
+
     getHouseDealList: ({ commit }, aptCode) => {
       const params = { aptCode: aptCode };
       houseDealList(
