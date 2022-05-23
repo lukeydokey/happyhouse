@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.SearchMapper">
+
+	<!-- 유저 검색 조회 -->
+	<select id="selectSearchInfo" parameterType="SearchInfoDto" resultType="SearchInfoDto">
+		select id, dongcode
+		from searchinfo 
+		where id = #{id} and dongCode = #{dongCode}
+	</select>
+	
+	<!-- 유저 검색 등록 -->
+	<insert id="insertSearchInfo" parameterType="SearchInfoDto">
+		insert into searchinfo(id, dongcode)
+		value (#{id}, #{dongCode})
+	</insert>
+	
+	<!-- 유저 검색횟수 탑 3 조회 -->
+	<select id="selectHotPlace" resultType="SearchInfoDto">
+		select d.sidoName, d.gugunName, d.dongName, s.dongcode, count(id) as hit
+		from searchinfo as s join dongcode as d
+		using (dongcode)
+		group by dongcode
+		order by hit desc
+		limit 3;
+	</select>
+	
+</mapper>
