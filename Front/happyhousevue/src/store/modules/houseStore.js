@@ -4,6 +4,7 @@ import {
   dongList,
   houseList,
   getHouseRecentInfo,
+  houseDealList,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
@@ -18,6 +19,7 @@ const houseStore = {
     houseRecentInfo: { aptCode: 0, min: [0, 0, 0, 0], max: [0, 0, 0, 0] },
     markers: [],
     range: 0,
+    deals: [],
   },
 
   getters: {
@@ -65,6 +67,11 @@ const houseStore = {
       // console.log(houses);
       state.houses = houses;
       eventBus.$emit("apartUpdated", "apartUpdated");
+    },
+    SET_HOUSEDEAL_LIST(state, deals) {
+      // console.log(houses);
+      state.deals = deals.data;
+      eventBus.$emit("dealsUpdated", deals);
     },
     SET_DETAIL_HOUSE(state, house) {
       // console.log("Mutations", house);
@@ -171,6 +178,7 @@ const houseStore = {
       );
     },
     async getHouseRecentInfo({ commit }, aptCode) {
+      await this.clearHouseRecentInfo();
       await getHouseRecentInfo(
         aptCode,
         (response) => {
@@ -181,8 +189,21 @@ const houseStore = {
         },
       );
     },
-    clearHouseRecentInfo: ({ commit }) => {
-      commit("CLEAR_HOUSE_RECENT_INFO");
+    async clearHouseRecentInfo({ commit }) {
+      await commit("CLEAR_HOUSE_RECENT_INFO");
+    },
+
+    getHouseDealList: ({ commit }, aptCode) => {
+      const params = { aptCode: aptCode };
+      houseDealList(
+        params,
+        (response) => {
+          commit("SET_HOUSEDEAL_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     },
     pushMarker: ({ commit }, marker) => {
       commit("PUSH_MARKER", marker);

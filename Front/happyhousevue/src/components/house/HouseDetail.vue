@@ -1,7 +1,7 @@
 <template>
   <b-container v-if="house" class="bv-example-row">
     <deal-chart :chart-data="chartData" class="mt-3" />
-    <deal-table class="mt-3" />
+    <deal-table class="mt-3" :deals="this.deals" />
   </b-container>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   components: { DealTable, DealChart },
   name: "HouseDetail",
   computed: {
-    ...mapState(houseStore, ["house", "houseRecentInfo"]),
+    ...mapState(houseStore, ["house", "houseRecentInfo", "deals"]),
     // house() {
     //   return this.$store.state.house;
     // },
