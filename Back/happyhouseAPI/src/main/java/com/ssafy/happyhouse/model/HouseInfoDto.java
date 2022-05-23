@@ -21,7 +21,7 @@ public class HouseInfoDto {
 	@ApiModelProperty(value = "건축 연도")
 	private int buildYear;
 	@ApiModelProperty(value = "지번 주소")
-	private String jibun;
+	private String jibun; 
 	@ApiModelProperty(value = "도로명 주소")
 	private String road;
 	@ApiModelProperty(value = "위도")

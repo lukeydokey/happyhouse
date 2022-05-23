@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseRecentPricesDto;
+import com.ssafy.happyhouse.model.ParkDto;
+import com.ssafy.happyhouse.model.SchoolDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
 
@@ -63,7 +65,14 @@ public class HouseMapController {
 	public ResponseEntity<List<HouseDealDto>> aptDeal(@RequestParam("aptCode") String aptCode) throws Exception {
 		return new ResponseEntity<List<HouseDealDto>>(haHouseMapService.getAptDeal(aptCode), HttpStatus.OK);
 	}
-	
+	@GetMapping("/school")
+	public ResponseEntity<List<SchoolDto>> school(@RequestParam("lat") String lat, @RequestParam("lng") String lng, @RequestParam("range") String range) throws Exception {
+		return new ResponseEntity<List<SchoolDto>>(haHouseMapService.getSchool(lat, lng, range), HttpStatus.OK);
+	}
+	@GetMapping("/park")
+	public ResponseEntity<List<ParkDto>> park(@RequestParam("lat") String lat, @RequestParam("lng") String lng, @RequestParam("range") String range) throws Exception {
+		return new ResponseEntity<List<ParkDto>>(haHouseMapService.getPark(lat, lng, range), HttpStatus.OK);
+	}
 	@GetMapping("/aptRecentInfo/{aptCode}")
 	public ResponseEntity<List<HouseRecentPricesDto>> aptRecentInfo(@PathVariable("aptCode") @ApiParam(value = "최근 거래가격 정보 가져올 아파트 코드", required = true) int aptCode) throws Exception {
 		return new ResponseEntity<List<HouseRecentPricesDto>>(haHouseMapService.getAptRecentInfo(aptCode), HttpStatus.OK);

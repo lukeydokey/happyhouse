@@ -55,6 +55,20 @@
 		where dongCode = #{dongCode} and aptName = #{aptName}
 	</select>
 	
+	<select id="getSchool" parameterType="String" resultType="SchoolDto">
+		select *
+		from schools
+		where 6371 * acos( cos( radians(#{lat}) ) * cos( radians( lat ) ) * cos( radians( lng )
+ - radians(#{lng}) ) + sin( radians(#{lat}) ) * sin( radians( lat ) ) ) <![CDATA[  <  ]]> #{range}/1000;
+	</select>
+	
+	<select id="getPark" parameterType="String" resultType="ParkDto">
+		select *
+		from parks
+		where 6371 * acos( cos( radians(#{lat}) ) * cos( radians( lat ) ) * cos( radians( lng )
+ - radians(#{lng}) ) + sin( radians(#{lat}) ) * sin( radians( lat ) ) ) <![CDATA[  <  ]]> #{range}/1000;
+	</select>
+	
 	<select id="getAptDeal" parameterType="String" resultType="houseDealDto">
 		select *
 		from housedeal
