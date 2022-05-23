@@ -28,33 +28,22 @@
       @change="searchApt"
       style="cursor: pointer"
     ></b-form-select>
-    <b-table-simple hover responsive class="mt-3">
-      <b-thead>
-        <b-tr>
-          <b-th colspan="3"><b>검색 순위 TOP 3</b></b-th>
-        </b-tr>
-      </b-thead>
-      <b-tbody>
-        <hot-place-item
-          v-for="(hotplace, index) in hotplaces"
-          :key="index"
-          :index="index"
-          v-bind="hotplace"
-        />
-      </b-tbody>
-    </b-table-simple>
+    <search-ranking />
+    <search-ranking-by-gender />
   </b-row>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import HotPlaceItem from "./HotPlaceItem.vue";
+import SearchRanking from "@/components/house/sideBar/ranking/SearchRanking.vue";
+import SearchRankingByGender from "@/components/house/sideBar/ranking/SearchRankingByGender.vue";
 
 const houseStore = "houseStore";
 const searchStore = "searchStore";
+const memberStore = "memberStore";
 
 export default {
-  components: { HotPlaceItem },
+  components: { SearchRanking, SearchRankingByGender },
   name: "HouseSearchBar",
   data() {
     return {
@@ -66,11 +55,13 @@ export default {
   computed: {
     ...mapState(houseStore, ["sidos", "guguns", "dongs", "houses"]),
     ...mapState(searchStore, ["hotplaces"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   created() {
     this.clearSidoList();
     this.getSido();
   },
+  updated() {},
   methods: {
     ...mapActions(houseStore, [
       "getSido",
@@ -81,6 +72,7 @@ export default {
       "clearGugunList",
       "clearDongList",
     ]),
+    ...mapActions(searchStore, ["search"]),
 
     gugunList() {
       // console.log(this.sidoCode);
@@ -96,7 +88,14 @@ export default {
     },
     async searchApt() {
       // console.log(this.dongCode);
-      if (this.dongCode) this.getHouseList(this.dongCode);
+      if (this.dongCode) {
+        this.getHouseList(this.dongCode);
+        let searchInfo = {
+          id: this.userInfo.id,
+          dongCode: this.dongCode,
+        };
+        this.search(searchInfo);
+      }
     },
   },
 };
