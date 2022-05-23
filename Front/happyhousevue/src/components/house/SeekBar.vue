@@ -88,7 +88,7 @@ export default {
           Math.round((leftVal / parentElmnt.clientWidth) * 1000) + "M";
         // this.set(Math.round((leftVal / parentElmnt.clientWidth) * 1000));
         eventBus.$emit(
-          "change",
+          "rangeChange",
           Math.round((leftVal / parentElmnt.clientWidth) * 1000),
         );
         elmnt.style.left = leftVal + "px";
@@ -102,9 +102,6 @@ export default {
         document.removeEventListener("touchmove", elementDrag);
       }
     },
-    set(input) {
-      this.setRange(input);
-    },
   },
   mounted() {
     this.dragElement(document.getElementById("circle"), this.range);
@@ -112,8 +109,8 @@ export default {
   created() {
     // this.displayMarkers(this.markerPositions);
 
-    eventBus.$on("change", (data) => {
-      this.set(data);
+    eventBus.$on("rangeChange", (data) => {
+      this.setRange(data);
     });
   },
 };
