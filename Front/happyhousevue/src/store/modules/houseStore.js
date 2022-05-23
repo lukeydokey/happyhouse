@@ -21,7 +21,6 @@ const houseStore = {
     range: 0,
     deals: [],
   },
-
   getters: {
     checkMarkersLenght: function (state) {
       return state.markers.length;
@@ -30,7 +29,6 @@ const houseStore = {
       return state.house;
     },
   },
-
   mutations: {
     SET_SIDO_LIST(state, sidos) {
       sidos.forEach((sido) => {
@@ -81,7 +79,6 @@ const houseStore = {
     },
     SET_HOUSE_RECENT_INFO(state, houseRecentInfo) {
       state.houseRecentInfo.aptCode = houseRecentInfo[0].aptCode;
-      console.log(houseRecentInfo);
       houseRecentInfo.forEach((info) => {
         if (info.dealYear === "2019") {
           state.houseRecentInfo.min[0] = info.min;
@@ -115,7 +112,6 @@ const houseStore = {
       state.house = null;
     },
   },
-
   actions: {
     getSido: ({ commit }) => {
       sidoList(
@@ -181,7 +177,6 @@ const houseStore = {
       );
     },
     async getHouseRecentInfo({ commit }, aptCode) {
-      await this.clearHouseRecentInfo();
       await getHouseRecentInfo(
         aptCode,
         (response) => {
@@ -192,10 +187,9 @@ const houseStore = {
         },
       );
     },
-    async clearHouseRecentInfo({ commit }) {
-      await commit("CLEAR_HOUSE_RECENT_INFO");
+    clearHouseRecentInfo: ({ commit }) => {
+      commit("CLEAR_HOUSE_RECENT_INFO");
     },
-
     getHouseDealList: ({ commit }, aptCode) => {
       const params = { aptCode: aptCode };
       houseDealList(

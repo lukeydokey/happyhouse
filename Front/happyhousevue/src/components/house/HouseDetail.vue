@@ -15,6 +15,12 @@ const houseStore = "houseStore";
 export default {
   components: { DealTable, DealChart },
   name: "HouseDetail",
+  data() {
+    return {
+      min: [0, 0, 0, 0],
+      max: [0, 0, 0, 0],
+    };
+  },
   computed: {
     ...mapState(houseStore, ["house", "houseRecentInfo", "deals"]),
     // house() {
@@ -27,23 +33,25 @@ export default {
           {
             label: "min",
             backgroundColor: "#99CC00",
-            data: this.houseRecentInfo.min,
+            data: this.min,
           },
           {
             label: "max",
             backgroundColor: "#99EEFF",
-            data: this.houseRecentInfo.max,
+            data: this.max,
           },
         ],
       };
     },
   },
   async created() {
+    await this.clearHouseRecentInfo();
     await this.getHouseRecentInfo(this.house.aptCode);
-    console.log(this.houseRecentInfo.min + "created");
+    this.min = this.houseRecentInfo.min;
+    this.max = this.houseRecentInfo.max;
   },
   methods: {
-    ...mapActions(houseStore, ["getHouseRecentInfo"]),
+    ...mapActions(houseStore, ["getHouseRecentInfo", "clearHouseRecentInfo"]),
   },
   filters: {
     price(value) {
