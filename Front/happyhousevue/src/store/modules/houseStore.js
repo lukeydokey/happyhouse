@@ -111,6 +111,9 @@ const houseStore = {
     SET_RANGE(state, range) {
       state.range = range;
     },
+    SET_HOUSENULL(state) {
+      state.house = null;
+    },
   },
 
   actions: {
@@ -215,6 +218,9 @@ const houseStore = {
     },
     setRange: ({ commit }, range) => {
       commit("SET_RANGE", range);
+    },
+    setHouseNull: ({ commit }) => {
+      commit("SET_HOUSENULL");
     },
   },
 };
