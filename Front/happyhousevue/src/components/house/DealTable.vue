@@ -15,15 +15,16 @@ export default {
       // Note 'isActive' is left out and will not appear in the rendered table
       fields: [
         {
-          key: "area",
-          label: "평수",
-          sortable: true,
-        },
-        {
           key: "floor",
           label: "층수",
           sortable: false,
         },
+        {
+          key: "area",
+          label: "평수",
+          sortable: true,
+        },
+
         {
           key: "dealAmount",
           label: "거래가",
