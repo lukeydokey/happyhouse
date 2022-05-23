@@ -49,11 +49,12 @@ export default {
     house: Object,
   },
   methods: {
-    ...mapActions(houseStore, ["detailHouse"]),
+    ...mapActions(houseStore, ["detailHouse", "getHouseDealList"]),
     selectHouse() {
       // console.log("listRow : ", this.house);
       // this.$store.dispatch("getHouse", this.house);
       this.detailHouse(this.house);
+      this.getHouseDealList(this.house.aptCode);
     },
     colorChange(flag) {
       this.isColor = flag;

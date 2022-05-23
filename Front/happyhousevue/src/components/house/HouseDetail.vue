@@ -1,6 +1,6 @@
 <template>
   <b-container v-if="house" class="bv-example-row">
-    <deal-table class="mt-3" />
+    <deal-table class="mt-3" :deals="this.deals" />
   </b-container>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   components: { DealTable },
   name: "HouseDetail",
   computed: {
-    ...mapState(houseStore, ["house"]),
+    ...mapState(houseStore, ["house", "deals"]),
     // house() {
     //   return this.$store.state.house;
     // },

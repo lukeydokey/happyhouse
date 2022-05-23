@@ -1,4 +1,10 @@
-import { sidoList, gugunList, dongList, houseList } from "@/api/house.js";
+import {
+  sidoList,
+  gugunList,
+  dongList,
+  houseList,
+  houseDealList,
+} from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
 const houseStore = {
@@ -11,6 +17,7 @@ const houseStore = {
     house: null,
     markers: [],
     range: 0,
+    deals: [],
   },
 
   getters: {
@@ -58,6 +65,11 @@ const houseStore = {
       // console.log(houses);
       state.houses = houses;
       eventBus.$emit("apartUpdated", "apartUpdated");
+    },
+    SET_HOUSEDEAL_LIST(state, deals) {
+      // console.log(houses);
+      state.deals = deals.data;
+      eventBus.$emit("dealsUpdated", deals);
     },
     SET_DETAIL_HOUSE(state, house) {
       // console.log("Mutations", house);
@@ -131,6 +143,18 @@ const houseStore = {
         params,
         (response) => {
           commit("SET_HOUSE_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    getHouseDealList: ({ commit }, aptCode) => {
+      const params = { aptCode: aptCode };
+      houseDealList(
+        params,
+        (response) => {
+          commit("SET_HOUSEDEAL_LIST", response);
         },
         (error) => {
           console.log(error);
