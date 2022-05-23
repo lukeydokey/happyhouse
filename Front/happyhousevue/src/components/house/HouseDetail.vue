@@ -1,11 +1,7 @@
 <template>
   <b-container v-if="house" class="bv-example-row">
-<<<<<<< HEAD
     <deal-table class="mt-3" :deals="this.deals" />
-=======
     <deal-chart class="mt-3" />
-    <deal-table class="mt-3" />
->>>>>>> 51becb398267fbe7d430c0497850a4f3b52bb48c
   </b-container>
 </template>
 
