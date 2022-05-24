@@ -96,6 +96,9 @@ const houseStore = {
 
       eventBus.$emit("detailApart", house);
     },
+    CLEAR_DETAIL_HOUSE(state) {
+      state.house = null;
+    },
     SET_HOUSE_RECENT_INFO(state, houseRecentInfo) {
       state.houseRecentInfo.aptCode = houseRecentInfo[0].aptCode;
       houseRecentInfo.forEach((info) => {
@@ -260,6 +263,9 @@ const houseStore = {
       // 나중에 house.일련번호를 이용하여 API 호출
       // console.log(commit, house);
       commit("SET_DETAIL_HOUSE", house);
+    },
+    clearHouse: ({ commit }) => {
+      commit("CLEAR_DETAIL_HOUSE");
     },
     setRange: ({ commit }, range) => {
       commit("SET_RANGE", range);

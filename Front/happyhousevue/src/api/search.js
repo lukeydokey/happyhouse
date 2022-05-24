@@ -14,4 +14,8 @@ function search(searchInfo, success, fail) {
   api.post(`/search`, searchInfo).then(success).catch(fail);
 }
 
-export { getHotPlaces, search, getHotPlacesByGender };
+function getDongsByDongName(dongName, success, fail) {
+  api.get(`/search/${dongName}`).then(success).catch(fail);
+}
+
+export { getHotPlaces, search, getHotPlacesByGender, getDongsByDongName };

@@ -1,4 +1,9 @@
-import { getHotPlaces, search, getHotPlacesByGender } from "@/api/search.js";
+import {
+  getHotPlaces,
+  search,
+  getHotPlacesByGender,
+  getDongsByDongName,
+} from "@/api/search.js";
 
 const searchStore = {
   namespaced: true,
@@ -6,6 +11,7 @@ const searchStore = {
     hotplaces: [],
     hotplacesbygender: [],
     searchLog: [],
+    searcheddongs: [],
   },
   getters: {},
   mutations: {
@@ -27,6 +33,14 @@ const searchStore = {
     },
     SET_SEARCH_LOG: (state, searchInfo) => {
       state.searchLog.push(searchInfo);
+    },
+    SET_SEARCHED_DONGS: (state, searcheddongs) => {
+      searcheddongs.forEach((dong) => {
+        state.searcheddongs.push(dong);
+      });
+    },
+    CLEAR_SEARCHED_DONGS: (state) => {
+      state.searcheddongs = [];
     },
   },
   actions: {
@@ -62,6 +76,18 @@ const searchStore = {
         searchInfo,
         (response) => {
           if (response.data === "success") commit("SET_SEARCH_LOG", searchInfo);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    getDongsByDongName({ commit }, dongName) {
+      commit("CLEAR_SEARCHED_DONGS");
+      getDongsByDongName(
+        dongName,
+        (response) => {
+          commit("SET_SEARCHED_DONGS", response.data);
         },
         (error) => {
           console.log(error);
