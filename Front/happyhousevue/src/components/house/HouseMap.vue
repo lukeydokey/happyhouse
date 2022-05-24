@@ -69,6 +69,7 @@ export default {
       parkPositions: [],
       markers: [],
       schoolmarkers: [],
+      parkmarkers: [],
       // 화면에 표시되어있는 marker들
     };
   },
@@ -141,22 +142,42 @@ export default {
         });
       }
       var imgSrc = require("@/assets/map/apart.png");
-      var imgSize = new kakao.maps.Size(42, 63);
+      var imgSize = [42, 63];
       this.displayMarkers(this.markerPositions, imgSrc, imgSize);
     },
     updateArea(areas) {
-      console.log("업데이트진입");
       this.schoolPositions = [];
+      this.parkPositions = [];
       for (var step = 0; step < areas.length; step++) {
-        this.schoolPositions.push({
-          title: areas[step].name,
-          latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
-          content: areas[step].address,
-        });
+        if (areas[step].type == "학교") {
+          this.schoolPositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
+        } else if (areas[step].type == "공원") {
+          this.parkPositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
+        }
       }
-      var imgSrc = require("@/assets/map/school.png");
-      var imgSize = new kakao.maps.Size(36, 54);
-      this.displayAreas(this.schoolPositions, imgSrc, imgSize);
+      var schoolIcon = require("@/assets/map/school.png");
+      var parkIcon = require("@/assets/map/park.png");
+      var imgSize = [40, 40];
+      this.displayAreas(
+        this.schoolPositions,
+        this.schoolmarkers,
+        schoolIcon,
+        imgSize,
+      );
+      this.displayAreas(
+        this.parkPositions,
+        this.parkmarkers,
+        parkIcon,
+        imgSize,
+      );
     },
     moveMap(selected) {
       var moveLatLon = new kakao.maps.LatLng(selected.lat, selected.lng);
@@ -250,7 +271,8 @@ export default {
         this.drawingLine.setMap(null);
       }
     },
-    displayMarkers(positions, imgSrc, imgSize) {
+    displayMarkers(positions, imgSrc, OriginSize) {
+      const imgSize = new kakao.maps.Size(OriginSize[0], OriginSize[1]);
       const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
@@ -285,13 +307,19 @@ export default {
         kakao.maps.event.addListener(
           marker,
           "mouseover",
-          this.makeOverListener(this.map, marker, infowindow),
+          this.makeOverListener(
+            this.map,
+            marker,
+            infowindow,
+            imgSrc,
+            OriginSize,
+          ),
           // overlay.setMap(this.map);
         );
         kakao.maps.event.addListener(
           marker,
           "mouseout",
-          this.makeOutListener(this.map, marker, infowindow),
+          this.makeOutListener(this.map, marker, infowindow, imgSrc, imgSize),
         );
 
         this.markers.push(marker);
@@ -308,28 +336,29 @@ export default {
         this.moveMap(this.houses.data[0]);
       }
     },
-    makeOverListener(map, marker, infowindow) {
+    makeOverListener(map, marker, infowindow, imgSrc, originSize) {
       return function () {
-        const imgSrc = require("@/assets/map/apart.png");
-        const imgSize = new kakao.maps.Size(48, 70);
+        const imgSize = new kakao.maps.Size(
+          originSize[0] * 1.4,
+          originSize[1] * 1.4,
+        );
         const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
         marker.setImage(markerImage);
         infowindow.open(map, marker);
       };
     },
-    makeOutListener(map, marker, infowindow) {
+    makeOutListener(map, marker, infowindow, imgSrc, imgSize) {
       return function () {
-        const imgSrc = require("@/assets/map/apart.png");
-        const imgSize = new kakao.maps.Size(42, 63);
         const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
         marker.setImage(markerImage);
         infowindow.close();
       };
     },
-    displayAreas(positions, imgSrc, imgSize) {
+    displayAreas(positions, markers, imgSrc, OriginSize) {
+      const imgSize = new kakao.maps.Size(OriginSize[0], OriginSize[1]);
       const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
-      if (this.schoolmarkers.length > 0) {
-        this.schoolmarkers.forEach((item) => {
+      if (markers.length > 0) {
+        markers.forEach((item) => {
           item.setMap(null);
         });
       }
@@ -361,16 +390,22 @@ export default {
         kakao.maps.event.addListener(
           marker,
           "mouseover",
-          this.makeOverListener(this.map, marker, infowindow),
+          this.makeOverListener(
+            this.map,
+            marker,
+            infowindow,
+            imgSrc,
+            OriginSize,
+          ),
           // overlay.setMap(this.map);
         );
         kakao.maps.event.addListener(
           marker,
           "mouseout",
-          this.makeOutListener(this.map, marker, infowindow),
+          this.makeOutListener(this.map, marker, infowindow, imgSrc, imgSize),
         );
 
-        this.schoolmarkers.push(marker);
+        markers.push(marker);
       });
     },
   },
@@ -409,6 +444,14 @@ export default {
       console.log(data);
       this.moveMap(this.house);
       this.drawCircle(data);
+      if (this.house) {
+        console.log(this.house);
+        this.getAreaList({
+          lat: this.house.lat,
+          lng: this.house.lng,
+          range: this.range,
+        });
+      }
     });
     eventBus.$on("click", (data) => {
       this.clickMove(data);
@@ -419,6 +462,7 @@ export default {
     eventBus.$on("rangeChanged", (data) => {
       console.log(data);
       if (this.house) {
+        console.log(this.house);
         this.getAreaList({
           lat: this.house.lat,
           lng: this.house.lng,
@@ -427,7 +471,6 @@ export default {
       }
     });
     eventBus.$on("areaUpdated", (data) => {
-      console.log("이벤트버스");
       this.updateArea(data);
     });
     // eventBus.$on("dragMove", (data) => {
