@@ -1,43 +1,22 @@
 <template>
   <div class="fluid-container">
-    <b-sidebar
-      id="sidebar-right"
-      icon="house-fill"
-      title="HappyHouse"
-      right
-      shadow
-      bg-color="#F5F5F5"
-    >
-      <b-card bg-variant="first" class="fontsans">
-        <h4 class="small-title">위치 검색</h4>
-        <b-row>
-          <b-col>
-            <house-search-bar></house-search-bar>
-          </b-col>
-        </b-row>
-        <h4 class="small-title">아파트 목록</h4>
-        <b-row>
-          <house-list />
-        </b-row>
-      </b-card>
-    </b-sidebar>
+    <house-side-bar />
     <house-map style="width: 100%; height: 100%"> </house-map>
   </div>
 </template>
+
 <script>
-import HouseSearchBar from "@/components/house/sideBar/HouseSearchBar.vue";
-import HouseList from "@/components/house/sideBar/HouseList.vue";
 import HouseMap from "@/components/house/HouseMap.vue";
 import { mapActions, mapState } from "vuex";
+import HouseSideBar from "@/components/house/sideBar/HouseSideBar.vue";
 const houseStore = "houseStore";
 const searchStore = "searchStore";
 const memberStore = "memberStore";
 export default {
   name: "HouseView",
   components: {
-    HouseSearchBar,
-    HouseList,
     HouseMap,
+    HouseSideBar,
   },
   computed: {
     ...mapState(memberStore, ["userInfo"]),

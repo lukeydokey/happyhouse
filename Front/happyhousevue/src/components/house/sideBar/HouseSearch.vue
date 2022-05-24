@@ -1,33 +1,41 @@
 <template>
-  <b-row class="ml-1 mr-1 mt-2 mb-4 text-center">
-    <!-- <b-col class="sm-3">
-      <b-form-input
-        v-model.trim="dongCode"
-        placeholder="동코드 입력...(예 : 11110)"
-        @keypress.enter="sendKeyword"
-      ></b-form-input>
-    </b-col>
-    <b-col class="sm-3" align="left">
-      <b-button variant="outline-primary" @click="sendKeyword">검색</b-button>
-    </b-col> -->
-    <b-form-select
-      v-model="sidoCode"
-      :options="sidos"
-      @change="gugunList"
-      style="cursor: pointer"
-    ></b-form-select>
-    <b-form-select
-      v-model="gugunCode"
-      :options="guguns"
-      @change="dongList"
-      style="cursor: pointer"
-    ></b-form-select>
-    <b-form-select
-      v-model="dongCode"
-      :options="dongs"
-      @change="searchApt"
-      style="cursor: pointer"
-    ></b-form-select>
+  <b-row class="ml-1 mr-1 mt-2 text-center">
+    <b-form-group v-if="type === 'dong'">
+      <b-form-select
+        v-model="sidoCode"
+        :options="sidos"
+        @change="gugunList"
+        style="cursor: pointer"
+      ></b-form-select>
+      <b-form-select
+        v-model="gugunCode"
+        :options="guguns"
+        @change="dongList"
+        style="cursor: pointer"
+      ></b-form-select>
+      <b-form-select
+        v-model="dongCode"
+        :options="dongs"
+        @change="searchApt"
+        style="cursor: pointer"
+      ></b-form-select>
+    </b-form-group>
+    <b-form-group v-else>
+      <b-row>
+        <b-col cols="9" class="mr-n3">
+          <b-form-input
+            v-model.trim="dongCode"
+            :placeholder="holder"
+            @keypress.enter="sendKeyword"
+          ></b-form-input>
+        </b-col>
+        <b-col>
+          <b-button variant="outline-primary" @click="sendKeyword"
+            >검색</b-button
+          >
+        </b-col>
+      </b-row>
+    </b-form-group>
   </b-row>
 </template>
 
@@ -47,14 +55,24 @@ export default {
       dongCode: null,
     };
   },
+  props: {
+    type: String,
+  },
   computed: {
     ...mapState(houseStore, ["sidos", "guguns", "dongs", "houses"]),
     ...mapState(searchStore, ["hotplaces"]),
     ...mapState(memberStore, ["userInfo"]),
+    holder() {
+      return this.type === "dongname"
+        ? "동이름 검색 (예 : 사직동)"
+        : "좌표 검색 (예 : 31,132)";
+    },
   },
   created() {
-    this.clearSidoList();
-    this.getSido();
+    if (this.type === "dong") {
+      this.clearSidoList();
+      this.getSido();
+    }
   },
   updated() {},
   methods: {
