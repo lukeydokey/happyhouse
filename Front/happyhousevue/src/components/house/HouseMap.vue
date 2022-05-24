@@ -174,7 +174,7 @@ export default {
       }
       var schoolIcon = require("@/assets/map/school.png");
       var parkIcon = require("@/assets/map/park.png");
-      var subwayIcon = require("@/assets/map/park.png");
+      var subwayIcon = require("@/assets/map/subway.png");
       var imgSize = [40, 40];
       this.displayAreas(
         this.schoolPositions,
