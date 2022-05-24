@@ -94,6 +94,9 @@ const searchStore = {
         },
       );
     },
+    clearSearchedDongs({ commit }) {
+      commit("CLEAR_SEARCHED_DONGS");
+    },
   },
 };
 
