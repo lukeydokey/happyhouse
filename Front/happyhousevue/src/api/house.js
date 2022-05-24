@@ -28,6 +28,9 @@ function houseDealList(params, success, fail) {
 function SchoolList(params, success, fail) {
   api.get(`/map/school`, { params: params }).then(success).catch(fail);
 }
+function ParkList(params, success, fail) {
+  api.get(`/map/park`, { params: params }).then(success).catch(fail);
+}
 
 export {
   sidoList,
@@ -37,4 +40,5 @@ export {
   getHouseRecentInfo,
   houseDealList,
   SchoolList,
+  ParkList,
 };

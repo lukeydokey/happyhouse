@@ -95,6 +95,7 @@ export default {
       }
 
       function closeDragElement() {
+        eventBus.$emit("rangeChanged", "rangeChanged");
         elmnt.classList.remove("s_on");
         document.onmouseup = null;
         document.removeEventListener("touchend", closeDragElement);

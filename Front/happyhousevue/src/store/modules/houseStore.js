@@ -6,6 +6,7 @@ import {
   getHouseRecentInfo,
   houseDealList,
   SchoolList,
+  ParkList,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
@@ -22,6 +23,7 @@ const houseStore = {
     range: 0,
     deals: [],
     schools: [],
+    parks: [],
     isSearching: false,
   },
   getters: {
@@ -81,6 +83,10 @@ const houseStore = {
       state.schools = schools.data;
       eventBus.$emit("schoolsUpdated", schools);
     },
+    SET_PARK_LIST(state, parks) {
+      state.parks = parks.data;
+      eventBus.$emit("parksUpdated", parks);
+    },
     SET_DETAIL_HOUSE(state, house) {
       // console.log("Mutations", house);
       state.house = house;
@@ -117,7 +123,6 @@ const houseStore = {
     },
     SET_RANGE(state, range) {
       state.range = range;
-      eventBus.$emit("rangeChanged", range);
     },
     SET_HOUSENULL(state) {
       state.house = null;
@@ -223,6 +228,19 @@ const houseStore = {
         (response) => {
           console.log(response);
           commit("SET_SCHOOL_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    getParkList: ({ commit }, { lat, lng, range }) => {
+      const params = { lat, lng, range };
+      ParkList(
+        params,
+        (response) => {
+          console.log(response);
+          commit("SET_PARK_LIST", response);
         },
         (error) => {
           console.log(error);
