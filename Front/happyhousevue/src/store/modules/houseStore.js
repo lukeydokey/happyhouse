@@ -27,16 +27,43 @@ const houseStore = {
     parks: [],
     areas: [],
     isSearching: false,
+    selectedArea: null,
+    curAddress: null,
   },
   getters: {
+    getCurAddress: function (state) {
+      return state.address;
+    },
     checkMarkersLenght: function (state) {
       return state.markers.length;
     },
     getSelected: function (state) {
       return state.house;
     },
+    getSelectedArea: function (state) {
+      return state.selectedArea;
+    },
     getRange: function (state) {
       return state.range;
+    },
+    getArea: function (state) {
+      var school = [];
+      var park = [];
+      var subway = [];
+      for (var i = 0; i < state.areas.length; i++) {
+        if (state.areas[i].type == "학교") {
+          school.push(state.areas[i]);
+        } else if (state.areas[i].type == "공원") {
+          park.push(state.areas[i]);
+        } else if (state.areas[i].type == "지하철") {
+          subway.push(state.areas[i]);
+        }
+      }
+      return [
+        { class: "학교", array: school },
+        { class: "공원", array: park },
+        { class: "지하철", array: subway },
+      ];
     },
   },
   mutations: {
@@ -142,6 +169,12 @@ const houseStore = {
     },
     SET_IS_SEARCHING(state, isSearching) {
       state.isSearching = isSearching;
+    },
+    SET_SELECTEDAREA(state, area) {
+      state.selectedArea = area;
+    },
+    SET_CURADDRESS(state, address) {
+      state.curAddress = address;
     },
   },
   actions: {
@@ -296,6 +329,12 @@ const houseStore = {
     },
     setIsSearching: ({ commit }, isSearching) => {
       commit("SET_IS_SEARCHING", isSearching);
+    },
+    setSelectedArea: ({ commit }, area) => {
+      commit("SET_SELECTEDAREA", area);
+    },
+    setCurAddress: ({ commit }, address) => {
+      commit("SET_CURADDRESS", address);
     },
   },
 };

@@ -22,7 +22,17 @@
         ></b-tab>
         <b-tab title="좌표"
           ><b-row>
-            <b-col><house-search :type="`latlng`" /></b-col></b-row
+            <b-col
+              ><h5>
+                <b>{{ this.curAddress }}</b>
+                <div style="display: flex; align-items: center">
+                  주변 검색 중
+                  <b-spinner
+                    variant="primary"
+                    type="grow"
+                    label="Spinning"
+                  ></b-spinner>
+                </div></h5></b-col></b-row
         ></b-tab>
       </b-tabs>
 
@@ -37,11 +47,20 @@
 <script>
 import HouseSearch from "@/components/house/sideBar/HouseSearch.vue";
 import HouseList from "@/components/house/sideBar/HouseList.vue";
+
+import { mapGetters, mapState } from "vuex";
+const houseStore = "houseStore";
 export default {
   name: "HouseSideBar",
   components: {
     HouseSearch,
     HouseList,
+  },
+  methods: {
+    ...mapGetters(houseStore, ["getCurAddress"]),
+  },
+  computed: {
+    ...mapState(houseStore, ["curAddress"]),
   },
 };
 </script>

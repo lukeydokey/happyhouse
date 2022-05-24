@@ -62,6 +62,7 @@ export default {
         fillOpacity: 0.2, // 채우기 불투명도입니다
       }),
       map: null,
+      geocoder: null,
       markerPositions: [],
       schoolPositions: [],
       parkPositions: [],
@@ -80,6 +81,7 @@ export default {
       "getSchoolList",
       "getParkList",
       "getAreaList",
+      "setCurAddress",
     ]),
     setnull() {
       this.setHouseNull();
@@ -92,6 +94,7 @@ export default {
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+      this.geocoder = new kakao.maps.services.Geocoder();
       kakao.maps.event.addListener(this.map, "click", function (mouseEvent) {
         // 클릭한 위도, 경도 정보를 가져옵니다
         var latlng = mouseEvent.latLng;
@@ -113,8 +116,12 @@ export default {
       //   // 지도의  레벨을 얻어옵니다
       //   eventBus.$emit("centerChange", "centerChange");
       // });
-      kakao.maps.event.addListener(this.map, "bounds_changed", function () {
+      // kakao.maps.event.addListener(this.map, "bounds_changed", function () {
+      //   eventBus.$emit("bounds_changed", "bounds_changed");
+      // });
+      kakao.maps.event.addListener(this.map, "idle", function () {
         eventBus.$emit("bounds_changed", "bounds_changed");
+        // searchAddrFromCoords(map.getCenter(), displayCenterInfo);
       });
       // this.displayMarkers(this.markerPositions);
     },
@@ -246,6 +253,7 @@ export default {
         "이고 <br>";
       message += "북동쪽 위도, 경도는  " + neLatlng.toString() + "입니다 </p>";
 
+      this.searchAddrFromCoords(this.map.getCenter(), this.displayCenterInfo);
       console.log(message);
     },
     drawCircle(data) {
@@ -418,11 +426,24 @@ export default {
         markers.push(marker);
       });
     },
+    searchAddrFromCoords(coords, callback) {
+      // 좌표로 행정동 주소 정보를 요청합니다
+      this.geocoder.coord2RegionCode(
+        coords.getLng(),
+        coords.getLat(),
+        callback,
+      );
+    },
+    displayCenterInfo(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        this.setCurAddress(result[1].address_name);
+      }
+    },
   },
   mounted() {
     if (!window.kakao || !window.kakao.maps) {
       const script = document.createElement("script");
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8c0ee03dd52a78f74e077c0615724e49`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=8c0ee03dd52a78f74e077c0615724e49&libraries=services`;
 
       script.addEventListener("load", () => {
         kakao.maps.load(this.initMap);

@@ -4,10 +4,14 @@
     class="bv-example-row"
     style="padding: 0"
   >
+    <!-- <li v-for="(area, index) in this.getArea" :key="index">
+      {{ area }}
+      2
+    </li> -->
     <area-list-item
-      v-for="(house, index) in areas"
+      v-for="(area, index) in this.getArea"
       :key="index"
-      :house="house"
+      :area="area"
     />
   </b-container>
   <b-container v-else class="bv-example-row mt-3">
@@ -23,7 +27,7 @@
 
 <script>
 import AreaListItem from "@/components/house/AreaListItem.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 const houseStore = "houseStore";
 
@@ -37,6 +41,7 @@ export default {
   },
   computed: {
     ...mapState(houseStore, ["houses", "areas"]),
+    ...mapGetters(houseStore, ["getArea"]),
     // houses() {
     //   return this.$store.state.houses;
     // },

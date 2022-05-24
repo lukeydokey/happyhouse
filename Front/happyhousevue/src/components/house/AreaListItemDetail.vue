@@ -1,42 +1,29 @@
 <template>
-  <div v-if="area.array.length != 0">
-    <b-row
-      @mouseover="colorChange(true)"
-      @mouseout="colorChange(false)"
-      @click="select(area.class)"
-      :class="{
-        'mouse-over-bgcolor': isColor,
-      }"
-      style="width: 100%; margin: 0; cursor: pointer"
-    >
-      <b-col>
-        <div style="float: left">{{ area.class }}</div>
-        <div style="float: right">{{ area.array.length }} 건</div>
-      </b-col>
-    </b-row>
-    <div v-if="area.class == getSelectedArea">
-      <area-list-item-detail
-        v-for="(object, index) in this.area.array"
-        :key="index"
-        :object="object"
-      />
-    </div>
-
-    <hr style="margin: 0; width: 100%" />
-  </div>
+  <b-row
+    @mouseover="colorChange(true)"
+    @mouseout="colorChange(false)"
+    :class="{
+      'mouse-over-bgcolor': isColor,
+    }"
+    style="width: 100%; margin: 0; cursor: pointer"
+  >
+    <b-col class="ml-2 mr-2">
+      <div style="float: left">{{ object.name }}</div>
+      <div style="float: right">{{ distance(object) }} M</div>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import AreaListItemDetail from "@/components/house/AreaListItemDetail.vue";
 
 const houseStore = "houseStore";
 
 export default {
   name: "HouseListItem",
-  components: {
-    AreaListItemDetail,
-  },
+  // computed: {
+  //   ...mapState(houseStore, ["house"]),
+  // },
   data() {
     return {
       isColor: false,
@@ -44,10 +31,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(houseStore, ["getSelected", "getSelectedArea"]),
+    ...mapGetters(houseStore, ["getSelected", "selectedArea"]),
   },
   props: {
-    area: Object,
+    object: Object,
   },
   methods: {
     ...mapActions(houseStore, [
@@ -75,6 +62,24 @@ export default {
       } else {
         this.setSelectedArea(selected);
       }
+    },
+    radians(degrees) {
+      return (degrees * Math.PI) / 180;
+    },
+    distance(object) {
+      console.log(object);
+      return (
+        6371000 *
+        Math.acos(
+          Math.cos(this.radians(object.lat)) *
+            Math.cos(this.radians(this.getSelected.lat)) *
+            Math.cos(
+              this.radians(this.getSelected.lng) - this.radians(object.lng),
+            ) +
+            Math.sin(this.radians(object.lat)) *
+              Math.sin(this.radians(this.getSelected.lat)),
+        )
+      ).toFixed(0);
     },
   },
 };

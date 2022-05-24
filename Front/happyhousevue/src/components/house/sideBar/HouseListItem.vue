@@ -51,6 +51,7 @@ export default {
       "detailHouse",
       "getHouseDealList",
       "clearHouse",
+      "setSelectedArea",
     ]),
     selectHouse() {
       // console.log("listRow : ", this.house);
@@ -61,6 +62,8 @@ export default {
         this.detailHouse(this.house);
         this.getHouseDealList(this.house.aptCode);
       }
+
+      this.setSelectedArea(null);
     },
     colorChange(flag) {
       this.isColor = flag;
