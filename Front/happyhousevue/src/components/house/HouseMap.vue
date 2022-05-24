@@ -26,9 +26,7 @@
         맵에 핀이 안 뜨면 상단바의 홈 버튼을 눌렀다가 아파트 버튼을 누르면
         됩니다.
       </strong>
-      <b-button variant="primary" v-b-toggle.sidebar-right @click="clearHouses"
-        >매물 검색</b-button
-      >
+      <b-button variant="primary" v-b-toggle.sidebar-right>매물 검색</b-button>
     </b-card>
   </div>
 </template>
@@ -82,13 +80,9 @@ export default {
       "getSchoolList",
       "getParkList",
       "getAreaList",
-      "clearHouseList",
     ]),
     setnull() {
       this.setHouseNull();
-    },
-    clearHouses() {
-      this.clearHouseList();
     },
     initMap() {
       console.log();

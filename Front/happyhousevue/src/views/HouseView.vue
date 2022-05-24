@@ -24,6 +24,8 @@ export default {
   created() {
     this.clearHotPlaces();
     this.clearHotPlacesByGender();
+    this.clearSearchedDongs();
+    this.clearHouseList();
     this.setIsSearching(true);
     this.getHotPlaces();
     this.getHotPlacesByGender(this.userInfo.gender);
@@ -32,12 +34,13 @@ export default {
     this.setIsSearching(false);
   },
   methods: {
-    ...mapActions(houseStore, ["setIsSearching"]),
+    ...mapActions(houseStore, ["setIsSearching", "clearHouseList"]),
     ...mapActions(searchStore, [
       "getHotPlaces",
       "clearHotPlaces",
       "getHotPlacesByGender",
       "clearHotPlacesByGender",
+      "clearSearchedDongs",
     ]),
   },
 };

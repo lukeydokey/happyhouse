@@ -55,7 +55,7 @@ export default {
     selectHouse() {
       // console.log("listRow : ", this.house);
       // this.$store.dispatch("getHouse", this.house);
-      if (this.getSelected) {
+      if (this.getSelected && this.getSelected.aptCode === this.house.aptCode) {
         this.clearHouse();
       } else {
         this.detailHouse(this.house);
