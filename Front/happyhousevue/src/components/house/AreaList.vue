@@ -4,8 +4,8 @@
     class="bv-example-row"
     style="padding: 0"
   >
-    <house-list-item
-      v-for="(house, index) in houses.data"
+    <area-list-item
+      v-for="(house, index) in areas"
       :key="index"
       :house="house"
     />
@@ -22,21 +22,21 @@
 </template>
 
 <script>
-import HouseListItem from "@/components/house/sideBar/HouseListItem.vue";
+import AreaListItem from "@/components/house/AreaListItem.vue";
 import { mapState } from "vuex";
 
 const houseStore = "houseStore";
 
 export default {
-  name: "HouseList",
+  name: "AreaList",
   components: {
-    HouseListItem,
+    AreaListItem,
   },
   data() {
     return {};
   },
   computed: {
-    ...mapState(houseStore, ["houses"]),
+    ...mapState(houseStore, ["houses", "areas"]),
     // houses() {
     //   return this.$store.state.houses;
     // },
