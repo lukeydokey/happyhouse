@@ -41,9 +41,11 @@
 	
 	<!-- 동 이름으로 법정동 조회 -->
 	<select id="selectDongsbyDongName" parameterType="String" resultType="SearchInfoDto">
-		select dongCode, sidoName, gugunName, dongName 
-		from dongcode 
+		select d.dongCode, d.sidoName, d.gugunName, d.dongName 
+		from dongcode as d join houseinfo h
+		on d.dongCode = h.dongCode
 		where dongName like concat('%',#{dongName},'%')
+		group by d.dongCode
 	</select>
 	
 </mapper>
