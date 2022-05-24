@@ -67,7 +67,6 @@ export default {
       return (degrees * Math.PI) / 180;
     },
     distance(object) {
-      console.log(object);
       return (
         6371000 *
         Math.acos(
