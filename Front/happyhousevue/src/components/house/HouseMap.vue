@@ -46,21 +46,9 @@ export default {
   data() {
     return {
       centerPosition: null,
-      drawingLine: new kakao.maps.Polyline({
-        strokeWeight: 3, // 선의 두께입니다
-        strokeColor: "#00a0e9", // 선의 색깔입니다
-        strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-        strokeStyle: "solid", // 선의 스타일입니다
-      }),
+      drawingLine: null,
 
-      drawingCircle: new kakao.maps.Circle({
-        strokeWeight: 1, // 선의 두께입니다
-        strokeColor: "#00a0e9", // 선의 색깔입니다
-        strokeOpacity: 0.1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-        strokeStyle: "solid", // 선의 스타일입니다
-        fillColor: "#00a0e9", // 채우기 색깔입니다
-        fillOpacity: 0.2, // 채우기 불투명도입니다
-      }),
+      drawingCircle: null,
       map: null,
       geocoder: null,
       markerPositions: [],
@@ -87,7 +75,21 @@ export default {
       this.setHouseNull();
     },
     initMap() {
-      console.log();
+      this.drawingLine = new kakao.maps.Polyline({
+        strokeWeight: 3, // 선의 두께입니다
+        strokeColor: "#00a0e9", // 선의 색깔입니다
+        strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+        strokeStyle: "solid", // 선의 스타일입니다
+      });
+
+      this.drawingCircle = new kakao.maps.Circle({
+        strokeWeight: 1, // 선의 두께입니다
+        strokeColor: "#00a0e9", // 선의 색깔입니다
+        strokeOpacity: 0.1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+        strokeStyle: "solid", // 선의 스타일입니다
+        fillColor: "#00a0e9", // 채우기 색깔입니다
+        fillOpacity: 0.2, // 채우기 불투명도입니다
+      });
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(37.575869, 126.976859, 16),
