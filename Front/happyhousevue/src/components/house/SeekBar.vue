@@ -88,7 +88,7 @@ export default {
           Math.round((leftVal / parentElmnt.clientWidth) * 1000) + "M";
         // this.set(Math.round((leftVal / parentElmnt.clientWidth) * 1000));
         eventBus.$emit(
-          "change",
+          "rangeChange",
           Math.round((leftVal / parentElmnt.clientWidth) * 1000),
         );
         elmnt.style.left = leftVal + "px";
@@ -100,10 +100,8 @@ export default {
         document.removeEventListener("touchend", closeDragElement);
         document.onmousemove = null;
         document.removeEventListener("touchmove", elementDrag);
+        eventBus.$emit("rangeChanged", "rangeChanged");
       }
-    },
-    set(input) {
-      this.setRange(input);
     },
   },
   mounted() {
@@ -112,8 +110,8 @@ export default {
   created() {
     // this.displayMarkers(this.markerPositions);
 
-    eventBus.$on("change", (data) => {
-      this.set(data);
+    eventBus.$on("rangeChange", (data) => {
+      this.setRange(data);
     });
   },
 };
@@ -124,7 +122,7 @@ HTML CSS JSResult Skip Results Iframe EDIT ON .container {
   overflow: hidden;
 }
 .seek-bar {
-  margin: 50px auto 20px;
+  margin: 20px auto 20px;
   position: relative;
   width: calc(87%);
   height: 10px;

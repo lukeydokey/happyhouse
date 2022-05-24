@@ -88,7 +88,7 @@ export default {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
     ...mapState(houseStore, ["isSearching"]),
     navBarColor() {
-      return this.isSearching ? "dark" : "transparent";
+      return this.isSearching ? "light" : "transparent";
     },
   },
   methods: {

@@ -18,4 +18,31 @@ function houseList(params, success, fail) {
   api.get(`/map/apt`, { params: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, dongList, houseList };
+async function getHouseRecentInfo(aptCode, success, fail) {
+  await api.get(`/map/aptRecentInfo/${aptCode}`).then(success).catch(fail);
+}
+
+function houseDealList(params, success, fail) {
+  api.get(`/map/aptDeal`, { params: params }).then(success).catch(fail);
+}
+function SchoolList(params, success, fail) {
+  api.get(`/map/school`, { params: params }).then(success).catch(fail);
+}
+function ParkList(params, success, fail) {
+  api.get(`/map/park`, { params: params }).then(success).catch(fail);
+}
+function AreaList(params, success, fail) {
+  api.get(`/map/area`, { params: params }).then(success).catch(fail);
+}
+
+export {
+  sidoList,
+  gugunList,
+  dongList,
+  houseList,
+  getHouseRecentInfo,
+  houseDealList,
+  SchoolList,
+  ParkList,
+  AreaList,
+};

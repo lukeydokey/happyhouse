@@ -1,6 +1,16 @@
 <template>
   <div class="fluid-container" style="width: 140px; z-index: 3" id="map">
     <b-card
+      v-if="this.house"
+      style="width: 15vw; z-index: 4"
+      class="mb-2 float-left fontsans"
+    >
+      <house-area />
+      <b-button variant="secondary" @click="setnull" class="float-right"
+        >창 닫기</b-button
+      >
+    </b-card>
+    <b-card
       title="오늘의 정보"
       img-src="https://picsum.photos/600/300/?image=25"
       img-alt="Image"
@@ -9,6 +19,8 @@
       style="max-width: 20rem; z-index: 4"
       class="mb-2 float-right fontsans"
     >
+      <search-ranking />
+      <search-ranking-by-gender />
       <div>추천 정보/뉴스/웹 크롤링 내용이 들어갈 자리</div>
       <strong>
         맵에 핀이 안 뜨면 상단바의 홈 버튼을 눌렀다가 아파트 버튼을 누르면
@@ -23,37 +35,55 @@
 /*global kakao*/
 import { eventBus } from "@/main.js";
 import { mapState, mapActions } from "vuex";
+import HouseArea from "@/components/house/HouseArea.vue";
+import SearchRanking from "@/components/house/ranking/SearchRanking.vue";
+import SearchRankingByGender from "@/components/house/ranking/SearchRankingByGender.vue";
 
 const houseStore = "houseStore";
 
 export default {
+  components: { HouseArea, SearchRanking, SearchRankingByGender },
   data() {
     return {
+      centerPosition: null,
+      drawingLine: new kakao.maps.Polyline({
+        strokeWeight: 3, // 선의 두께입니다
+        strokeColor: "#00a0e9", // 선의 색깔입니다
+        strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+        strokeStyle: "solid", // 선의 스타일입니다
+      }),
+
+      drawingCircle: new kakao.maps.Circle({
+        strokeWeight: 1, // 선의 두께입니다
+        strokeColor: "#00a0e9", // 선의 색깔입니다
+        strokeOpacity: 0.1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+        strokeStyle: "solid", // 선의 스타일입니다
+        fillColor: "#00a0e9", // 채우기 색깔입니다
+        fillOpacity: 0.2, // 채우기 불투명도입니다
+      }),
       map: null,
-      markerPositions: [
-        {
-          title: "카카오",
-          latlng: new kakao.maps.LatLng(33.450705, 126.570677),
-        },
-        {
-          title: "생태연못",
-          latlng: new kakao.maps.LatLng(33.450936, 126.569477),
-        },
-        {
-          title: "텃밭",
-          latlng: new kakao.maps.LatLng(33.450705, 126.570177),
-        },
-        {
-          title: "근린공원",
-          latlng: new kakao.maps.LatLng(33.451393, 126.570738),
-        },
-      ],
+      markerPositions: [],
+      schoolPositions: [],
+      parkPositions: [],
+      subwayPositions: [],
       markers: [],
+      schoolmarkers: [],
+      parkmarkers: [],
+      subwaymarkers: [],
       // 화면에 표시되어있는 marker들
     };
   },
   methods: {
-    ...mapActions(houseStore, ["pushMarker"]),
+    ...mapActions(houseStore, [
+      "pushMarker",
+      "setHouseNull",
+      "getSchoolList",
+      "getParkList",
+      "getAreaList",
+    ]),
+    setnull() {
+      this.setHouseNull();
+    },
     initMap() {
       console.log();
       const container = document.getElementById("map");
@@ -62,21 +92,102 @@ export default {
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+      kakao.maps.event.addListener(this.map, "click", function (mouseEvent) {
+        // 클릭한 위도, 경도 정보를 가져옵니다
+        var latlng = mouseEvent.latLng;
+        eventBus.$emit("click", latlng);
+        var message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
+        message += "경도는 " + latlng.getLng() + " 입니다";
+
+        console.log(message);
+      });
+      // kakao.maps.event.addListener(this.map, "dragend", function () {
+      //   // 지도 중심좌표를 얻어옵니다
+      //   eventBus.$emit("dragMove", "dragMove");
+      // });
+      // kakao.maps.event.addListener(this.map, "zoom_changed", function () {
+      //   // 지도의 현재 레벨을 얻어옵니다
+      //   eventBus.$emit("zoomChange", "zoomChange");
+      // });
+      // kakao.maps.event.addListener(this.map, "center_changed", function () {
+      //   // 지도의  레벨을 얻어옵니다
+      //   eventBus.$emit("centerChange", "centerChange");
+      // });
+      kakao.maps.event.addListener(this.map, "bounds_changed", function () {
+        eventBus.$emit("bounds_changed", "bounds_changed");
+      });
       // this.displayMarkers(this.markerPositions);
     },
     update() {
       this.markerPositions = [];
-      var step;
-      for (step = 0; step < this.houses.data.length; step++) {
+      for (var step = 0; step < this.houses.data.length; step++) {
         this.markerPositions.push({
           title: this.houses.data[step].aptName,
           latlng: new kakao.maps.LatLng(
             this.houses.data[step].lat,
             this.houses.data[step].lng,
           ),
+          content:
+            this.houses.data[step].sidoName +
+            " " +
+            this.houses.data[step].gugunName +
+            " " +
+            this.houses.data[step].dongName +
+            " " +
+            this.houses.data[step].jibun,
         });
       }
-      this.displayMarkers(this.markerPositions);
+      var imgSrc = require("@/assets/map/apart.png");
+      var imgSize = [42, 63];
+      this.displayMarkers(this.markerPositions, imgSrc, imgSize);
+    },
+    updateArea(areas) {
+      this.schoolPositions = [];
+      this.parkPositions = [];
+      this.subwayPositions = [];
+      for (var step = 0; step < areas.length; step++) {
+        if (areas[step].type == "학교") {
+          this.schoolPositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
+        } else if (areas[step].type == "공원") {
+          this.parkPositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
+        } else if (areas[step].type == "지하철") {
+          this.subwayPositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
+        }
+      }
+      var schoolIcon = require("@/assets/map/school.png");
+      var parkIcon = require("@/assets/map/park.png");
+      var subwayIcon = require("@/assets/map/park.png");
+      var imgSize = [40, 40];
+      this.displayAreas(
+        this.schoolPositions,
+        this.schoolmarkers,
+        schoolIcon,
+        imgSize,
+      );
+      this.displayAreas(
+        this.parkPositions,
+        this.parkmarkers,
+        parkIcon,
+        imgSize,
+      );
+      this.displayAreas(
+        this.subwayPositions,
+        this.subwaymarkers,
+        subwayIcon,
+        imgSize,
+      );
     },
     moveMap(selected) {
       var moveLatLon = new kakao.maps.LatLng(selected.lat, selected.lng);
@@ -86,16 +197,98 @@ export default {
         this.map.setLevel(4);
       }
     },
-    displayMarkers(positions) {
+    clickMove(moveLatLon) {
+      this.map.panTo(moveLatLon);
+    },
+    // dragMove() {
+    //   if (this.map) var latlng = this.map.getCenter();
+
+    //   var message = "변경된 지도 중심좌표는 " + latlng.getLat() + " 이고, ";
+    //   message += "경도는 " + latlng.getLng() + " 입니다";
+
+    //   console.log(message);
+    // },
+    // zoomChange() {
+    //   var level = this.map.getLevel();
+
+    //   var message = "현재 지도 레벨은 " + level + " 입니다";
+    //   console.log(message);
+    // },
+    // centerChange() {
+    //   var level = this.map.getLevel();
+
+    //   // 지도의 중심좌표를 얻어옵니다
+    //   var latlng = this.map.getCenter();
+
+    //   var message = "지도 레벨은 " + level + " 이고";
+    //   message +=
+    //     "중심 좌표는 위도 " +
+    //     latlng.getLat() +
+    //     ", 경도 " +
+    //     latlng.getLng() +
+    //     "입니다";
+
+    //   console.log(message);
+    // },
+    boundsChanged() {
+      // 지도 영역정보를 얻어옵니다
+      var bounds = this.map.getBounds();
+
+      // 영역정보의 남서쪽 정보를 얻어옵니다
+      var swLatlng = bounds.getSouthWest();
+
+      // 영역정보의 북동쪽 정보를 얻어옵니다
+      var neLatlng = bounds.getNorthEast();
+
+      var message =
+        "<p>영역좌표는 남서쪽 위도, 경도는  " +
+        swLatlng.toString() +
+        "이고 <br>";
+      message += "북동쪽 위도, 경도는  " + neLatlng.toString() + "입니다 </p>";
+
+      console.log(message);
+    },
+    drawCircle(data) {
+      this.centerPosition = this.map.getCenter();
+      var length;
+      if (this.house) {
+        length = this.range;
+        this.centerPosition = new kakao.maps.LatLng(
+          this.house.lat,
+          this.house.lng,
+        );
+      } else {
+        length = data;
+      }
+      if (!(this.drawingCircle && this.drawingLine)) return;
+      if (length > 0) {
+        // 그려지고 있는 원의 중심좌표와 반지름입니다
+        var circleOptions = {
+          center: this.centerPosition,
+          radius: length,
+        };
+
+        // 그려지고 있는 원의 옵션을 설정합니다
+        this.drawingCircle.setOptions(circleOptions);
+
+        // 그려지고 있는 원을 지도에 표시합니다
+        this.drawingCircle.setMap(this.map);
+
+        // 그려지고 있는 선을 지도에 표시합니다
+        this.drawingLine.setMap(this.map);
+      } else {
+        this.drawingCircle.setMap(null);
+        this.drawingLine.setMap(null);
+      }
+    },
+    displayMarkers(positions, imgSrc, OriginSize) {
+      const imgSize = new kakao.maps.Size(OriginSize[0], OriginSize[1]);
+      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
       if (this.markers.length > 0) {
         this.markers.forEach((item) => {
           item.setMap(null);
         });
       }
-
-      const imgSrc = require("@/assets/map/apart.png");
-      const imgSize = new kakao.maps.Size(42, 63);
-      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
       positions.forEach((position) => {
         const marker = new kakao.maps.Marker({
@@ -104,6 +297,41 @@ export default {
           title: position.title,
           image: markerImage,
         });
+
+        var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div id="content">' +
+            '<div id="siteNotice">' +
+            "</div>" +
+            '<h5 id="firstHeading" class="firstHeading"> ' +
+            position.title +
+            " </h5>" +
+            '<div id="bodyContent"><p>' +
+            position.content +
+            "</div>", // 인포윈도우에 표시할 내용
+        });
+
+        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+        // 이벤트 리스너로는 클로저를 만들어 등록합니다
+        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        kakao.maps.event.addListener(
+          marker,
+          "mouseover",
+          this.makeOverListener(
+            this.map,
+            marker,
+            infowindow,
+            imgSrc,
+            OriginSize,
+          ),
+          // overlay.setMap(this.map);
+        );
+        kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          this.makeOutListener(this.map, marker, infowindow, imgSrc, imgSize),
+        );
+
         this.markers.push(marker);
       });
 
@@ -117,6 +345,78 @@ export default {
       if (this.map.getLevel() > 10) {
         this.moveMap(this.houses.data[0]);
       }
+    },
+    makeOverListener(map, marker, infowindow, imgSrc, originSize) {
+      return function () {
+        const imgSize = new kakao.maps.Size(
+          originSize[0] * 1.4,
+          originSize[1] * 1.4,
+        );
+        const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+        marker.setImage(markerImage);
+        infowindow.open(map, marker);
+      };
+    },
+    makeOutListener(map, marker, infowindow, imgSrc, imgSize) {
+      return function () {
+        const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+        marker.setImage(markerImage);
+        infowindow.close();
+      };
+    },
+    displayAreas(positions, markers, imgSrc, OriginSize) {
+      const imgSize = new kakao.maps.Size(OriginSize[0], OriginSize[1]);
+      const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+      if (markers.length > 0) {
+        markers.forEach((item) => {
+          item.setMap(null);
+        });
+      }
+
+      positions.forEach((position) => {
+        const marker = new kakao.maps.Marker({
+          map: this.map,
+          position: position.latlng,
+          title: position.title,
+          image: markerImage,
+        });
+
+        var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div id="content">' +
+            '<div id="siteNotice">' +
+            "</div>" +
+            '<h5 id="firstHeading" class="firstHeading"> ' +
+            position.title +
+            " </h5>" +
+            '<div id="bodyContent"><p>' +
+            position.content +
+            "</div>", // 인포윈도우에 표시할 내용
+        });
+
+        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+        // 이벤트 리스너로는 클로저를 만들어 등록합니다
+        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        kakao.maps.event.addListener(
+          marker,
+          "mouseover",
+          this.makeOverListener(
+            this.map,
+            marker,
+            infowindow,
+            imgSrc,
+            OriginSize,
+          ),
+          // overlay.setMap(this.map);
+        );
+        kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          this.makeOutListener(this.map, marker, infowindow, imgSrc, imgSize),
+        );
+
+        markers.push(marker);
+      });
     },
   },
   mounted() {
@@ -134,7 +434,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(houseStore, ["houses", "house", "checkMarkersLenght"]),
+    ...mapState(houseStore, [
+      "houses",
+      "house",
+      "schools",
+      "parks",
+      "checkMarkersLenght",
+      "range",
+    ]),
   },
   created() {
     // this.displayMarkers(this.markerPositions);
@@ -146,6 +453,51 @@ export default {
     eventBus.$on("detailApart", (data) => {
       console.log(data);
       this.moveMap(this.house);
+      this.drawCircle(data);
+      if (this.house) {
+        console.log(this.house);
+        this.getAreaList({
+          lat: this.house.lat,
+          lng: this.house.lng,
+          range: this.range,
+        });
+      }
+    });
+    eventBus.$on("click", (data) => {
+      this.clickMove(data);
+    });
+    eventBus.$on("rangeChange", (data) => {
+      this.drawCircle(data);
+    });
+    eventBus.$on("rangeChanged", (data) => {
+      console.log(data);
+      if (this.house) {
+        console.log(this.house);
+        this.getAreaList({
+          lat: this.house.lat,
+          lng: this.house.lng,
+          range: this.range,
+        });
+      }
+    });
+    eventBus.$on("areaUpdated", (data) => {
+      this.updateArea(data);
+    });
+    // eventBus.$on("dragMove", (data) => {
+    //   console.log(data);
+    //   this.dragMove();
+    // });
+    // eventBus.$on("zoomChange", (data) => {
+    //   console.log(data);
+    //   this.zoomChange();
+    // });
+    // eventBus.$on("centerChange", (data) => {
+    //   console.log(data);
+    //   this.centerChange();
+    // });
+    eventBus.$on("bounds_changed", (data) => {
+      console.log(data);
+      this.boundsChanged();
     });
   },
 };
@@ -156,5 +508,97 @@ export default {
   padding: 0px;
   width: 100vw;
   height: 100px;
+}
+.wrap {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 288px;
+  height: 132px;
+  margin-left: -144px;
+  text-align: left;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+  line-height: 1.5;
+}
+.wrap * {
+  padding: 0;
+  margin: 0;
+}
+.wrap .info {
+  width: 286px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.wrap .info:nth-child(1) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+.info .title {
+  padding: 5px 0 0 10px;
+  height: 30px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: bold;
+}
+.info .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+}
+.info .close:hover {
+  cursor: pointer;
+}
+.info .body {
+  position: relative;
+  overflow: hidden;
+}
+.info .desc {
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
+}
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.desc .jibun {
+  font-size: 11px;
+  color: #888;
+  margin-top: -2px;
+}
+.info .img {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 73px;
+  height: 71px;
+  border: 1px solid #ddd;
+  color: #888;
+  overflow: hidden;
+}
+.info:after {
+  content: "";
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: 0;
+  width: 22px;
+  height: 12px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+}
+.info .link {
+  color: #5085bb;
 }
 </style>

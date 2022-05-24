@@ -19,20 +19,18 @@
     </b-row>
     <div v-if="getSelected && getSelected.jibun == house.jibun">
       <house-detail />
-      <house-area />
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import HouseDetail from "@/components/house/HouseDetail.vue";
-import HouseArea from "@/components/house/HouseArea.vue";
+import HouseDetail from "@/components/house/sideBar/HouseDetail.vue";
 
 const houseStore = "houseStore";
 
 export default {
-  components: { HouseDetail, HouseArea },
+  components: { HouseDetail },
   name: "HouseListItem",
   // computed: {
   //   ...mapState(houseStore, ["house"]),
@@ -49,11 +47,20 @@ export default {
     house: Object,
   },
   methods: {
-    ...mapActions(houseStore, ["detailHouse"]),
+    ...mapActions(houseStore, [
+      "detailHouse",
+      "getHouseDealList",
+      "clearHouse",
+    ]),
     selectHouse() {
       // console.log("listRow : ", this.house);
       // this.$store.dispatch("getHouse", this.house);
-      this.detailHouse(this.house);
+      if (this.getSelected && this.getSelected.aptCode === this.house.aptCode) {
+        this.clearHouse();
+      } else {
+        this.detailHouse(this.house);
+        this.getHouseDealList(this.house.aptCode);
+      }
     },
     colorChange(flag) {
       this.isColor = flag;
