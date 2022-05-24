@@ -21,7 +21,7 @@
 
 <script>
 import { mapState } from "vuex";
-import SearchRankingByGenderItem from "@/components/house/sideBar/ranking/SearchRankingByGenderItem.vue";
+import SearchRankingByGenderItem from "@/components/house/ranking/SearchRankingByGenderItem.vue";
 
 const searchStore = "searchStore";
 export default {

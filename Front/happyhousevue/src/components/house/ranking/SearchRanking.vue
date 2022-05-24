@@ -21,7 +21,7 @@
 
 <script>
 import { mapState } from "vuex";
-import SearchRankingItem from "@/components/house/sideBar/ranking/SearchRankingItem.vue";
+import SearchRankingItem from "@/components/house/ranking/SearchRankingItem.vue";
 
 const searchStore = "searchStore";
 export default {

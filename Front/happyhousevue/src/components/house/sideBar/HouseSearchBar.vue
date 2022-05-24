@@ -28,22 +28,17 @@
       @change="searchApt"
       style="cursor: pointer"
     ></b-form-select>
-    <search-ranking />
-    <search-ranking-by-gender />
   </b-row>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import SearchRanking from "@/components/house/sideBar/ranking/SearchRanking.vue";
-import SearchRankingByGender from "@/components/house/sideBar/ranking/SearchRankingByGender.vue";
 
 const houseStore = "houseStore";
 const searchStore = "searchStore";
 const memberStore = "memberStore";
 
 export default {
-  components: { SearchRanking, SearchRankingByGender },
   name: "HouseSearchBar",
   data() {
     return {

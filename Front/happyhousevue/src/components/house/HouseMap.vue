@@ -19,6 +19,8 @@
       style="max-width: 20rem; z-index: 4"
       class="mb-2 float-right fontsans"
     >
+      <search-ranking />
+      <search-ranking-by-gender />
       <div>추천 정보/뉴스/웹 크롤링 내용이 들어갈 자리</div>
       <strong>
         맵에 핀이 안 뜨면 상단바의 홈 버튼을 눌렀다가 아파트 버튼을 누르면
@@ -34,11 +36,13 @@
 import { eventBus } from "@/main.js";
 import { mapState, mapActions } from "vuex";
 import HouseArea from "@/components/house/HouseArea.vue";
+import SearchRanking from "@/components/house/ranking/SearchRanking.vue";
+import SearchRankingByGender from "@/components/house/ranking/SearchRankingByGender.vue";
 
 const houseStore = "houseStore";
 
 export default {
-  components: { HouseArea },
+  components: { HouseArea, SearchRanking, SearchRankingByGender },
   data() {
     return {
       centerPosition: null,
