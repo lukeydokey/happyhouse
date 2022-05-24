@@ -24,7 +24,7 @@
       <b-row>
         <b-col cols="9" class="mr-n3">
           <b-form-input
-            v-model.trim="dongCode"
+            v-model.trim="input"
             :placeholder="holder"
             @keypress.enter="sendKeyword"
           ></b-form-input>
@@ -35,24 +35,39 @@
           >
         </b-col>
       </b-row>
+      <b-row class="mt-3" v-if="type === 'dongname'">
+        <b-col v-if="searcheddongs.length > 0">
+          <dong-search-item
+            v-for="dong in searcheddongs"
+            :key="dong.dongCode"
+            v-bind="dong"
+          />
+        </b-col>
+        <b-col v-else>
+          <b-alert variant="secondary" show>검색된 법정동이 없습니다.</b-alert>
+        </b-col>
+      </b-row>
     </b-form-group>
   </b-row>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import DongSearchItem from "./DongSearchItem.vue";
 
 const houseStore = "houseStore";
 const searchStore = "searchStore";
 const memberStore = "memberStore";
 
 export default {
+  components: { DongSearchItem },
   name: "HouseSearchBar",
   data() {
     return {
       sidoCode: null,
       gugunCode: null,
       dongCode: null,
+      input: null,
     };
   },
   props: {
@@ -60,7 +75,7 @@ export default {
   },
   computed: {
     ...mapState(houseStore, ["sidos", "guguns", "dongs", "houses"]),
-    ...mapState(searchStore, ["hotplaces"]),
+    ...mapState(searchStore, ["hotplaces", "searcheddongs"]),
     ...mapState(memberStore, ["userInfo"]),
     holder() {
       return this.type === "dongname"
@@ -85,7 +100,7 @@ export default {
       "clearGugunList",
       "clearDongList",
     ]),
-    ...mapActions(searchStore, ["search"]),
+    ...mapActions(searchStore, ["search", "getDongsByDongName"]),
 
     gugunList() {
       // console.log(this.sidoCode);
@@ -108,6 +123,11 @@ export default {
           dongCode: this.dongCode,
         };
         this.search(searchInfo);
+      }
+    },
+    async sendKeyword() {
+      if (this.type === "dongname") {
+        this.getDongsByDongName(this.input);
       }
     },
   },

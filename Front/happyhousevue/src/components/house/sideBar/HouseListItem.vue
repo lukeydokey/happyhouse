@@ -47,12 +47,20 @@ export default {
     house: Object,
   },
   methods: {
-    ...mapActions(houseStore, ["detailHouse", "getHouseDealList"]),
+    ...mapActions(houseStore, [
+      "detailHouse",
+      "getHouseDealList",
+      "clearHouse",
+    ]),
     selectHouse() {
       // console.log("listRow : ", this.house);
       // this.$store.dispatch("getHouse", this.house);
-      this.detailHouse(this.house);
-      this.getHouseDealList(this.house.aptCode);
+      if (this.getSelected) {
+        this.clearHouse();
+      } else {
+        this.detailHouse(this.house);
+        this.getHouseDealList(this.house.aptCode);
+      }
     },
     colorChange(flag) {
       this.isColor = flag;
