@@ -61,7 +61,7 @@ public class HouseDealDto {
 	}
 	public void setDealDay(String dealDay) {
 		this.dealDay = dealDay;
-	}
+	} 
 	public String getArea() {
 		return area;
 	}

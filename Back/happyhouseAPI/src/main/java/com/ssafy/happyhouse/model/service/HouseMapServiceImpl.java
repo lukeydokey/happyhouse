@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.happyhouse.model.AreaDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseRecentPricesDto;
+import com.ssafy.happyhouse.model.ParkDto;
+import com.ssafy.happyhouse.model.SchoolDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
 import com.ssafy.happyhouse.parser.ApiExplorer;
@@ -55,7 +58,20 @@ public class HouseMapServiceImpl implements HouseMapService {
 	public List<HouseRecentPricesDto> getAptRecentInfo(int aptCode) throws Exception {
 		return houseMapMapper.getAptRecentInfo(aptCode);
 	}
+	
+	@Override
+	public List<SchoolDto> getSchool(String lat, String lng, String range) throws Exception {
+		return houseMapMapper.getSchool(lat, lng, range);
+	}
 
+	@Override
+	public List<ParkDto> getPark(String lat, String lng, String range) throws Exception {
+		return houseMapMapper.getPark(lat, lng, range);
+	}
+	@Override
+	public List<AreaDto> getArea(String lat, String lng, String range) throws Exception {
+		return houseMapMapper.getArea(lat, lng, range);
+	}
 	@Override
 	public List<HouseInfoDto> getAptWithName(String dong, String apt) throws Exception {
 		List<HouseInfoDto> list = houseMapMapper.getAptInDong(dong);
@@ -174,6 +190,9 @@ public class HouseMapServiceImpl implements HouseMapService {
 		
 		System.out.println("Transaction success");
 	}
+
+
+	
 
 
 }
