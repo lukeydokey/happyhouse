@@ -24,9 +24,9 @@
           ><b-row>
             <b-col
               ><h5>
-                <b>{{ this.curAddress }}</b>
+                <b>{{ this.curAddress }} </b>
                 <div style="display: flex; align-items: center">
-                  주변 검색 중
+                  주변 검색 중&nbsp;&nbsp;
                   <b-spinner
                     variant="primary"
                     type="grow"

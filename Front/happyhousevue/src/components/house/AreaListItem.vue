@@ -10,8 +10,12 @@
       style="width: 100%; margin: 0; cursor: pointer"
     >
       <b-col>
-        <div style="float: left">{{ area.class }}</div>
-        <div style="float: right">{{ area.array.length }} 건</div>
+        <div style="float: left; font-size: 1.1em">
+          <b>{{ area.class }}</b>
+        </div>
+        <div style="float: right; font-size: 1.1em">
+          <b style="color: #2196f3">{{ area.array.length }}</b> 건
+        </div>
       </b-col>
     </b-row>
     <div v-if="area.class == getSelectedArea">
@@ -40,7 +44,6 @@ export default {
   data() {
     return {
       isColor: false,
-      isSelected: false,
     };
   },
   computed: {
@@ -70,7 +73,7 @@ export default {
       this.isColor = flag;
     },
     select(selected) {
-      if (this.isSelected) {
+      if (this.getSelectedArea == selected) {
         this.setSelectedArea(null);
       } else {
         this.setSelectedArea(selected);

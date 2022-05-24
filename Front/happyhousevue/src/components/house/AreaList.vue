@@ -1,6 +1,6 @@
 <template>
   <b-container
-    v-if="houses && houses.length != 0"
+    v-if="houses && houses.length != 0 && this.areas.length != 0"
     class="bv-example-row"
     style="padding: 0"
   >
