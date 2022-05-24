@@ -7,12 +7,13 @@
       <b class="meter">{{ range }}M </b>
       <b>내의 주변시설</b>
     </h5>
-    <h4></h4>
+    <area-list />
   </div>
 </template>
 
 <script>
 import SeekBar from "@/components/house/SeekBar.vue";
+import AreaList from "@/components/house/AreaList.vue";
 import { mapState, mapActions } from "vuex";
 const houseStore = "houseStore";
 
@@ -20,6 +21,7 @@ export default {
   name: "HouseArea",
   components: {
     SeekBar,
+    AreaList,
   },
   data() {
     return {};
