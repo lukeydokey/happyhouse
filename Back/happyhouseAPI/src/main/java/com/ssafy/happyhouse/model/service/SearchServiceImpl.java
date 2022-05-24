@@ -28,6 +28,16 @@ public class SearchServiceImpl implements SearchService{
 	public List<SearchInfoDto> selectHotPlace() throws Exception {
 		return searchMapper.selectHotPlace();
 	}
+
+	@Override
+	public List<SearchInfoDto> selectHotPlacebyGender(String gender) throws Exception {
+		return searchMapper.selectHotPlacebyGender(gender);
+	}
+
+	@Override
+	public List<SearchInfoDto> selectDongsbyDongName(String dongName) throws Exception {
+		return searchMapper.selectDongsbyDongName(dongName);
+	}
 	
 	
 }

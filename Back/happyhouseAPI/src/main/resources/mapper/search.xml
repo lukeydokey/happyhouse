@@ -24,7 +24,26 @@
 		using (dongcode)
 		group by dongcode
 		order by hit desc
-		limit 3;
+		limit 3
+	</select>
+	
+	<!-- 유저 성별 검색 순위 조회 -->
+	<select id="selectHotPlacebyGender" parameterType="String" resultType="SearchInfoDto">
+		select d.sidoName, d.gugunName, d.dongName, s.dongcode, count(s.id) as hit
+		from searchinfo as s join user as u
+		on s.id=u.id and u.gender = #{gender}
+		join dongcode as d
+		using (dongcode)
+		group by dongcode
+		order by hit desc
+		limit 3
+	</select>
+	
+	<!-- 동 이름으로 법정동 조회 -->
+	<select id="selectDongsbyDongName" parameterType="String" resultType="SearchInfoDto">
+		select dongCode, sidoName, gugunName, dongName 
+		from dongcode 
+		where dongName like concat('%',#{dongName},'%')
 	</select>
 	
 </mapper>

@@ -12,4 +12,6 @@ public interface SearchMapper {
 	public SearchInfoDto selectSearchInfo(SearchInfoDto searchInfo) throws SQLException;
 	public int insertSearchInfo (SearchInfoDto searchInfo) throws SQLException;
 	public List<SearchInfoDto> selectHotPlace() throws SQLException;
+	public List<SearchInfoDto> selectHotPlacebyGender(String gender) throws SQLException;
+	public List<SearchInfoDto> selectDongsbyDongName(String dongName) throws SQLException;
 }
