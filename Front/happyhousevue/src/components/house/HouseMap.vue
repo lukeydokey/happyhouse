@@ -73,7 +73,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(houseStore, ["pushMarker", "setHouseNull", "clearHouseList"]),
+    ...mapActions(houseStore, [
+      "pushMarker",
+      "setHouseNull",
+      "getSchoolList",
+      "getParkList",
+      "getAreaList",
+      "clearHouseList",
+    ]),
     setnull() {
       this.setHouseNull();
     },
@@ -137,22 +144,18 @@ export default {
       var imgSize = new kakao.maps.Size(42, 63);
       this.displayMarkers(this.markerPositions, imgSrc, imgSize);
     },
-    updateArea() {
+    updateArea(areas) {
+      console.log("업데이트진입");
       this.schoolPositions = [];
-      console.log("스쿨");
-      console.log(this.schools);
-      for (var step = 0; step < this.schools.length; step++) {
+      for (var step = 0; step < areas.length; step++) {
         this.schoolPositions.push({
-          title: this.schools[step].name,
-          latlng: new kakao.maps.LatLng(
-            this.schools[step].lat,
-            this.schools[step].lng,
-          ),
-          content: this.schools[step].address,
+          title: areas[step].name,
+          latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+          content: areas[step].address,
         });
       }
       var imgSrc = require("@/assets/map/school.png");
-      var imgSize = new kakao.maps.Size(42, 63);
+      var imgSize = new kakao.maps.Size(36, 54);
       this.displayAreas(this.schoolPositions, imgSrc, imgSize);
     },
     moveMap(selected) {
@@ -415,7 +418,17 @@ export default {
     });
     eventBus.$on("rangeChanged", (data) => {
       console.log(data);
-      this.updateArea();
+      if (this.house) {
+        this.getAreaList({
+          lat: this.house.lat,
+          lng: this.house.lng,
+          range: this.range,
+        });
+      }
+    });
+    eventBus.$on("areaUpdated", (data) => {
+      console.log("이벤트버스");
+      this.updateArea(data);
     });
     // eventBus.$on("dragMove", (data) => {
     //   console.log(data);

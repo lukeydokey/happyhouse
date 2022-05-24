@@ -95,12 +95,12 @@ export default {
       }
 
       function closeDragElement() {
-        eventBus.$emit("rangeChanged", "rangeChanged");
         elmnt.classList.remove("s_on");
         document.onmouseup = null;
         document.removeEventListener("touchend", closeDragElement);
         document.onmousemove = null;
         document.removeEventListener("touchmove", elementDrag);
+        eventBus.$emit("rangeChanged", "rangeChanged");
       }
     },
   },

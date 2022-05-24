@@ -7,6 +7,7 @@ import {
   houseDealList,
   SchoolList,
   ParkList,
+  AreaList,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
@@ -24,6 +25,7 @@ const houseStore = {
     deals: [],
     schools: [],
     parks: [],
+    areas: [],
     isSearching: false,
   },
   getters: {
@@ -89,6 +91,11 @@ const houseStore = {
     SET_PARK_LIST(state, parks) {
       state.parks = parks.data;
       eventBus.$emit("parksUpdated", parks);
+    },
+    SET_AREA_LIST(state, area) {
+      console.log("serarea");
+      state.areas = area.data;
+      eventBus.$emit("areaUpdated", area.data);
     },
     SET_DETAIL_HOUSE(state, house) {
       // console.log("Mutations", house);
@@ -250,6 +257,20 @@ const houseStore = {
         (response) => {
           console.log(response);
           commit("SET_PARK_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+      this.getSchoolList(lat, lng, range);
+    },
+    getAreaList: ({ commit }, { lat, lng, range }) => {
+      const params = { lat, lng, range };
+      AreaList(
+        params,
+        (response) => {
+          console.log(response);
+          commit("SET_AREA_LIST", response);
         },
         (error) => {
           console.log(error);

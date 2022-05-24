@@ -14,7 +14,6 @@
 <script>
 import SeekBar from "@/components/house/SeekBar.vue";
 import { mapState, mapActions } from "vuex";
-import { eventBus } from "@/main.js";
 const houseStore = "houseStore";
 
 export default {
@@ -34,21 +33,6 @@ export default {
     // // houses() {
     // //   return this.$store.state.houses;
     // // },
-  },
-  created() {
-    eventBus.$on("rangeChanged", (data) => {
-      console.log(data);
-      this.getSchoolList({
-        lat: this.house.lat,
-        lng: this.house.lng,
-        range: this.range,
-      });
-      this.getParkList({
-        lat: this.house.lat,
-        lng: this.house.lng,
-        range: this.range,
-      });
-    });
   },
 };
 </script>
