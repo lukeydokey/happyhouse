@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.happyhouse.model.AreaDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseRecentPricesDto;
@@ -66,6 +67,10 @@ public class HouseMapServiceImpl implements HouseMapService {
 	@Override
 	public List<ParkDto> getPark(String lat, String lng, String range) throws Exception {
 		return houseMapMapper.getPark(lat, lng, range);
+	}
+	@Override
+	public List<AreaDto> getArea(String lat, String lng, String range) throws Exception {
+		return houseMapMapper.getArea(lat, lng, range);
 	}
 	@Override
 	public List<HouseInfoDto> getAptWithName(String dong, String apt) throws Exception {

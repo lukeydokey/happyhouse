@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.happyhouse.model.AreaDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseRecentPricesDto;
@@ -25,6 +26,7 @@ public interface HouseMapMapper {
 	List<HouseRecentPricesDto>getAptRecentInfo(int aptCode) throws SQLException;
 	List<SchoolDto>getSchool(String lat, String lng, String range) throws SQLException;
 	List<ParkDto>getPark(String lat, String lng, String range) throws SQLException;
+	List<AreaDto>getArea(String lat, String lng, String range) throws SQLException;
 	HouseInfoDto getApt(HouseInfoDto houseInfo) throws SQLException;
 	int countApt() throws SQLException;
 	void saveAptInfo(List<HouseInfoDto> houseInfos) throws SQLException;
