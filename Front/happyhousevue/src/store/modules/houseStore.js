@@ -76,6 +76,9 @@ const houseStore = {
       state.houses = houses;
       eventBus.$emit("apartUpdated", "apartUpdated");
     },
+    CLEAR_HOUSE_LIST(state) {
+      state.houses = [];
+    },
     SET_HOUSEDEAL_LIST(state, deals) {
       // console.log(houses);
       state.deals = deals.data;
@@ -201,6 +204,9 @@ const houseStore = {
           console.log(error);
         },
       );
+    },
+    clearHouseList: ({ commit }) => {
+      commit("CLEAR_HOUSE_LIST");
     },
     async getHouseRecentInfo({ commit }, aptCode) {
       await getHouseRecentInfo(
