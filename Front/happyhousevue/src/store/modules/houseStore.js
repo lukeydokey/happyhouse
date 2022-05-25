@@ -39,6 +39,7 @@ const houseStore = {
     curAddress: null,
     coordSearch: false,
     like: [],
+    compare: false,
   },
   getters: {
     getLikedApt: function (state) {
@@ -217,6 +218,9 @@ const houseStore = {
     SET_COORDOFF(state) {
       state.coordSearch = false;
     },
+    CHANGE_COMPARE(state) {
+      state.compare = !state.compare;
+    },
     ADD_CHANGE_APT(state, params) {
       state.like = [];
       eventBus.$emit("likeChange", params);
@@ -224,6 +228,7 @@ const houseStore = {
     SET_LIKE_APT(state, data) {
       console.log(data);
       state.like = data.data;
+      eventBus.$emit("likeChanged", "likeChanged");
     },
   },
   actions: {
@@ -403,7 +408,9 @@ const houseStore = {
     setCoordOff: ({ commit }) => {
       commit("SET_COORDOFF");
     },
-
+    changeCompare: ({ commit }) => {
+      commit("CHANGE_COMPARE");
+    },
     likeAptSet: ({ commit }, params) => {
       setLikeApt(
         params,

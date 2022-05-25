@@ -10,9 +10,20 @@
         >창 닫기</b-button
       >
     </b-card>
+    <b-card
+      v-if="this.house && compare"
+      style="width: 15vw; z-index: 4"
+      class="mb-2 float-left fontsans scroll"
+      ><b-form-select
+        v-model="like.aptName"
+        :options="sidos"
+        @change="gugunList"
+        style="cursor: pointer"
+      ></b-form-select>
+    </b-card>
 
     <b-card
-      style="max-width: 20rem; z-index: 4"
+      style="width: 12vw; z-index: 4"
       class="mb-2 float-right fontsans scroll"
     >
       <div style="align-items: center">
@@ -28,6 +39,8 @@
       <h4 class="small-title float-left">
         <b class="blue fontsans">{{ userInfo.name }}</b> 님의 관심 매물
       </h4>
+      <br />
+      <like-list />
     </b-card>
   </div>
 </template>
@@ -39,12 +52,13 @@ import { mapState, mapActions } from "vuex";
 import HouseArea from "@/components/house/HouseArea.vue";
 import SearchRanking from "@/components/house/ranking/SearchRanking.vue";
 import SearchRankingByGender from "@/components/house/ranking/SearchRankingByGender.vue";
+import LikeList from "@/components/house/LikeList.vue";
 
 const houseStore = "houseStore";
 const memberStore = "memberStore";
 
 export default {
-  components: { HouseArea, SearchRanking, SearchRankingByGender },
+  components: { HouseArea, SearchRanking, SearchRankingByGender, LikeList },
   data() {
     return {
       centerPosition: null,
@@ -321,7 +335,6 @@ export default {
 
         this.markers.push(marker);
       });
-
       if (positions.length != 0 && !this.coordSearch) {
         const bounds = positions.reduce(
           (bounds, position) => bounds.extend(position.latlng),
@@ -442,6 +455,8 @@ export default {
       "checkMarkersLenght",
       "range",
       "coordSearch",
+      "like",
+      "compare",
     ]),
     ...mapState(memberStore, ["userInfo"]),
   },
