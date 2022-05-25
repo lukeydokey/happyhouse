@@ -26,6 +26,11 @@ const onlyAuthUser = async (to, from, next) => {
 
 const routes = [
   {
+    path: "/",
+    name: "root",
+    redirect: "/home",
+  },
+  {
     path: "/home",
     name: "home",
     component: HomeView,
