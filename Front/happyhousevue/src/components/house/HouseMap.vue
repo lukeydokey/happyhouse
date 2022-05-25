@@ -3,30 +3,31 @@
     <b-card
       v-if="this.house"
       style="width: 15vw; z-index: 4"
-      class="mb-2 float-left fontsans"
+      class="mb-2 float-left fontsans scroll"
     >
       <house-area />
       <b-button variant="secondary" @click="setnull" class="float-right"
         >창 닫기</b-button
       >
     </b-card>
+
     <b-card
-      title="오늘의 정보"
-      img-src="https://picsum.photos/600/300/?image=25"
-      img-alt="Image"
-      img-top
-      tag="article"
       style="max-width: 20rem; z-index: 4"
-      class="mb-2 float-right fontsans"
+      class="mb-2 float-right fontsans scroll"
     >
+      <div style="align-items: center">
+        <h4 class="small-title float-left">추천 정보</h4>
+        <b-button variant="primary" class="float-right" v-b-toggle.sidebar-right
+          >매물 검색</b-button
+        >
+      </div>
+
       <search-ranking />
       <search-ranking-by-gender />
-      <div>추천 정보/뉴스/웹 크롤링 내용이 들어갈 자리</div>
-      <strong>
-        맵에 핀이 안 뜨면 상단바의 홈 버튼을 눌렀다가 아파트 버튼을 누르면
-        됩니다.
-      </strong>
-      <b-button variant="primary" v-b-toggle.sidebar-right>매물 검색</b-button>
+
+      <h4 class="small-title float-left">
+        <b class="blue fontsans">{{ userInfo.name }}</b> 님의 관심 매물
+      </h4>
     </b-card>
   </div>
 </template>
@@ -40,6 +41,7 @@ import SearchRanking from "@/components/house/ranking/SearchRanking.vue";
 import SearchRankingByGender from "@/components/house/ranking/SearchRankingByGender.vue";
 
 const houseStore = "houseStore";
+const memberStore = "memberStore";
 
 export default {
   components: { HouseArea, SearchRanking, SearchRankingByGender },
@@ -75,6 +77,9 @@ export default {
       "getCoordList",
       "clearHouseList",
       "likeAptGet",
+      "detailHouse",
+      "getHouseDealList",
+      "setSelectedArea",
     ]),
     setnull() {
       this.setHouseNull();
@@ -111,26 +116,9 @@ export default {
 
         console.log(message);
       });
-      // kakao.maps.event.addListener(this.map, "dragend", function () {
-      //   // 지도 중심좌표를 얻어옵니다
-      //   eventBus.$emit("dragMove", "dragMove");
-      // });
-      // kakao.maps.event.addListener(this.map, "zoom_changed", function () {
-      //   // 지도의 현재 레벨을 얻어옵니다
-      //   eventBus.$emit("zoomChange", "zoomChange");
-      // });
-      // kakao.maps.event.addListener(this.map, "center_changed", function () {
-      //   // 지도의  레벨을 얻어옵니다
-      //   eventBus.$emit("centerChange", "centerChange");
-      // });
-      // kakao.maps.event.addListener(this.map, "bounds_changed", function () {
-      //   eventBus.$emit("bounds_changed", "bounds_changed");
-      // });
       kakao.maps.event.addListener(this.map, "idle", function () {
         eventBus.$emit("bounds_changed", "bounds_changed");
-        // searchAddrFromCoords(map.getCenter(), displayCenterInfo);
       });
-      // this.displayMarkers(this.markerPositions);
     },
     update() {
       this.markerPositions = [];
@@ -142,6 +130,7 @@ export default {
               this.houses.data[step].lat,
               this.houses.data[step].lng,
             ),
+            house: this.houses.data[step],
             content:
               this.houses.data[step].sidoName +
               " " +
@@ -229,36 +218,6 @@ export default {
     clickMove(moveLatLon) {
       this.map.panTo(moveLatLon);
     },
-    // dragMove() {
-    //   if (this.map) var latlng = this.map.getCenter();
-
-    //   var message = "변경된 지도 중심좌표는 " + latlng.getLat() + " 이고, ";
-    //   message += "경도는 " + latlng.getLng() + " 입니다";
-
-    //   console.log(message);
-    // },
-    // zoomChange() {
-    //   var level = this.map.getLevel();
-
-    //   var message = "현재 지도 레벨은 " + level + " 입니다";
-    //   console.log(message);
-    // },
-    // centerChange() {
-    //   var level = this.map.getLevel();
-
-    //   // 지도의 중심좌표를 얻어옵니다
-    //   var latlng = this.map.getCenter();
-
-    //   var message = "지도 레벨은 " + level + " 이고";
-    //   message +=
-    //     "중심 좌표는 위도 " +
-    //     latlng.getLat() +
-    //     ", 경도 " +
-    //     latlng.getLng() +
-    //     "입니다";
-
-    //   console.log(message);
-    // },
     boundsChanged() {
       var bounds = this.map.getBounds();
       var swLatlng = bounds.getSouthWest();
@@ -296,19 +255,12 @@ export default {
       }
       if (!(this.drawingCircle && this.drawingLine)) return;
       if (length > 0) {
-        // 그려지고 있는 원의 중심좌표와 반지름입니다
         var circleOptions = {
           center: this.centerPosition,
           radius: length,
         };
-
-        // 그려지고 있는 원의 옵션을 설정합니다
         this.drawingCircle.setOptions(circleOptions);
-
-        // 그려지고 있는 원을 지도에 표시합니다
         this.drawingCircle.setMap(this.map);
-
-        // 그려지고 있는 선을 지도에 표시합니다
         this.drawingLine.setMap(this.map);
       } else {
         this.drawingCircle.setMap(null);
@@ -342,12 +294,9 @@ export default {
             " </h5>" +
             '<div id="bodyContent"><p>' +
             position.content +
-            "</div>", // 인포윈도우에 표시할 내용
+            "</div>",
         });
 
-        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-        // 이벤트 리스너로는 클로저를 만들어 등록합니다
-        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
         kakao.maps.event.addListener(
           marker,
           "mouseover",
@@ -358,12 +307,16 @@ export default {
             imgSrc,
             OriginSize,
           ),
-          // overlay.setMap(this.map);
         );
         kakao.maps.event.addListener(
           marker,
           "mouseout",
           this.makeOutListener(this.map, marker, infowindow, imgSrc, imgSize),
+        );
+        kakao.maps.event.addListener(
+          marker,
+          "click",
+          this.makeClickListener(position.house),
         );
 
         this.markers.push(marker);
@@ -380,6 +333,11 @@ export default {
       if (this.map.getLevel() > 10) {
         this.moveMap(this.houses.data[0]);
       }
+    },
+    makeClickListener(house) {
+      return function () {
+        eventBus.$emit("iconclick", house);
+      };
     },
     makeOverListener(map, marker, infowindow, imgSrc, originSize) {
       return function () {
@@ -426,12 +384,8 @@ export default {
             " </h5>" +
             '<div id="bodyContent"><p>' +
             position.content +
-            "</div>", // 인포윈도우에 표시할 내용
+            "</div>",
         });
-
-        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-        // 이벤트 리스너로는 클로저를 만들어 등록합니다
-        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
         kakao.maps.event.addListener(
           marker,
           "mouseover",
@@ -442,7 +396,6 @@ export default {
             imgSrc,
             OriginSize,
           ),
-          // overlay.setMap(this.map);
         );
         kakao.maps.event.addListener(
           marker,
@@ -454,7 +407,6 @@ export default {
       });
     },
     searchAddrFromCoords(coords, callback) {
-      // 좌표로 행정동 주소 정보를 요청합니다
       this.geocoder.coord2RegionCode(
         coords.getLng(),
         coords.getLat(),
@@ -491,6 +443,7 @@ export default {
       "range",
       "coordSearch",
     ]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   created() {
     // this.displayMarkers(this.markerPositions);
@@ -539,6 +492,16 @@ export default {
     eventBus.$on("bounds_changed", (data) => {
       console.log(data);
       this.boundsChanged();
+    });
+    eventBus.$on("iconclick", (house) => {
+      if (this.getSelected && this.getSelected.aptCode === house.aptCode) {
+        this.clearHouse();
+      } else {
+        this.detailHouse(house);
+        this.getHouseDealList(this.house.aptCode);
+      }
+
+      this.setSelectedArea(null);
     });
   },
 };
@@ -641,5 +604,12 @@ export default {
 }
 .info .link {
   color: #5085bb;
+}
+.scroll {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+.blue {
+  color: #2196f3;
 }
 </style>

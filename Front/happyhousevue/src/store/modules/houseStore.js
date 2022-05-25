@@ -149,7 +149,8 @@ const houseStore = {
     SET_DETAIL_HOUSE(state, house) {
       // console.log("Mutations", house);
       state.house = house;
-
+      console.log(house);
+      console.log(1);
       eventBus.$emit("detailApart", house);
     },
     CLEAR_DETAIL_HOUSE(state) {
