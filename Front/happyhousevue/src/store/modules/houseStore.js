@@ -10,7 +10,7 @@ import {
   AreaList,
   coordList,
   setLikeApt,
-  // deleteLikeApt,
+  deleteLikeApt,
   getLikeApt,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
@@ -216,7 +216,7 @@ const houseStore = {
     SET_COORDOFF(state) {
       state.coordSearch = false;
     },
-    ADD_LIKE_APT(state, params) {
+    ADD_CHANGE_APT(state, params) {
       state.like = [];
       eventBus.$emit("likeChange", params);
     },
@@ -408,7 +408,20 @@ const houseStore = {
         params,
         (response) => {
           console.log(response);
-          commit("ADD_LIKE_APT", params);
+          commit("ADD_CHANGE_APT", params);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    likeAptDelete: ({ commit }, params) => {
+      console.log(params);
+      deleteLikeApt(
+        params,
+        (response) => {
+          console.log(response);
+          commit("ADD_CHANGE_APT", params);
         },
         (error) => {
           console.log(error);

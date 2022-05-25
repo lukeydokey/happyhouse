@@ -21,7 +21,7 @@
           v-else
           src="@/assets/like/heart.png"
           style="float: right; width: 1.2em; height: 1.2em"
-          @click="like(userInfo.id, house.aptCode)"
+          @click="dislike(userInfo.id, house.aptCode)"
         />
         <br />
         <div @click="selectHouse">
@@ -69,6 +69,7 @@ export default {
       "clearHouse",
       "setSelectedArea",
       "likeAptSet",
+      "likeAptDelete",
     ]),
     selectHouse() {
       // console.log("listRow : ", this.house);
@@ -86,10 +87,10 @@ export default {
       this.isColor = flag;
     },
     like(id, aptCode) {
-      console.log("test");
-      console.log(this.getLikedApt.indexOf(this.house.aptCode.toString()));
       this.likeAptSet({ id, aptCode });
-      console.log(this.getLikedApt.indexOf(this.house.aptCode.toString()));
+    },
+    dislike(id, aptCode) {
+      this.likeAptDelete({ id, aptCode });
     },
   },
 };
