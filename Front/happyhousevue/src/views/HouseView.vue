@@ -23,6 +23,7 @@ export default {
   },
   created() {
     this.setCoordOff();
+    this.likeAptGet(this.userInfo.id);
     this.clearHotPlaces();
     this.clearHotPlacesByGender();
     this.clearSearchedDongs();
@@ -39,6 +40,7 @@ export default {
       "setIsSearching",
       "clearHouseList",
       "setCoordOff",
+      "likeAptGet",
     ]),
     ...mapActions(searchStore, [
       "getHotPlaces",

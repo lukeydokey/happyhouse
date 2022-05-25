@@ -74,6 +74,7 @@ export default {
       "setCurAddress",
       "getCoordList",
       "clearHouseList",
+      "likeAptGet",
     ]),
     setnull() {
       this.setHouseNull();
@@ -531,18 +532,10 @@ export default {
     eventBus.$on("areaUpdated", (data) => {
       this.updateArea(data);
     });
-    // eventBus.$on("dragMove", (data) => {
-    //   console.log(data);
-    //   this.dragMove();
-    // });
-    // eventBus.$on("zoomChange", (data) => {
-    //   console.log(data);
-    //   this.zoomChange();
-    // });
-    // eventBus.$on("centerChange", (data) => {
-    //   console.log(data);
-    //   this.centerChange();
-    // });
+    eventBus.$on("likeChange", (data) => {
+      console.log(data);
+      this.likeAptGet(data.id);
+    });
     eventBus.$on("bounds_changed", (data) => {
       console.log(data);
       this.boundsChanged();

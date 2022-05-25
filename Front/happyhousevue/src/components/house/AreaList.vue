@@ -42,9 +42,6 @@ export default {
   computed: {
     ...mapState(houseStore, ["houses", "areas"]),
     ...mapGetters(houseStore, ["getArea"]),
-    // houses() {
-    //   return this.$store.state.houses;
-    // },
   },
 };
 </script>

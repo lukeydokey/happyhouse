@@ -37,6 +37,18 @@ function ParkList(params, success, fail) {
 function AreaList(params, success, fail) {
   api.get(`/map/area`, { params: params }).then(success).catch(fail);
 }
+async function setLikeApt(params, success, fail) {
+  await api
+    .post(`/map/likeapt`, JSON.stringify(params))
+    .then(success)
+    .catch(fail);
+}
+function deleteLikeApt(params, success, fail) {
+  api.delete(`/map/likeapt`, { params: params }).then(success).catch(fail);
+}
+function getLikeApt(params, success, fail) {
+  api.get(`/map/likeapt`, { params: params }).then(success).catch(fail);
+}
 
 export {
   sidoList,
@@ -49,4 +61,7 @@ export {
   ParkList,
   AreaList,
   coordList,
+  setLikeApt,
+  deleteLikeApt,
+  getLikeApt,
 };

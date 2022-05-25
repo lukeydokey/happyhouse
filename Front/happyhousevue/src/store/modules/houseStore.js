@@ -9,6 +9,9 @@ import {
   ParkList,
   AreaList,
   coordList,
+  setLikeApt,
+  // deleteLikeApt,
+  getLikeApt,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
@@ -35,8 +38,16 @@ const houseStore = {
     selectedArea: null,
     curAddress: null,
     coordSearch: false,
+    like: [],
   },
   getters: {
+    getLikedApt: function (state) {
+      var res = [];
+      for (var i = 0; i < state.like.length; i++) {
+        res.push(state.like[i].aptCode);
+      }
+      return res;
+    },
     getCurAddress: function (state) {
       return state.address;
     },
@@ -204,6 +215,14 @@ const houseStore = {
     },
     SET_COORDOFF(state) {
       state.coordSearch = false;
+    },
+    ADD_LIKE_APT(state, params) {
+      state.like = [];
+      eventBus.$emit("likeChange", params);
+    },
+    SET_LIKE_APT(state, data) {
+      console.log(data);
+      state.like = data.data;
     },
   },
   actions: {
@@ -382,6 +401,32 @@ const houseStore = {
     },
     setCoordOff: ({ commit }) => {
       commit("SET_COORDOFF");
+    },
+
+    likeAptSet: ({ commit }, params) => {
+      setLikeApt(
+        params,
+        (response) => {
+          console.log(response);
+          commit("ADD_LIKE_APT", params);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    likeAptGet: ({ commit }, params) => {
+      console.log(params);
+      getLikeApt(
+        { id: params },
+        (response) => {
+          console.log(response);
+          commit("SET_LIKE_APT", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     },
   },
 };

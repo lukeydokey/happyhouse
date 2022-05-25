@@ -12,9 +12,16 @@
       <b-col class="align-self-center mt-1">
         <b @click="selectHouse">{{ house.aptName }}</b>
         <img
+          v-if="this.getLikedApt.indexOf(this.house.aptCode.toString()) == -1"
+          src="@/assets/like/emptyheart.png"
+          style="float: right; width: 1.2em; height: 1.2em"
+          @click="like(userInfo.id, house.aptCode)"
+        />
+        <img
+          v-else
           src="@/assets/like/heart.png"
           style="float: right; width: 1.2em; height: 1.2em"
-          @click="like(house.aptCode, userInfo.id)"
+          @click="like(userInfo.id, house.aptCode)"
         />
         <br />
         <div @click="selectHouse">
@@ -49,7 +56,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(houseStore, ["getSelected"]),
+    ...mapGetters(houseStore, ["getSelected", "getLikedApt"]),
     ...mapState(memberStore, ["userInfo"]),
   },
   props: {
@@ -61,6 +68,7 @@ export default {
       "getHouseDealList",
       "clearHouse",
       "setSelectedArea",
+      "likeAptSet",
     ]),
     selectHouse() {
       // console.log("listRow : ", this.house);
@@ -77,9 +85,11 @@ export default {
     colorChange(flag) {
       this.isColor = flag;
     },
-    like(aptCode, id) {
-      console.log(aptCode);
-      console.log(id);
+    like(id, aptCode) {
+      console.log("test");
+      console.log(this.getLikedApt.indexOf(this.house.aptCode.toString()));
+      this.likeAptSet({ id, aptCode });
+      console.log(this.getLikedApt.indexOf(this.house.aptCode.toString()));
     },
   },
 };
