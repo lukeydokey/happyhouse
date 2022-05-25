@@ -15,7 +15,6 @@
         </div>
         <div style="float: right; font-size: 1.1em">
           <b style="color: #2196f3">{{ area.array.length }}</b> 건
-          {{ count(area) }}
         </div>
       </b-col>
     </b-row>
@@ -60,15 +59,7 @@ export default {
       "clearHouse",
       "setSelectedArea",
     ]),
-    count(compArea) {
-      // for (var i = 0; i < compArea.lenght; i++) {
-      //   console.log(i);
-      //   if (compArea.class == this.getArea[i].class) {
-      //     return compArea.lenght - this.getArea[i].lenght;
-      //   }
-      // }
-      return 3;
-    },
+
     selectHouse() {
       // console.log("listRow : ", this.house);
       // this.$store.dispatch("getHouse", this.house);
