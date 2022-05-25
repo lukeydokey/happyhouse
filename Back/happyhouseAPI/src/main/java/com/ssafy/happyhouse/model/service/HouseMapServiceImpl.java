@@ -14,6 +14,7 @@ import com.ssafy.happyhouse.model.AreaDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseRecentPricesDto;
+import com.ssafy.happyhouse.model.LikeAptDto;
 import com.ssafy.happyhouse.model.ParkDto;
 import com.ssafy.happyhouse.model.SchoolDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
@@ -74,6 +75,18 @@ public class HouseMapServiceImpl implements HouseMapService {
 	@Override
 	public List<AreaDto> getArea(String lat, String lng, String range) throws Exception {
 		return houseMapMapper.getArea(lat, lng, range);
+	}
+	@Override
+	public void setLikeApt(LikeAptDto like) {
+		houseMapMapper.insertLikeApt(like);
+	}
+	@Override
+	public void deleteLikeApt(String id, String aptCode) {
+		houseMapMapper.deleteLikeApt(id, aptCode);
+	}
+	@Override
+	public List<LikeAptDto> getLikeApt(String id) {
+		return houseMapMapper.getLikeApt(id);
 	}
 	@Override
 	public List<HouseInfoDto> getAptWithName(String dong, String apt) throws Exception {
@@ -196,8 +209,6 @@ public class HouseMapServiceImpl implements HouseMapService {
 
 	
 
-
 	
-
 
 }

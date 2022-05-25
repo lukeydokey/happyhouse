@@ -9,6 +9,7 @@ import com.ssafy.happyhouse.model.AreaDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseRecentPricesDto;
+import com.ssafy.happyhouse.model.LikeAptDto;
 import com.ssafy.happyhouse.model.ParkDto;
 import com.ssafy.happyhouse.model.SchoolDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
@@ -32,4 +33,7 @@ public interface HouseMapMapper {
 	int countApt() throws SQLException;
 	void saveAptInfo(List<HouseInfoDto> houseInfos) throws SQLException;
 	void saveAptDeal(List<HouseInfoDto> houseDeals) throws SQLException;
+	void insertLikeApt(LikeAptDto like);
+	void deleteLikeApt(String id, String aptCode);
+	List<LikeAptDto> getLikeApt(String id);
 }

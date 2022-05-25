@@ -6,6 +6,7 @@ import com.ssafy.happyhouse.model.AreaDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseRecentPricesDto;
+import com.ssafy.happyhouse.model.LikeAptDto;
 import com.ssafy.happyhouse.model.ParkDto;
 import com.ssafy.happyhouse.model.SchoolDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
@@ -24,4 +25,7 @@ public interface HouseMapService {
 	List<AreaDto> getArea(String lat, String lng, String range) throws Exception;
 	List<HouseRecentPricesDto>getAptRecentInfo(String aptCode) throws Exception;
 	void save() throws Exception;
+	void setLikeApt(LikeAptDto like);
+	void deleteLikeApt(String id, String aptCode);
+	List<LikeAptDto> getLikeApt(String id);
 }
