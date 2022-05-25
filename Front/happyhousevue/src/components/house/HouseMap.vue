@@ -55,10 +55,12 @@ export default {
       schoolPositions: [],
       parkPositions: [],
       subwayPositions: [],
+      conveniencePositions: [],
       markers: [],
       schoolmarkers: [],
       parkmarkers: [],
       subwaymarkers: [],
+      conveniencemarkers: [],
       // 화면에 표시되어있는 marker들
     };
   },
@@ -157,6 +159,7 @@ export default {
       this.schoolPositions = [];
       this.parkPositions = [];
       this.subwayPositions = [];
+      this.conveniencePositions = [];
       for (var step = 0; step < areas.length; step++) {
         if (areas[step].type == "학교") {
           this.schoolPositions.push({
@@ -176,11 +179,18 @@ export default {
             latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
             content: areas[step].address,
           });
+        } else if (areas[step].type == "편의점") {
+          this.conveniencePositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
         }
       }
       var schoolIcon = require("@/assets/map/school.png");
       var parkIcon = require("@/assets/map/park.png");
       var subwayIcon = require("@/assets/map/subway.png");
+      var convenienceIcon = require("@/assets/map/convenience.png");
       var imgSize = [40, 40];
       this.displayAreas(
         this.schoolPositions,
@@ -198,6 +208,12 @@ export default {
         this.subwayPositions,
         this.subwaymarkers,
         subwayIcon,
+        imgSize,
+      );
+      this.displayAreas(
+        this.conveniencePositions,
+        this.conveniencemarkers,
+        convenienceIcon,
         imgSize,
       );
     },

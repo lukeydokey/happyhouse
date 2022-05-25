@@ -56,6 +56,7 @@ const houseStore = {
       var school = [];
       var park = [];
       var subway = [];
+      var convenience = [];
       for (var i = 0; i < state.areas.length; i++) {
         if (state.areas[i].type == "학교") {
           school.push(state.areas[i]);
@@ -63,12 +64,15 @@ const houseStore = {
           park.push(state.areas[i]);
         } else if (state.areas[i].type == "지하철") {
           subway.push(state.areas[i]);
+        } else if (state.areas[i].type == "편의점") {
+          convenience.push(state.areas[i]);
         }
       }
       return [
         { class: "학교", array: school },
         { class: "공원", array: park },
         { class: "지하철", array: subway },
+        { class: "편의점", array: convenience },
       ];
     },
   },

@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-row
-      @click="selectHouse"
       @mouseover="colorChange(true)"
       @mouseout="colorChange(false)"
       :class="{
@@ -11,9 +10,17 @@
       style="width: 100%; margin: 0; cursor: pointer"
     >
       <b-col class="align-self-center mt-1">
-        <b>{{ house.aptName }}</b>
-        <br />{{ house.sidoName }} {{ house.gugunName }} {{ house.dongName }}
-        {{ house.jibun }}
+        <b @click="selectHouse">{{ house.aptName }}</b>
+        <img
+          src="@/assets/like/heart.png"
+          style="float: right; width: 1.2em; height: 1.2em"
+          @click="like(house.aptCode, userInfo.id)"
+        />
+        <br />
+        <div @click="selectHouse">
+          {{ house.sidoName }} {{ house.gugunName }} {{ house.dongName }}
+          {{ house.jibun }}
+        </div>
         <hr style="margin: 0; width: 100%" />
       </b-col>
     </b-row>
@@ -24,10 +31,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import HouseDetail from "@/components/house/sideBar/HouseDetail.vue";
 
 const houseStore = "houseStore";
+const memberStore = "memberStore";
 
 export default {
   components: { HouseDetail },
@@ -42,6 +50,7 @@ export default {
   },
   computed: {
     ...mapGetters(houseStore, ["getSelected"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   props: {
     house: Object,
@@ -67,6 +76,10 @@ export default {
     },
     colorChange(flag) {
       this.isColor = flag;
+    },
+    like(aptCode, id) {
+      console.log(aptCode);
+      console.log(id);
     },
   },
 };
