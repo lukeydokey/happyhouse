@@ -1,10 +1,7 @@
 <template>
   <div>
     <h4 class="small-title">주변 정보</h4>
-    <b-button
-      variant="secondary"
-      @click="this.changeCompare"
-      class="float-right"
+    <b-button variant="light" @click="this.changeCompare" class="float-right"
       >관심 매물 비교</b-button
     >
     <seek-bar></seek-bar>

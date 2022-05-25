@@ -34,14 +34,35 @@ const houseStore = {
     schools: [],
     parks: [],
     areas: [],
+    compareAreas: [],
     isSearching: false,
     selectedArea: null,
     curAddress: null,
     coordSearch: false,
     like: [],
     compare: false,
+    selectedCompare: null,
+    compareSelectedArea: null,
   },
   getters: {
+    getLikeOption: function (state) {
+      var res = [];
+      res.push({ value: null, text: "비교할 관심 매물을 선택해주세요." });
+      for (var i = 0; i < state.like.length; i++) {
+        res.push({
+          value: state.like[i],
+          text:
+            state.like[i].aptName +
+            "-" +
+            state.like[i].sidoName +
+            " " +
+            state.like[i].gugunName +
+            " " +
+            state.like[i].dongName,
+        });
+      }
+      return res;
+    },
     getLikedApt: function (state) {
       var res = [];
       for (var i = 0; i < state.like.length; i++) {
@@ -58,8 +79,14 @@ const houseStore = {
     getSelected: function (state) {
       return state.house;
     },
+    getCompareSelected: function (state) {
+      return state.selectedCompare;
+    },
     getSelectedArea: function (state) {
       return state.selectedArea;
+    },
+    getSelectedCompareArea: function (state) {
+      return state.CompareSelectedArea;
     },
     getRange: function (state) {
       return state.range;
@@ -78,6 +105,29 @@ const houseStore = {
           subway.push(state.areas[i]);
         } else if (state.areas[i].type == "편의점") {
           convenience.push(state.areas[i]);
+        }
+      }
+      return [
+        { class: "학교", array: school },
+        { class: "공원", array: park },
+        { class: "지하철", array: subway },
+        { class: "편의점", array: convenience },
+      ];
+    },
+    getCompareArea: function (state) {
+      var school = [];
+      var park = [];
+      var subway = [];
+      var convenience = [];
+      for (var i = 0; i < state.compareAreas.length; i++) {
+        if (state.compareAreas[i].type == "학교") {
+          school.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "공원") {
+          park.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "지하철") {
+          subway.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "편의점") {
+          convenience.push(state.compareAreas[i]);
         }
       }
       return [
@@ -143,8 +193,11 @@ const houseStore = {
       eventBus.$emit("parksUpdated", parks);
     },
     SET_AREA_LIST(state, area) {
-      console.log("serarea");
       state.areas = area.data;
+      eventBus.$emit("areaUpdated", area.data);
+    },
+    SET_COMAREA_LIST(state, area) {
+      state.compareAreas = area.data;
       eventBus.$emit("areaUpdated", area.data);
     },
     SET_DETAIL_HOUSE(state, house) {
@@ -209,6 +262,9 @@ const houseStore = {
     SET_SELECTEDAREA(state, area) {
       state.selectedArea = area;
     },
+    SET_COMPARE_SELECTEDAREA(state, area) {
+      state.compareSelectedArea = area;
+    },
     SET_CURADDRESS(state, address) {
       state.curAddress = address;
     },
@@ -229,6 +285,9 @@ const houseStore = {
       console.log(data);
       state.like = data.data;
       eventBus.$emit("likeChanged", "likeChanged");
+    },
+    SET_COMPARE(state, selected) {
+      state.selectedCompare = selected;
     },
   },
   actions: {
@@ -376,6 +435,19 @@ const houseStore = {
         },
       );
     },
+    getComAreaList: ({ commit }, { lat, lng, range }) => {
+      const params = { lat, lng, range };
+      AreaList(
+        params,
+        (response) => {
+          console.log(response);
+          commit("SET_COMAREA_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
     pushMarker: ({ commit }, marker) => {
       commit("PUSH_MARKER", marker);
     },
@@ -398,6 +470,9 @@ const houseStore = {
     },
     setSelectedArea: ({ commit }, area) => {
       commit("SET_SELECTEDAREA", area);
+    },
+    setCompareSelectedArea: ({ commit }, area) => {
+      commit("SET_COMPARE_SELECTEDAREA", area);
     },
     setCurAddress: ({ commit }, address) => {
       commit("SET_CURADDRESS", address);
@@ -448,6 +523,9 @@ const houseStore = {
           console.log(error);
         },
       );
+    },
+    compareLikeSet: ({ commit }, selected) => {
+      commit("SET_COMPARE", selected);
     },
   },
 };

@@ -14,12 +14,8 @@
       v-if="this.house && compare"
       style="width: 15vw; z-index: 4"
       class="mb-2 float-left fontsans scroll"
-      ><b-form-select
-        v-model="like.aptName"
-        :options="sidos"
-        @change="gugunList"
-        style="cursor: pointer"
-      ></b-form-select>
+    >
+      <compare-like />
     </b-card>
 
     <b-card
@@ -53,17 +49,23 @@ import HouseArea from "@/components/house/HouseArea.vue";
 import SearchRanking from "@/components/house/ranking/SearchRanking.vue";
 import SearchRankingByGender from "@/components/house/ranking/SearchRankingByGender.vue";
 import LikeList from "@/components/house/LikeList.vue";
+import CompareLike from "@/components/house/CompareLike.vue";
 
 const houseStore = "houseStore";
 const memberStore = "memberStore";
 
 export default {
-  components: { HouseArea, SearchRanking, SearchRankingByGender, LikeList },
+  components: {
+    HouseArea,
+    SearchRanking,
+    SearchRankingByGender,
+    LikeList,
+    CompareLike,
+  },
   data() {
     return {
       centerPosition: null,
       drawingLine: null,
-
       drawingCircle: null,
       map: null,
       geocoder: null,
@@ -94,6 +96,7 @@ export default {
       "detailHouse",
       "getHouseDealList",
       "setSelectedArea",
+      "getComAreaList",
     ]),
     setnull() {
       this.setHouseNull();
@@ -457,6 +460,7 @@ export default {
       "coordSearch",
       "like",
       "compare",
+      "selectedCompare",
     ]),
     ...mapState(memberStore, ["userInfo"]),
   },
@@ -493,6 +497,14 @@ export default {
         this.getAreaList({
           lat: this.house.lat,
           lng: this.house.lng,
+          range: this.range,
+        });
+      }
+      if (this.selectedCompare) {
+        console.log("비교");
+        this.getComAreaList({
+          lat: this.selectedCompare.lat,
+          lng: this.selectedCompare.lng,
           range: this.range,
         });
       }

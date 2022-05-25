@@ -34,8 +34,8 @@ function SchoolList(params, success, fail) {
 function ParkList(params, success, fail) {
   api.get(`/map/park`, { params: params }).then(success).catch(fail);
 }
-function AreaList(params, success, fail) {
-  api.get(`/map/area`, { params: params }).then(success).catch(fail);
+async function AreaList(params, success, fail) {
+  await api.get(`/map/area`, { params: params }).then(success).catch(fail);
 }
 async function setLikeApt(params, success, fail) {
   await api
