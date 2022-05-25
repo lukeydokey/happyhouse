@@ -247,17 +247,22 @@ export default {
       var swLatlng = bounds.getSouthWest();
       var neLatlng = bounds.getNorthEast();
 
-      if (this.coordSearch && this.map.getLevel() < 5) {
-        this.getCoordList({
-          lat1: swLatlng.getLat(),
-          lng1: swLatlng.getLng(),
-          lat2: neLatlng.getLat(),
-          lng2: neLatlng.getLng(),
-        });
-        this.searchAddrFromCoords(this.map.getCenter(), this.displayCenterInfo);
-      } else {
-        this.setCurAddress(null);
-        this.clearHouseList();
+      if (this.coordSearch) {
+        if (this.map.getLevel() < 5) {
+          this.getCoordList({
+            lat1: swLatlng.getLat(),
+            lng1: swLatlng.getLng(),
+            lat2: neLatlng.getLat(),
+            lng2: neLatlng.getLng(),
+          });
+          this.searchAddrFromCoords(
+            this.map.getCenter(),
+            this.displayCenterInfo,
+          );
+        } else {
+          this.setCurAddress(null);
+          this.clearHouseList();
+        }
       }
     },
     drawCircle(data) {
