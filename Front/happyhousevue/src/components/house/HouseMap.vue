@@ -74,11 +74,17 @@ export default {
       parkPositions: [],
       subwayPositions: [],
       conveniencePositions: [],
+      marketPositions: [],
+      cafePositions: [],
+      cctvPositions: [],
       markers: [],
       schoolmarkers: [],
       parkmarkers: [],
       subwaymarkers: [],
       conveniencemarkers: [],
+      marketmarkers: [],
+      cafemarkers: [],
+      cctvmarkers: [],
       // 화면에 표시되어있는 marker들
     };
   },
@@ -167,6 +173,9 @@ export default {
       this.parkPositions = [];
       this.subwayPositions = [];
       this.conveniencePositions = [];
+      this.marketPositions = [];
+      this.cafePositions = [];
+      this.cctvPositions = [];
       for (var step = 0; step < areas.length; step++) {
         if (areas[step].type == "학교") {
           this.schoolPositions.push({
@@ -192,12 +201,34 @@ export default {
             latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
             content: areas[step].address,
           });
+        } else if (areas[step].type == "CCTV") {
+          this.cctvPositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
+        } else if (areas[step].type == "대형마트") {
+          this.marketPositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
+        } else if (areas[step].type == "카페") {
+          this.cafePositions.push({
+            title: areas[step].name,
+            latlng: new kakao.maps.LatLng(areas[step].lat, areas[step].lng),
+            content: areas[step].address,
+          });
         }
       }
       var schoolIcon = require("@/assets/map/school.png");
       var parkIcon = require("@/assets/map/park.png");
       var subwayIcon = require("@/assets/map/subway.png");
       var convenienceIcon = require("@/assets/map/convenience.png");
+      var cafeIcon = require("@/assets/map/cafe.png");
+      var marketIcon = require("@/assets/map/market.png");
+      var cctvIcon = require("@/assets/map/cctv.png");
+
       var imgSize = [40, 40];
       this.displayAreas(
         this.schoolPositions,
@@ -221,6 +252,24 @@ export default {
         this.conveniencePositions,
         this.conveniencemarkers,
         convenienceIcon,
+        imgSize,
+      );
+      this.displayAreas(
+        this.cafePositions,
+        this.cafemarkers,
+        cafeIcon,
+        imgSize,
+      );
+      this.displayAreas(
+        this.cctvPositions,
+        this.cctvmarkers,
+        cctvIcon,
+        imgSize,
+      );
+      this.displayAreas(
+        this.marketPositions,
+        this.marketmarkers,
+        marketIcon,
         imgSize,
       );
     },

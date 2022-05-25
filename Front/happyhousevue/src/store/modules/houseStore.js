@@ -96,6 +96,9 @@ const houseStore = {
       var park = [];
       var subway = [];
       var convenience = [];
+      var market = [];
+      var cafe = [];
+      var cctv = [];
       for (var i = 0; i < state.areas.length; i++) {
         if (state.areas[i].type == "학교") {
           school.push(state.areas[i]);
@@ -105,6 +108,12 @@ const houseStore = {
           subway.push(state.areas[i]);
         } else if (state.areas[i].type == "편의점") {
           convenience.push(state.areas[i]);
+        } else if (state.areas[i].type == "대형 마트") {
+          market.push(state.areas[i]);
+        } else if (state.areas[i].type == "카페") {
+          cafe.push(state.areas[i]);
+        } else if (state.areas[i].type == "CCTV") {
+          cctv.push(state.areas[i]);
         }
       }
       return [
@@ -112,6 +121,9 @@ const houseStore = {
         { class: "공원", array: park },
         { class: "지하철", array: subway },
         { class: "편의점", array: convenience },
+        { class: "대형마트", array: market },
+        { class: "카페", array: cafe },
+        { class: "CCTV", array: cctv },
       ];
     },
     getCompareArea: function (state) {
@@ -119,6 +131,9 @@ const houseStore = {
       var park = [];
       var subway = [];
       var convenience = [];
+      var market = [];
+      var cafe = [];
+      var cctv = [];
       for (var i = 0; i < state.compareAreas.length; i++) {
         if (state.compareAreas[i].type == "학교") {
           school.push(state.compareAreas[i]);
@@ -128,6 +143,12 @@ const houseStore = {
           subway.push(state.compareAreas[i]);
         } else if (state.compareAreas[i].type == "편의점") {
           convenience.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "대형 마트") {
+          market.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "카페") {
+          cafe.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "CCTV") {
+          cctv.push(state.compareAreas[i]);
         }
       }
       return [
@@ -135,6 +156,9 @@ const houseStore = {
         { class: "공원", array: park },
         { class: "지하철", array: subway },
         { class: "편의점", array: convenience },
+        { class: "대형마트", array: market },
+        { class: "카페", array: cafe },
+        { class: "CCTV", array: cctv },
       ];
     },
   },
