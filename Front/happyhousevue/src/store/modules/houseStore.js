@@ -8,6 +8,7 @@ import {
   SchoolList,
   ParkList,
   AreaList,
+  coordList,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
@@ -33,6 +34,7 @@ const houseStore = {
     isSearching: false,
     selectedArea: null,
     curAddress: null,
+    coordSearch: false,
   },
   getters: {
     getCurAddress: function (state) {
@@ -109,6 +111,7 @@ const houseStore = {
     },
     CLEAR_HOUSE_LIST(state) {
       state.houses = [];
+      eventBus.$emit("apartUpdated", "apartUpdated");
     },
     SET_HOUSEDEAL_LIST(state, deals) {
       // console.log(houses);
@@ -192,6 +195,12 @@ const houseStore = {
     SET_CURADDRESS(state, address) {
       state.curAddress = address;
     },
+    SET_COORDON(state) {
+      state.coordSearch = true;
+    },
+    SET_COORDOFF(state) {
+      state.coordSearch = false;
+    },
   },
   actions: {
     getSido: ({ commit }) => {
@@ -248,6 +257,18 @@ const houseStore = {
     getHouseList: ({ commit }, dongCode) => {
       const params = { dong: dongCode };
       houseList(
+        params,
+        (response) => {
+          commit("SET_HOUSE_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    getCoordList: ({ commit }, { lat1, lng1, lat2, lng2 }) => {
+      const params = { lat1, lng1, lat2, lng2 };
+      coordList(
         params,
         (response) => {
           commit("SET_HOUSE_LIST", response);
@@ -351,6 +372,12 @@ const houseStore = {
     },
     setCurAddress: ({ commit }, address) => {
       commit("SET_CURADDRESS", address);
+    },
+    setCoordOn: ({ commit }) => {
+      commit("SET_COORDON");
+    },
+    setCoordOff: ({ commit }) => {
+      commit("SET_COORDOFF");
     },
   },
 };
