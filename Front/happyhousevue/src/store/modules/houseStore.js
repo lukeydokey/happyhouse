@@ -19,7 +19,11 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
-    houseRecentInfo: { aptCode: 0, min: [0, 0, 0, 0], max: [0, 0, 0, 0] },
+    houseRecentInfo: {
+      aptCode: 0,
+      min: [0, 0, 0, 0, 0, 0, 0, 0],
+      max: [0, 0, 0, 0, 0, 0, 0, 0],
+    },
     markers: [],
     range: 0,
     deals: [],
@@ -136,26 +140,38 @@ const houseStore = {
     SET_HOUSE_RECENT_INFO(state, houseRecentInfo) {
       state.houseRecentInfo.aptCode = houseRecentInfo[0].aptCode;
       houseRecentInfo.forEach((info) => {
-        if (info.dealYear === "2019") {
+        if (info.dealYear === "2015") {
           state.houseRecentInfo.min[0] = info.min;
           state.houseRecentInfo.max[0] = info.max;
-        } else if (info.dealYear === "2020") {
+        } else if (info.dealYear === "2016") {
           state.houseRecentInfo.min[1] = info.min;
           state.houseRecentInfo.max[1] = info.max;
-        } else if (info.dealYear === "2021") {
+        } else if (info.dealYear === "2017") {
           state.houseRecentInfo.min[2] = info.min;
           state.houseRecentInfo.max[2] = info.max;
-        } else if (info.dealYear === "2022") {
+        } else if (info.dealYear === "2018") {
           state.houseRecentInfo.min[3] = info.min;
           state.houseRecentInfo.max[3] = info.max;
+        } else if (info.dealYear === "2019") {
+          state.houseRecentInfo.min[4] = info.min;
+          state.houseRecentInfo.max[4] = info.max;
+        } else if (info.dealYear === "2020") {
+          state.houseRecentInfo.min[5] = info.min;
+          state.houseRecentInfo.max[5] = info.max;
+        } else if (info.dealYear === "2021") {
+          state.houseRecentInfo.min[6] = info.min;
+          state.houseRecentInfo.max[6] = info.max;
+        } else if (info.dealYear === "2022") {
+          state.houseRecentInfo.min[7] = info.min;
+          state.houseRecentInfo.max[7] = info.max;
         }
       });
     },
     CLEAR_HOUSE_RECENT_INFO(state) {
       state.houseRecentInfo = {
         aptCode: 0,
-        min: [0, 0, 0, 0],
-        max: [0, 0, 0, 0],
+        min: [0, 0, 0, 0, 0, 0, 0, 0],
+        max: [0, 0, 0, 0, 0, 0, 0, 0],
       };
     },
     PUSH_MARKER(state, marker) {
