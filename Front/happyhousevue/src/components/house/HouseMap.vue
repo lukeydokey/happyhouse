@@ -70,6 +70,8 @@ export default {
       "getParkList",
       "getAreaList",
       "setCurAddress",
+      "getCoordList",
+      "clearHouseList",
     ]),
     setnull() {
       this.setHouseNull();
@@ -129,23 +131,24 @@ export default {
     },
     update() {
       this.markerPositions = [];
-      for (var step = 0; step < this.houses.data.length; step++) {
-        this.markerPositions.push({
-          title: this.houses.data[step].aptName,
-          latlng: new kakao.maps.LatLng(
-            this.houses.data[step].lat,
-            this.houses.data[step].lng,
-          ),
-          content:
-            this.houses.data[step].sidoName +
-            " " +
-            this.houses.data[step].gugunName +
-            " " +
-            this.houses.data[step].dongName +
-            " " +
-            this.houses.data[step].jibun,
-        });
-      }
+      if (this.houses)
+        for (var step = 0; step < this.houses.data.length; step++) {
+          this.markerPositions.push({
+            title: this.houses.data[step].aptName,
+            latlng: new kakao.maps.LatLng(
+              this.houses.data[step].lat,
+              this.houses.data[step].lng,
+            ),
+            content:
+              this.houses.data[step].sidoName +
+              " " +
+              this.houses.data[step].gugunName +
+              " " +
+              this.houses.data[step].dongName +
+              " " +
+              this.houses.data[step].jibun,
+          });
+        }
       var imgSrc = require("@/assets/map/apart.png");
       var imgSize = [42, 63];
       this.displayMarkers(this.markerPositions, imgSrc, imgSize);
@@ -240,23 +243,27 @@ export default {
     //   console.log(message);
     // },
     boundsChanged() {
-      // 지도 영역정보를 얻어옵니다
       var bounds = this.map.getBounds();
-
-      // 영역정보의 남서쪽 정보를 얻어옵니다
       var swLatlng = bounds.getSouthWest();
-
-      // 영역정보의 북동쪽 정보를 얻어옵니다
       var neLatlng = bounds.getNorthEast();
 
-      var message =
-        "<p>영역좌표는 남서쪽 위도, 경도는  " +
-        swLatlng.toString() +
-        "이고 <br>";
-      message += "북동쪽 위도, 경도는  " + neLatlng.toString() + "입니다 </p>";
-
-      this.searchAddrFromCoords(this.map.getCenter(), this.displayCenterInfo);
-      console.log(message);
+      if (this.coordSearch) {
+        if (this.map.getLevel() < 5) {
+          this.getCoordList({
+            lat1: swLatlng.getLat(),
+            lng1: swLatlng.getLng(),
+            lat2: neLatlng.getLat(),
+            lng2: neLatlng.getLng(),
+          });
+          this.searchAddrFromCoords(
+            this.map.getCenter(),
+            this.displayCenterInfo,
+          );
+        } else {
+          this.setCurAddress(null);
+          this.clearHouseList();
+        }
+      }
     },
     drawCircle(data) {
       this.centerPosition = this.map.getCenter();
@@ -345,12 +352,13 @@ export default {
         this.markers.push(marker);
       });
 
-      const bounds = positions.reduce(
-        (bounds, position) => bounds.extend(position.latlng),
-        new kakao.maps.LatLngBounds(),
-      );
-
-      this.map.setBounds(bounds);
+      if (positions.length != 0 && !this.coordSearch) {
+        const bounds = positions.reduce(
+          (bounds, position) => bounds.extend(position.latlng),
+          new kakao.maps.LatLngBounds(),
+        );
+        this.map.setBounds(bounds);
+      }
       // console.log(this.map.getLevel());
       if (this.map.getLevel() > 10) {
         this.moveMap(this.houses.data[0]);
@@ -464,6 +472,7 @@ export default {
       "parks",
       "checkMarkersLenght",
       "range",
+      "coordSearch",
     ]),
   },
   created() {

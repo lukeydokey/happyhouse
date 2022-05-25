@@ -22,6 +22,7 @@ export default {
     ...mapState(memberStore, ["userInfo"]),
   },
   created() {
+    this.setCoordOff();
     this.clearHotPlaces();
     this.clearHotPlacesByGender();
     this.clearSearchedDongs();
@@ -34,7 +35,11 @@ export default {
     this.setIsSearching(false);
   },
   methods: {
-    ...mapActions(houseStore, ["setIsSearching", "clearHouseList"]),
+    ...mapActions(houseStore, [
+      "setIsSearching",
+      "clearHouseList",
+      "setCoordOff",
+    ]),
     ...mapActions(searchStore, [
       "getHotPlaces",
       "clearHotPlaces",

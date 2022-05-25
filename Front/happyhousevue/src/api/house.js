@@ -17,6 +17,9 @@ function dongList(params, success, fail) {
 function houseList(params, success, fail) {
   api.get(`/map/apt`, { params: params }).then(success).catch(fail);
 }
+function coordList(params, success, fail) {
+  api.get(`/map/coord`, { params: params }).then(success).catch(fail);
+}
 
 async function getHouseRecentInfo(aptCode, success, fail) {
   await api.get(`/map/aptRecentInfo/${aptCode}`).then(success).catch(fail);
@@ -45,4 +48,5 @@ export {
   SchoolList,
   ParkList,
   AreaList,
+  coordList,
 };
