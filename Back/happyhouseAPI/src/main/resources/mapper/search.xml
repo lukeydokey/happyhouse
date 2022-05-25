@@ -44,7 +44,7 @@
 		select d.dongCode, d.sidoName, d.gugunName, d.dongName 
 		from dongcode as d join houseinfo h
 		on d.dongCode = h.dongCode
-		where dongName like concat('%',#{dongName},'%')
+		where d.dongName like concat('%',#{dongName},'%')
 		group by d.dongCode
 	</select>
 	
