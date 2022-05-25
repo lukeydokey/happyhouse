@@ -109,4 +109,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.m-1 {
+  width: 100px;
+}
+</style>

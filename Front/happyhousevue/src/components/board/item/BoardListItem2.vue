@@ -2,7 +2,7 @@
   <b-tr>
     <b-td class="col-3">{{ userid }}</b-td>
     <b-td class="text-left">{{ content }}</b-td>
-    <b-td class="col-2">{{ regtime | dateFormat }}</b-td>
+    <b-td class="col-2">{{ regtime }}</b-td>
     <b-td class="col-1"
       ><b-button
         type="reset"
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import moment from "moment";
 import { mapActions, mapState } from "vuex";
 const boardStore = "boardStore";
 const memberStore = "memberStore";
@@ -35,11 +34,6 @@ export default {
     ...mapState(memberStore, ["userInfo"]),
     isMyComment() {
       return this.userInfo.id === this.userid ? true : false;
-    },
-  },
-  filters: {
-    dateFormat(regtime) {
-      return moment(new Date(regtime)).format("YY.MM.DD");
     },
   },
   methods: {

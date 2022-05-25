@@ -80,7 +80,7 @@
             >
             <b-button
               type="button"
-              variant="success"
+              variant="danger"
               class="m-1"
               @click="movePage"
               >취소</b-button
@@ -205,4 +205,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.m-1 {
+  width: 100px;
+}
+</style>
