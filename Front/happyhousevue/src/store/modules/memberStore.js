@@ -92,6 +92,7 @@ const memberStore = {
         (response) => {
           if (response.data === "success") {
             commit("SET_IS_REGISTER_ERROR", false);
+            commit("SET_USER_INFO", user);
           } else {
             commit("SET_IS_REGISTER_ERROR", true);
           }
