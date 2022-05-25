@@ -22,8 +22,9 @@ public interface HouseMapMapper {
 	SidoGugunCodeDto getSidoGugunDong (String dongCode) throws SQLException;
 	List<HouseInfoDto> getDongInGugun(String gugun) throws SQLException;
 	List<HouseInfoDto> getAptInDong(String dong) throws SQLException;
+	List<HouseInfoDto> getAptInCoord(String lat1, String lng1, String lat2, String lng2);
 	List<HouseDealDto> getAptDeal(String aptCode) throws SQLException;
-	List<HouseRecentPricesDto>getAptRecentInfo(int aptCode) throws SQLException;
+	List<HouseRecentPricesDto>getAptRecentInfo(String aptCode) throws SQLException;
 	List<SchoolDto>getSchool(String lat, String lng, String range) throws SQLException;
 	List<ParkDto>getPark(String lat, String lng, String range) throws SQLException;
 	List<AreaDto>getArea(String lat, String lng, String range) throws SQLException;

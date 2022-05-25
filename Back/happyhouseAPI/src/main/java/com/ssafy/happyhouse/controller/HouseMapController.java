@@ -56,6 +56,10 @@ public class HouseMapController {
 	public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInDong(dong), HttpStatus.OK);
 	}
+	@GetMapping("/coord")
+	public ResponseEntity<List<HouseInfoDto>> coord(@RequestParam("lat1") String lat1, @RequestParam("lng1") String lng1, @RequestParam("lat2") String lat2, @RequestParam("lng2") String lng2) throws Exception {
+		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInCoord(lat1, lng1, lat2, lng2), HttpStatus.OK);
+	}
 	
 	@GetMapping("/aptName")
 	public ResponseEntity<List<HouseInfoDto>> aptName(@RequestParam("dong") String dong, @RequestParam("apt") String apt) throws Exception {
@@ -71,7 +75,7 @@ public class HouseMapController {
 		return new ResponseEntity<List<AreaDto>>(haHouseMapService.getArea(lat, lng, range), HttpStatus.OK);
 	}
 	@GetMapping("/aptRecentInfo/{aptCode}")
-	public ResponseEntity<List<HouseRecentPricesDto>> aptRecentInfo(@PathVariable("aptCode") @ApiParam(value = "최근 거래가격 정보 가져올 아파트 코드", required = true) int aptCode) throws Exception {
+	public ResponseEntity<List<HouseRecentPricesDto>> aptRecentInfo(@PathVariable("aptCode") @ApiParam(value = "최근 거래가격 정보 가져올 아파트 코드", required = true) String aptCode) throws Exception {
 		return new ResponseEntity<List<HouseRecentPricesDto>>(haHouseMapService.getAptRecentInfo(aptCode), HttpStatus.OK);
 	}
 	

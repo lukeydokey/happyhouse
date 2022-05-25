@@ -49,6 +49,20 @@
 		order by aptName
 	</select>
 	
+	
+	<select id="getAptInCoord" parameterType="string" resultType="houseInfoDto">
+		select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice,
+				(select floor from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) floor
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where h.lat between #{lat1} and #{lat2} and h.lng between #{lng1} and #{lng2}
+		order by aptName
+	</select>
+	
 	<select id="getApt" parameterType="houseInfoDto" resultType="houseInfoDto">
 		select aptCode
 		from houseinfo
@@ -82,7 +96,7 @@
 		where aptcode = #{aptCode}
 	</select>
 	
-	<select id="getAptRecentInfo" parameterType="int" resultType="houseRecentPricesDto">
+	<select id="getAptRecentInfo" parameterType="String" resultType="houseRecentPricesDto">
 		select aptcode, dealYear,  min(cast(replace(dealAmount,",","") as signed)) as min, max(cast(replace(dealAmount,",","") as signed)) as max
 		from housedeal
 		where aptCode = #{aptCode}

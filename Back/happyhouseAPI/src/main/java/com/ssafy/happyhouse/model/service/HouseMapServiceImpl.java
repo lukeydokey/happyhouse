@@ -48,14 +48,17 @@ public class HouseMapServiceImpl implements HouseMapService {
 	public List<HouseInfoDto> getAptInDong(String dong) throws Exception {
 		return houseMapMapper.getAptInDong(dong);
 	}
-
+	@Override
+	public List<HouseInfoDto> getAptInCoord(String lat1, String lng1, String lat2, String lng2) throws Exception {
+		return houseMapMapper.getAptInCoord(lat1, lng1, lat2, lng2);
+	}
 	@Override
 	public List<HouseDealDto> getAptDeal(String aptCode) throws Exception {
 		return houseMapMapper.getAptDeal(aptCode);
 	}
 	
 	@Override
-	public List<HouseRecentPricesDto> getAptRecentInfo(int aptCode) throws Exception {
+	public List<HouseRecentPricesDto> getAptRecentInfo(String aptCode) throws Exception {
 		return houseMapMapper.getAptRecentInfo(aptCode);
 	}
 	
@@ -190,6 +193,8 @@ public class HouseMapServiceImpl implements HouseMapService {
 		
 		System.out.println("Transaction success");
 	}
+
+	
 
 
 	
