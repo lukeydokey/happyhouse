@@ -94,9 +94,11 @@ export default {
       this.getArticle(article.articleno);
       this.clearComments();
       this.getComments(article.articleno);
-      this.$router.push({
-        name: "boardDetail",
-      });
+      setTimeout(() => {
+        this.$router.push({
+          name: "boardDetail",
+        });
+      }, 200);
     },
   },
 };
