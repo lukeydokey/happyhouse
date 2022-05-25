@@ -114,7 +114,7 @@
 	</insert>
 	<delete id="deleteLikeApt" parameterType="String">
 		delete from likeapt
-		where id = #{aptCode} and aptCode #{aptCode}
+		where id = #{id} and aptCode = #{aptCode}
 	</delete>
 	<select id="getLikeApt" parameterType="String" resultType="LikeAptDto">
 		select *
