@@ -18,13 +18,11 @@ public interface HouseMapService {
 	List<HouseInfoDto> getDongInGugun(String gugun) throws Exception;
 	List<HouseInfoDto> getAptInDong(String dong) throws Exception;
 	List<HouseInfoDto> getAptInCoord(String lat1, String lng1, String lat2, String lng2) throws Exception;
-	List<HouseInfoDto> getAptWithName(String dong, String apt) throws Exception;
 	List<HouseDealDto> getAptDeal(String aptCode) throws Exception;
 	List<SchoolDto> getSchool(String lat, String lng, String range) throws Exception;
 	List<ParkDto> getPark(String lat, String lng, String range) throws Exception;
 	List<AreaDto> getArea(String lat, String lng, String range) throws Exception;
 	List<HouseRecentPricesDto>getAptRecentInfo(String aptCode) throws Exception;
-	void save() throws Exception;
 	void setLikeApt(LikeAptDto like);
 	void deleteLikeApt(String id, String aptCode);
 	List<LikeAptDto> getLikeApt(String id);

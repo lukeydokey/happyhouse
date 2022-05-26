@@ -68,11 +68,6 @@ public class HouseMapController {
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInCoord(lat1, lng1, lat2, lng2), HttpStatus.OK);
 	}
 	
-	@GetMapping("/aptName")
-	public ResponseEntity<List<HouseInfoDto>> aptName(@RequestParam("dong") String dong, @RequestParam("apt") String apt) throws Exception {
-		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptWithName(dong, apt), HttpStatus.OK);
-	}
-	
 	@GetMapping("/aptDeal")
 	public ResponseEntity<List<HouseDealDto>> aptDeal(@RequestParam("aptCode") String aptCode) throws Exception {
 		return new ResponseEntity<List<HouseDealDto>>(haHouseMapService.getAptDeal(aptCode), HttpStatus.OK);
@@ -107,12 +102,6 @@ public class HouseMapController {
 		}catch(Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
-	}
-	
-	@ApiOperation(value = "아파트 실 거래가 파싱용 ")
-	@GetMapping("/save")
-	public void save() throws Exception{
-		haHouseMapService.save();
 	}
 	
 }

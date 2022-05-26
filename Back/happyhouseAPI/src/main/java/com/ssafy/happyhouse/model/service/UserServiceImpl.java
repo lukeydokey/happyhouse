@@ -3,7 +3,6 @@ package com.ssafy.happyhouse.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.happyhouse.jwt.JwtTokenProvider;
 import com.ssafy.happyhouse.model.UserDto;
 import com.ssafy.happyhouse.model.mapper.UserMapper;
 
@@ -13,8 +12,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-
-	private JwtTokenProvider jwtProvider = new JwtTokenProvider();
 	
 	@Override
 	public int idCheck(String id) throws Exception {
