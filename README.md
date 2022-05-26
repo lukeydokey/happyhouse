@@ -48,7 +48,9 @@ npm run lint
 ## 실행 화면
 <br>
 ### 메인화면
+
 ![01메인화면](https://user-images.githubusercontent.com/77423712/170437652-ec7dfb3a-f763-4743-94d9-d26a5e530aba.png)
+
 ### 로그인 화면
 ![02로그인](https://user-images.githubusercontent.com/77423712/170437681-67ea4627-7420-47a8-bcb2-c565a72700e5.png)
 ### 회원가입 화면
