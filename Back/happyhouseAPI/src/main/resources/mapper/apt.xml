@@ -108,9 +108,9 @@
 		from houseinfo
 	</select>
 	<insert id="insertLikeApt" parameterType="LikeAptDto">
-		insert into likeapt(id, aptCode)
+		insert into likeapt(id, aptCode, aptName, dongCode, dongName, gugunName, jibun, lat, lng, sidoName)
 		values(
-		#{id}, #{aptCode})
+		#{id}, #{aptCode}, #{aptName}, #{dongCode}, #{dongName}, #{gugunName}, #{jibun}, #{lat}, #{lng}, #{sidoName})
 	</insert>
 	<delete id="deleteLikeApt" parameterType="String">
 		delete from likeapt

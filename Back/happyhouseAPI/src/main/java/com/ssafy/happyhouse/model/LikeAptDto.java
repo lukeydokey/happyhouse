@@ -12,6 +12,72 @@ public class LikeAptDto {
 	private String id;
 	@ApiModelProperty(value = "아파트코 드")
 	private String aptCode;
+	@ApiModelProperty(value = "아파트 이름")
+	private String aptName;
+	@ApiModelProperty(value = "찜목록 ID")
+	private String dongCode;
+	@ApiModelProperty(value = "사용자 ID")
+	private String dongName;
+	@ApiModelProperty(value = "아파트코 드")
+	private String floor;
+	@ApiModelProperty(value = "아파트 이름")
+	private String gugunName;
+	@ApiModelProperty(value = "찜목록 ID")
+	private String jibun;
+	@ApiModelProperty(value = "사용자 ID")
+	private String lat;
+	@ApiModelProperty(value = "아파트코 드")
+	private String lng;
+	@ApiModelProperty(value = "아파트 이름")
+	private String sidoName;
+	public String getDongCode() {
+		return dongCode;
+	}
+	public void setDongCode(String dongCode) {
+		this.dongCode = dongCode;
+	}
+	public String getDongName() {
+		return dongName;
+	}
+	public void setDongName(String dongName) {
+		this.dongName = dongName;
+	}
+	public String getFloor() {
+		return floor;
+	}
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
+	public String getGugunName() {
+		return gugunName;
+	}
+	public void setGugunName(String gugunName) {
+		this.gugunName = gugunName;
+	}
+	public String getJibun() {
+		return jibun;
+	}
+	public void setJibun(String jibun) {
+		this.jibun = jibun;
+	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+	public String getLng() {
+		return lng;
+	}
+	public void setLng(String lng) {
+		this.lng = lng;
+	}
+	public String getSidoName() {
+		return sidoName;
+	}
+	public void setSidoName(String sidoName) {
+		this.sidoName = sidoName;
+	}
 	public String getNo() {
 		return no;
 	}
@@ -29,6 +95,12 @@ public class LikeAptDto {
 	}
 	public void setAptCode(String aptCode) {
 		this.aptCode = aptCode;
+	}
+	public String getAptName() {
+		return aptName;
+	}
+	public void setAptName(String aptName) {
+		this.aptName = aptName;
 	}
 	@Override
 	public String toString() {
