@@ -222,7 +222,6 @@ const houseStore = {
     },
     SET_COMAREA_LIST(state, area) {
       state.compareAreas = area.data;
-      eventBus.$emit("areaUpdated", area.data);
     },
     SET_DETAIL_HOUSE(state, house) {
       // console.log("Mutations", house);

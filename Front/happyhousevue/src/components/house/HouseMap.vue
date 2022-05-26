@@ -541,19 +541,18 @@ export default {
     });
     eventBus.$on("rangeChanged", (data) => {
       console.log(data);
+      if (this.selectedCompare) {
+        this.getComAreaList({
+          lat: this.selectedCompare.lat,
+          lng: this.selectedCompare.lng,
+          range: this.range,
+        });
+      }
       if (this.house) {
         console.log(this.house);
         this.getAreaList({
           lat: this.house.lat,
           lng: this.house.lng,
-          range: this.range,
-        });
-      }
-      if (this.selectedCompare) {
-        console.log("비교");
-        this.getComAreaList({
-          lat: this.selectedCompare.lat,
-          lng: this.selectedCompare.lng,
           range: this.range,
         });
       }
