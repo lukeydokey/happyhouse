@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
+  <b-container class="bv-example-row mt-3 text-center fontsans">
     <b-card bg-variant="first">
       <h3 class="underline-steelblue">
         <b-icon icon="person-lines-fill"></b-icon> Member Service

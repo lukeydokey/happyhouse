@@ -73,15 +73,17 @@
             </b-form-group>
             <b-button
               type="button"
-              variant="primary"
+              variant="outline-primary"
               class="m-1"
+              style="float: right"
               @click="checkValue"
               >회원가입</b-button
             >
             <b-button
               type="button"
-              variant="success"
+              variant="outline-danger"
               class="m-1"
+              style="float: right"
               @click="movePage"
               >취소</b-button
             >
@@ -205,4 +207,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.m-1 {
+  width: 100px;
+}
+</style>

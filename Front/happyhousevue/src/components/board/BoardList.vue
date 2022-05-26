@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { moment } from "moment";
 import { mapActions, mapState } from "vuex";
 const boardStore = "boardStore";
 
@@ -53,8 +54,12 @@ export default {
         { key: "articleno", label: "글번호", tdClass: "tdClass" },
         { key: "subject", label: "제목", tdClass: "tdSubject" },
         { key: "userid", label: "작성자", tdClass: "tdClass" },
-        { key: "regtime", label: "작성일", tdClass: "tdClass" },
-        { key: "hit", label: "조회수", tdClass: "tdClass" },
+        {
+          key: "regtime",
+          label: "작성일",
+          tdClass: "tdClass",
+          formatter: "dateFormat",
+        },
       ],
     };
   },
@@ -70,6 +75,11 @@ export default {
     };
     this.listArticle(param);
   },
+  filters: {
+    dateFormat(regtime) {
+      return moment(new Date(regtime)).format("YY.MM.DD");
+    },
+  },
   methods: {
     ...mapActions(boardStore, [
       "listArticle",
@@ -84,9 +94,11 @@ export default {
       this.getArticle(article.articleno);
       this.clearComments();
       this.getComments(article.articleno);
-      this.$router.push({
-        name: "boardDetail",
-      });
+      setTimeout(() => {
+        this.$router.push({
+          name: "boardDetail",
+        });
+      }, 200);
     },
   },
 };

@@ -8,8 +8,8 @@
       {{ area }}
       2
     </li> -->
-    <area-list-item
-      v-for="(area, index) in this.getArea"
+    <compare-area-list-item
+      v-for="(area, index) in this.getCompareArea"
       :key="index"
       :area="area"
     />
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import AreaListItem from "@/components/house/AreaListItem.vue";
+import CompareAreaListItem from "@/components/house/CompareAreaListItem.vue";
 import { mapState, mapGetters } from "vuex";
 
 const houseStore = "houseStore";
@@ -34,14 +34,14 @@ const houseStore = "houseStore";
 export default {
   name: "AreaList",
   components: {
-    AreaListItem,
+    CompareAreaListItem,
   },
   data() {
     return {};
   },
   computed: {
     ...mapState(houseStore, ["houses", "areas"]),
-    ...mapGetters(houseStore, ["getArea"]),
+    ...mapGetters(houseStore, ["getCompareArea"]),
   },
 };
 </script>

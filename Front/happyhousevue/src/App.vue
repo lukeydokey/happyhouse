@@ -36,19 +36,7 @@ export default {
 body {
   margin: 0;
 }
-a {
-  text-decoration: none;
-}
 
-a:hover {
-  text-decoration: none;
-  font-weight: bold;
-  color: chartreuse;
-}
-
-a.router-link-exact-active {
-  color: #3aa4ca;
-}
 .fade-enter {
   opacity: 0;
 }

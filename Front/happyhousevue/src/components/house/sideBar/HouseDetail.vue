@@ -17,8 +17,8 @@ export default {
   name: "HouseDetail",
   data() {
     return {
-      min: [0, 0, 0, 0],
-      max: [0, 0, 0, 0],
+      min: [0, 0, 0, 0, 0, 0, 0, 0],
+      max: [0, 0, 0, 0, 0, 0, 0, 0],
     };
   },
   computed: {
@@ -28,7 +28,16 @@ export default {
     // },
     chartData() {
       return {
-        labels: ["2019", "2020", "2021", "2022"],
+        labels: [
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+        ],
         datasets: [
           {
             label: "min",

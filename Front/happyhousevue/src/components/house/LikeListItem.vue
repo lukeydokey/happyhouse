@@ -15,7 +15,7 @@
           v-if="this.getLikedApt.indexOf(this.house.aptCode.toString()) == -1"
           src="@/assets/like/emptyheart.png"
           style="float: right; width: 1.2em; height: 1.2em"
-          @click="like(userInfo.id, house)"
+          @click="like(userInfo.id, house.aptCode)"
         />
         <img
           v-else
@@ -81,25 +81,14 @@ export default {
         this.getHouseDealList(this.house.aptCode);
       }
 
+      eventBus.$emit("likeclick", house);
       this.setSelectedArea(null);
     },
     colorChange(flag) {
       this.isColor = flag;
     },
-    like(id, house) {
-      this.likeAptSet({
-        id,
-        aptCode: house.aptCode,
-        aptName: house.aptName,
-        dongCode: house.dongCode,
-        dongName: house.dongName,
-        floor: house.floor,
-        gugunName: house.gugunName,
-        jibun: house.jibun,
-        lat: house.lat,
-        lng: house.lng,
-        sidoName: house.sidoName,
-      });
+    like(id, aptCode) {
+      this.likeAptSet({ id, aptCode });
     },
     dislike(id, aptCode) {
       this.likeAptDelete({ id, aptCode });

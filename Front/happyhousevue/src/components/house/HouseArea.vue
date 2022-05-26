@@ -1,6 +1,9 @@
 <template>
   <div>
     <h4 class="small-title">주변 정보</h4>
+    <b-button variant="light" @click="this.changeCompare" class="float-right"
+      >관심 매물 비교</b-button
+    >
     <seek-bar></seek-bar>
     <h5 class="text-center inline fontsans">
       <b>{{ this.house.aptName }}<br /></b><b> 근방 </b>
@@ -27,10 +30,18 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(houseStore, ["getSchoolList", "getParkList"]),
+    ...mapActions(houseStore, [
+      "getSchoolList",
+      "getParkList",
+      "changeCompare",
+    ]),
+    compareMode() {
+      console.log(this.compare);
+      this.compare = !this.compare;
+    },
   },
   computed: {
-    ...mapState(houseStore, ["range", "house"]),
+    ...mapState(houseStore, ["range", "house", "compare"]),
     // ...mapState(houseStore, ["houses"]),
     // // houses() {
     // //   return this.$store.state.houses;

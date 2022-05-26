@@ -17,6 +17,9 @@ function dongList(params, success, fail) {
 function houseList(params, success, fail) {
   api.get(`/map/apt`, { params: params }).then(success).catch(fail);
 }
+function coordList(params, success, fail) {
+  api.get(`/map/coord`, { params: params }).then(success).catch(fail);
+}
 
 async function getHouseRecentInfo(aptCode, success, fail) {
   await api.get(`/map/aptRecentInfo/${aptCode}`).then(success).catch(fail);
@@ -31,8 +34,20 @@ function SchoolList(params, success, fail) {
 function ParkList(params, success, fail) {
   api.get(`/map/park`, { params: params }).then(success).catch(fail);
 }
-function AreaList(params, success, fail) {
-  api.get(`/map/area`, { params: params }).then(success).catch(fail);
+async function AreaList(params, success, fail) {
+  await api.get(`/map/area`, { params: params }).then(success).catch(fail);
+}
+async function setLikeApt(params, success, fail) {
+  await api
+    .post(`/map/likeapt`, JSON.stringify(params))
+    .then(success)
+    .catch(fail);
+}
+function deleteLikeApt(params, success, fail) {
+  api.delete(`/map/likeapt`, { params: params }).then(success).catch(fail);
+}
+function getLikeApt(params, success, fail) {
+  api.get(`/map/likeapt`, { params: params }).then(success).catch(fail);
 }
 
 export {
@@ -45,4 +60,8 @@ export {
   SchoolList,
   ParkList,
   AreaList,
+  coordList,
+  setLikeApt,
+  deleteLikeApt,
+  getLikeApt,
 };

@@ -8,6 +8,10 @@ import {
   SchoolList,
   ParkList,
   AreaList,
+  coordList,
+  setLikeApt,
+  deleteLikeApt,
+  getLikeApt,
 } from "@/api/house.js";
 import { eventBus } from "@/main.js";
 
@@ -19,24 +23,143 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
-    houseRecentInfo: { aptCode: 0, min: [0, 0, 0, 0], max: [0, 0, 0, 0] },
+    houseRecentInfo: {
+      aptCode: 0,
+      min: [0, 0, 0, 0, 0, 0, 0, 0],
+      max: [0, 0, 0, 0, 0, 0, 0, 0],
+    },
     markers: [],
     range: 0,
     deals: [],
     schools: [],
     parks: [],
     areas: [],
+    compareAreas: [],
     isSearching: false,
+    selectedArea: null,
+    curAddress: null,
+    coordSearch: false,
+    like: [],
+    compare: false,
+    selectedCompare: null,
+    compareSelectedArea: null,
   },
   getters: {
+    getLikeOption: function (state) {
+      var res = [];
+      res.push({ value: null, text: "비교할 관심 매물을 선택해주세요." });
+      for (var i = 0; i < state.like.length; i++) {
+        res.push({
+          value: state.like[i],
+          text:
+            state.like[i].aptName +
+            "-" +
+            state.like[i].sidoName +
+            " " +
+            state.like[i].gugunName +
+            " " +
+            state.like[i].dongName,
+        });
+      }
+      return res;
+    },
+    getLikedApt: function (state) {
+      var res = [];
+      for (var i = 0; i < state.like.length; i++) {
+        res.push(state.like[i].aptCode);
+      }
+      return res;
+    },
+    getCurAddress: function (state) {
+      return state.address;
+    },
     checkMarkersLenght: function (state) {
       return state.markers.length;
     },
     getSelected: function (state) {
       return state.house;
     },
+    getCompareSelected: function (state) {
+      return state.selectedCompare;
+    },
+    getSelectedArea: function (state) {
+      return state.selectedArea;
+    },
+    getSelectedCompareArea: function (state) {
+      return state.CompareSelectedArea;
+    },
     getRange: function (state) {
       return state.range;
+    },
+    getArea: function (state) {
+      var school = [];
+      var park = [];
+      var subway = [];
+      var convenience = [];
+      var market = [];
+      var cafe = [];
+      var cctv = [];
+      for (var i = 0; i < state.areas.length; i++) {
+        if (state.areas[i].type == "학교") {
+          school.push(state.areas[i]);
+        } else if (state.areas[i].type == "공원") {
+          park.push(state.areas[i]);
+        } else if (state.areas[i].type == "지하철") {
+          subway.push(state.areas[i]);
+        } else if (state.areas[i].type == "편의점") {
+          convenience.push(state.areas[i]);
+        } else if (state.areas[i].type == "대형 마트") {
+          market.push(state.areas[i]);
+        } else if (state.areas[i].type == "카페") {
+          cafe.push(state.areas[i]);
+        } else if (state.areas[i].type == "CCTV") {
+          cctv.push(state.areas[i]);
+        }
+      }
+      return [
+        { class: "학교", array: school },
+        { class: "공원", array: park },
+        { class: "지하철", array: subway },
+        { class: "편의점", array: convenience },
+        { class: "대형마트", array: market },
+        { class: "카페", array: cafe },
+        { class: "CCTV", array: cctv },
+      ];
+    },
+    getCompareArea: function (state) {
+      var school = [];
+      var park = [];
+      var subway = [];
+      var convenience = [];
+      var market = [];
+      var cafe = [];
+      var cctv = [];
+      for (var i = 0; i < state.compareAreas.length; i++) {
+        if (state.compareAreas[i].type == "학교") {
+          school.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "공원") {
+          park.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "지하철") {
+          subway.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "편의점") {
+          convenience.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "대형 마트") {
+          market.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "카페") {
+          cafe.push(state.compareAreas[i]);
+        } else if (state.compareAreas[i].type == "CCTV") {
+          cctv.push(state.compareAreas[i]);
+        }
+      }
+      return [
+        { class: "학교", array: school },
+        { class: "공원", array: park },
+        { class: "지하철", array: subway },
+        { class: "편의점", array: convenience },
+        { class: "대형마트", array: market },
+        { class: "카페", array: cafe },
+        { class: "CCTV", array: cctv },
+      ];
     },
   },
   mutations: {
@@ -78,6 +201,7 @@ const houseStore = {
     },
     CLEAR_HOUSE_LIST(state) {
       state.houses = [];
+      eventBus.$emit("apartUpdated", "apartUpdated");
     },
     SET_HOUSEDEAL_LIST(state, deals) {
       // console.log(houses);
@@ -93,14 +217,17 @@ const houseStore = {
       eventBus.$emit("parksUpdated", parks);
     },
     SET_AREA_LIST(state, area) {
-      console.log("serarea");
       state.areas = area.data;
       eventBus.$emit("areaUpdated", area.data);
+    },
+    SET_COMAREA_LIST(state, area) {
+      state.compareAreas = area.data;
     },
     SET_DETAIL_HOUSE(state, house) {
       // console.log("Mutations", house);
       state.house = house;
-
+      console.log(house);
+      console.log(1);
       eventBus.$emit("detailApart", house);
     },
     CLEAR_DETAIL_HOUSE(state) {
@@ -109,26 +236,38 @@ const houseStore = {
     SET_HOUSE_RECENT_INFO(state, houseRecentInfo) {
       state.houseRecentInfo.aptCode = houseRecentInfo[0].aptCode;
       houseRecentInfo.forEach((info) => {
-        if (info.dealYear === "2019") {
+        if (info.dealYear === "2015") {
           state.houseRecentInfo.min[0] = info.min;
           state.houseRecentInfo.max[0] = info.max;
-        } else if (info.dealYear === "2020") {
+        } else if (info.dealYear === "2016") {
           state.houseRecentInfo.min[1] = info.min;
           state.houseRecentInfo.max[1] = info.max;
-        } else if (info.dealYear === "2021") {
+        } else if (info.dealYear === "2017") {
           state.houseRecentInfo.min[2] = info.min;
           state.houseRecentInfo.max[2] = info.max;
-        } else if (info.dealYear === "2022") {
+        } else if (info.dealYear === "2018") {
           state.houseRecentInfo.min[3] = info.min;
           state.houseRecentInfo.max[3] = info.max;
+        } else if (info.dealYear === "2019") {
+          state.houseRecentInfo.min[4] = info.min;
+          state.houseRecentInfo.max[4] = info.max;
+        } else if (info.dealYear === "2020") {
+          state.houseRecentInfo.min[5] = info.min;
+          state.houseRecentInfo.max[5] = info.max;
+        } else if (info.dealYear === "2021") {
+          state.houseRecentInfo.min[6] = info.min;
+          state.houseRecentInfo.max[6] = info.max;
+        } else if (info.dealYear === "2022") {
+          state.houseRecentInfo.min[7] = info.min;
+          state.houseRecentInfo.max[7] = info.max;
         }
       });
     },
     CLEAR_HOUSE_RECENT_INFO(state) {
       state.houseRecentInfo = {
         aptCode: 0,
-        min: [0, 0, 0, 0],
-        max: [0, 0, 0, 0],
+        min: [0, 0, 0, 0, 0, 0, 0, 0],
+        max: [0, 0, 0, 0, 0, 0, 0, 0],
       };
     },
     PUSH_MARKER(state, marker) {
@@ -142,6 +281,36 @@ const houseStore = {
     },
     SET_IS_SEARCHING(state, isSearching) {
       state.isSearching = isSearching;
+    },
+    SET_SELECTEDAREA(state, area) {
+      state.selectedArea = area;
+    },
+    SET_COMPARE_SELECTEDAREA(state, area) {
+      state.compareSelectedArea = area;
+    },
+    SET_CURADDRESS(state, address) {
+      state.curAddress = address;
+    },
+    SET_COORDON(state) {
+      state.coordSearch = true;
+    },
+    SET_COORDOFF(state) {
+      state.coordSearch = false;
+    },
+    CHANGE_COMPARE(state) {
+      state.compare = !state.compare;
+    },
+    ADD_CHANGE_APT(state, params) {
+      state.like = [];
+      eventBus.$emit("likeChange", params);
+    },
+    SET_LIKE_APT(state, data) {
+      console.log(data);
+      state.like = data.data;
+      eventBus.$emit("likeChanged", "likeChanged");
+    },
+    SET_COMPARE(state, selected) {
+      state.selectedCompare = selected;
     },
   },
   actions: {
@@ -199,6 +368,18 @@ const houseStore = {
     getHouseList: ({ commit }, dongCode) => {
       const params = { dong: dongCode };
       houseList(
+        params,
+        (response) => {
+          commit("SET_HOUSE_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    getCoordList: ({ commit }, { lat1, lng1, lat2, lng2 }) => {
+      const params = { lat1, lng1, lat2, lng2 };
+      coordList(
         params,
         (response) => {
           commit("SET_HOUSE_LIST", response);
@@ -277,6 +458,19 @@ const houseStore = {
         },
       );
     },
+    getComAreaList: ({ commit }, { lat, lng, range }) => {
+      const params = { lat, lng, range };
+      AreaList(
+        params,
+        (response) => {
+          console.log(response);
+          commit("SET_COMAREA_LIST", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
     pushMarker: ({ commit }, marker) => {
       commit("PUSH_MARKER", marker);
     },
@@ -296,6 +490,65 @@ const houseStore = {
     },
     setIsSearching: ({ commit }, isSearching) => {
       commit("SET_IS_SEARCHING", isSearching);
+    },
+    setSelectedArea: ({ commit }, area) => {
+      commit("SET_SELECTEDAREA", area);
+    },
+    setCompareSelectedArea: ({ commit }, area) => {
+      commit("SET_COMPARE_SELECTEDAREA", area);
+    },
+    setCurAddress: ({ commit }, address) => {
+      commit("SET_CURADDRESS", address);
+    },
+    setCoordOn: ({ commit }) => {
+      commit("SET_COORDON");
+    },
+    setCoordOff: ({ commit }) => {
+      commit("SET_COORDOFF");
+    },
+    changeCompare: ({ commit }) => {
+      commit("CHANGE_COMPARE");
+    },
+    likeAptSet: ({ commit }, params) => {
+      setLikeApt(
+        params,
+        (response) => {
+          console.log(response);
+          commit("ADD_CHANGE_APT", params);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    likeAptDelete: ({ commit }, params) => {
+      console.log(params);
+      deleteLikeApt(
+        params,
+        (response) => {
+          console.log(response);
+          commit("ADD_CHANGE_APT", params);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    likeAptGet: ({ commit }, params) => {
+      console.log(params);
+      getLikeApt(
+        { id: params },
+        (response) => {
+          console.log(response);
+          commit("SET_LIKE_APT", response);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    compareLikeSet: ({ commit }, selected) => {
+      commit("SET_COMPARE", selected);
     },
   },
 };

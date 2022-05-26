@@ -74,7 +74,7 @@
             >
             <b-button
               type="button"
-              variant="success"
+              variant="danger"
               class="m-1"
               @click="movePage"
               >취소</b-button
@@ -133,22 +133,23 @@ export default {
     checkValue() {
       // 사용자 입력값 체크하기
       this.setRegisterErrorFalse();
-      !this.$refs.password &&
+      !this.$refs.password.value &&
         (this.setRegisterErrorTrue(), this.$refs.password.focus());
       !this.isRegisterError &&
-        !this.$refs.name &&
+        !this.$refs.name.value &&
         (this.setRegisterErrorTrue(), this.$refs.name.focus());
       !this.isRegisterError &&
-        !this.$refs.email &&
+        !this.$refs.email.value &&
         (this.setRegisterErrorTrue(), this.$refs.email.focus());
       !this.isRegisterError &&
-        !this.$refs.phonenumber &&
+        !this.$refs.phonenumber.value &&
         (this.setRegisterErrorTrue(), this.$refs.phonenumber.focus());
       // 만약, 내용이 다 입력되어 있다면 modify
       if (!this.isRegisterError) this.confirm();
     },
     async confirm() {
-      this.userUpdate(this.userInfo);
+      this.user.phonenumber = this.$refs.phonenumber.value;
+      this.userUpdate(this.user);
       this.$router.push({ name: "myPage" });
     },
     movePage() {
@@ -159,4 +160,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.m-1 {
+  width: 100px;
+}
+</style>

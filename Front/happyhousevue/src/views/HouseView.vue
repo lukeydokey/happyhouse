@@ -22,6 +22,8 @@ export default {
     ...mapState(memberStore, ["userInfo"]),
   },
   created() {
+    this.setCoordOff();
+    this.likeAptGet(this.userInfo.id);
     this.clearHotPlaces();
     this.clearHotPlacesByGender();
     this.clearSearchedDongs();
@@ -34,7 +36,12 @@ export default {
     this.setIsSearching(false);
   },
   methods: {
-    ...mapActions(houseStore, ["setIsSearching", "clearHouseList"]),
+    ...mapActions(houseStore, [
+      "setIsSearching",
+      "clearHouseList",
+      "setCoordOff",
+      "likeAptGet",
+    ]),
     ...mapActions(searchStore, [
       "getHotPlaces",
       "clearHotPlaces",
@@ -60,10 +67,5 @@ body {
 <style>
 .small-title {
   display: inline-block;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 70%,
-    rgba(231, 149, 27, 0.3) 30%
-  );
 }
 </style>
