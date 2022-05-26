@@ -15,26 +15,15 @@ public class CommentServiceImpl implements CommentService {
 	
     @Autowired
 	private CommentMapper commentMapper;
-
-    @Override
-	public List<BoardDto> retrieveBoard() {
-		return commentMapper.selectBoard();
-	}
     
   	@Override
-	public boolean writeBoard(CommentDto comment) {
-		return commentMapper.insertBoard(comment) == 1;
+	public boolean writeComment(CommentDto comment) {
+		return commentMapper.insertComment(comment) == 1;
 	}
 
 	@Override
 	public List<CommentDto> retrieveComment(int articleno) {
 		return commentMapper.selectCommentByNo(articleno);
-	}
-
-	@Override
-	@Transactional
-	public boolean updateBoard(BoardDto board) {
-		return commentMapper.updateBoard(board) == 1;
 	}
 
 	@Override

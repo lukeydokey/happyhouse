@@ -6,9 +6,7 @@ import com.ssafy.happyhouse.model.BoardDto;
 import com.ssafy.happyhouse.model.CommentDto;
 
 public interface CommentService {
-	public List<BoardDto> retrieveBoard();
 	public List<CommentDto> retrieveComment(int articleno);
-	public boolean writeBoard(CommentDto comment);
-	public boolean updateBoard(BoardDto board);
+	public boolean writeComment(CommentDto comment);
 	public boolean deleteComment(int commentno);
 }

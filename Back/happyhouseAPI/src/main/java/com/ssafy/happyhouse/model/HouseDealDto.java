@@ -7,9 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 public class HouseDealDto {
 
 	@ApiModelProperty(value = "매물 번호")
-	private int no;
+	private String no;
 	@ApiModelProperty(value = "아파트 코드")
-	private int aptCode;
+	private String aptCode;
 	@ApiModelProperty(value = "거래 가격")
 	private String dealAmount;
 	@ApiModelProperty(value = "거래 년도")
@@ -26,16 +26,17 @@ public class HouseDealDto {
 	private String type;
 	@ApiModelProperty(value = "임대료")
 	private String rentMoney;
-	public int getNo() {
+	
+	public String getNo() {
 		return no;
 	}
-	public void setNo(int no) {
+	public void setNo(String no) {
 		this.no = no;
 	}
-	public int getAptCode() {
+	public String getAptCode() {
 		return aptCode;
 	}
-	public void setAptCode(int aptCode) {
+	public void setAptCode(String aptCode) {
 		this.aptCode = aptCode;
 	}
 	public String getDealAmount() {
