@@ -35,16 +35,20 @@
               ></b-form-input>
             </b-form-group>
             <b-button
+              squared
               type="button"
-              variant="primary"
+              variant="outline-secondary"
               class="m-1"
+              style="float: right"
               @click="checkValue"
               >로그인</b-button
             >
             <b-button
+              squared
               type="button"
-              variant="success"
+              variant="outline-secondary"
               class="m-1"
+              style="float: right"
               @click="movePage"
               >회원가입</b-button
             >
